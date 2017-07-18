@@ -1,12 +1,10 @@
-# Thinkpad X230 Clover Config for macOS 10.12 ~ 10.12.5
+# Thinkpad X230 Clover Config for macOS 10.13 High Sierra Beta
 
-**View 10.13 Branch to learn how to install High Sierra Public Beta.**
+**Run macOS High Sierra on your ThinkPad X230**
 
-**Run macOS Sierra on your ThinkPad X230**
+**Video Tutorial : Coming Soon**
 
-**Video Tutorial : https://www.youtube.com/watch?v=MkGsSwpwheQ**
-
-**Last Edit 2017/07/10**
+**Last Edit 2017/07/19**
 
 ## Introduction
 
@@ -18,13 +16,6 @@
  -  Sorry for my bad english and this complicated guide.
  -  Install macOS Sierra might cause Data Loss. **REMEMBER TO BACKUP BEFORE INSTALLING**.
  -  This guide comes with absolutely no warranty. I am not responsible for any damage in hardware , software or data loss on your laptop. Take your own risk.
-
-------
-
-**Update**
-
-- Screen brightness is working on macOS 10.12.5 but it is not adjustable.(maybe Night Shift messed up the screen brightness mechanism), there is a workaround here (credit goes to Rehabman): https://www.tonymacx86.com/threads/guide-laptop-backlight-control-using-applebacklightinjector-kext.218222/
-
 
 ------
 
@@ -171,9 +162,9 @@
 
 3.   Choose USB.
 
-4.   At the Boot Screen, choose your **new Sierra installation.**
+4.   At the Boot Screen, choose your **new High Sierra installation drive.**
 
-5.   Complete macOS Sierra setup.
+5.   Complete macOS High Sierra setup.
 
 ## Post-Install (Kexts Installation)
 

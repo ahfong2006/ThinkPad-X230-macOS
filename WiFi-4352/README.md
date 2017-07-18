@@ -1,0 +1,1 @@
+### Install Files in Extra-Kexts/ folder to /Library/Extensions to make your WiFi Working (If you have Broadcom BCM94352 Device)
