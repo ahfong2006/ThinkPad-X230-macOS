@@ -1,14 +1,16 @@
 /*
  * Intel ACPI Component Architecture
- * AML Disassembler version 20100331
+ * AML/ASL+ Disassembler version 20161210-64(RM)
+ * Copyright (c) 2000 - 2016 Intel Corporation
+ * 
+ * Disassembling to non-symbolic legacy ASL operators
  *
- * Disassembly of iASLPPOqzb.aml, Wed Jul 19 07:36:51 2017
- *
+ * Disassembly of iASLoAhS2C.aml, Tue Jul 18 23:26:40 2017
  *
  * Original Table Header:
  *     Signature        "DSDT"
  *     Length           0x0000FFFC (65532)
- *     Revision         0x01 **** ACPI 1.0, no 64-bit math support
+ *     Revision         0x01 **** 32-bit table (V1), no 64-bit math support
  *     Checksum         0xC6
  *     OEM ID           "Apple "
  *     OEM Table ID     "TP-G2   "
@@ -16,23 +18,50 @@
  *     Compiler ID      "INTL"
  *     Compiler Version 0x20140926 (538183974)
  */
-DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
+DefinitionBlock ("", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 {
-    External (DTGP, MethodObj)    // 4 Arguments
-    External (PDC7)
-    External (PDC6)
-    External (PDC5)
-    External (PDC4)
-    External (PDC3)
-    External (PDC2)
-    External (PDC1)
-    External (PDC0)
-    External (\_PR_.CLVL, IntObj)
-    External (\_PR_.CPU0._PSS, IntObj)
-    External (\_SB_.PCI0.SAT1.PRT1)
-    External (\_SB_.PCI0.SAT1.SCND.MSTR)
-    External (\_SB_.PCI0.SAT1.SCND.GTME)
-    External (\_SB_.PCI0.SAT1.PRIM.GTME)
+    /*
+     * iASL Warning: There was 1 external control method found during
+     * disassembly, but only 0 were resolved (1 unresolved). Additional
+     * ACPI tables may be required to properly disassemble the code. This
+     * resulting disassembler output file may not compile because the
+     * disassembler did not know how many arguments to assign to the
+     * unresolved methods. Note: SSDTs can be dynamically loaded at
+     * runtime and may or may not be available via the host OS.
+     *
+     * To specify the tables needed to resolve external control method
+     * references, the -e option can be used to specify the filenames.
+     * Example iASL invocations:
+     *     iasl -e ssdt1.aml ssdt2.aml ssdt3.aml -d dsdt.aml
+     *     iasl -e dsdt.aml ssdt2.aml -d ssdt1.aml
+     *     iasl -e ssdt*.aml -d dsdt.aml
+     *
+     * In addition, the -fe option can be used to specify a file containing
+     * control method external declarations with the associated method
+     * argument counts. Each line of the file must be of the form:
+     *     External (<method pathname>, MethodObj, <argument count>)
+     * Invocation:
+     *     iasl -fe refs.txt -d dsdt.aml
+     *
+     * The following methods were unresolved and many not compile properly
+     * because the disassembler had to guess at the number of arguments
+     * required for each:
+     */
+    External (_PR_.CLVL, IntObj)    // Warning: Unknown object
+    External (_PR_.CPU0._PSS, IntObj)    // Warning: Unknown object
+    External (_SB_.PCI0.SAT1.PRIM.GTME, UnknownObj)    // Warning: Unknown object
+    External (_SB_.PCI0.SAT1.PRT1, UnknownObj)    // Warning: Unknown object
+    External (_SB_.PCI0.SAT1.SCND.GTME, UnknownObj)    // Warning: Unknown object
+    External (_SB_.PCI0.SAT1.SCND.MSTR, UnknownObj)    // Warning: Unknown object
+    External (DTGP, MethodObj)    // Warning: Unknown method, guessing 4 arguments
+    External (PDC0, UnknownObj)    // Warning: Unknown object
+    External (PDC1, UnknownObj)    // Warning: Unknown object
+    External (PDC2, UnknownObj)    // Warning: Unknown object
+    External (PDC3, UnknownObj)    // Warning: Unknown object
+    External (PDC4, UnknownObj)    // Warning: Unknown object
+    External (PDC5, UnknownObj)    // Warning: Unknown object
+    External (PDC6, UnknownObj)    // Warning: Unknown object
+    External (PDC7, UnknownObj)    // Warning: Unknown object
 
     Scope (_PR)
     {
@@ -52,69 +81,49 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         {
             If (And (PPMF, 0x0400))
             {
-                If (LOr (LAnd (And (PDC0, 0x08), LOr (LEqual (Arg0, 
-                    0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC0, 0x10), LEqual (Arg0, 
-                    0x81))))
+                If (LOr (LAnd (And (PDC0, 0x08), LOr (LEqual (Arg0, 0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC0, 0x10), LEqual (Arg0, 0x81))))
                 {
                     Notify (\_PR.CPU0, Arg0)
                 }
 
-                If (LOr (LAnd (And (PDC1, 0x08), LOr (LEqual (Arg0, 
-                    0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC1, 0x10), LEqual (Arg0, 
-                    0x81))))
+                If (LOr (LAnd (And (PDC1, 0x08), LOr (LEqual (Arg0, 0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC1, 0x10), LEqual (Arg0, 0x81))))
                 {
                     Notify (\_PR.CPU1, Arg0)
                 }
 
-                If (LOr (LAnd (And (PDC2, 0x08), LOr (LEqual (Arg0, 
-                    0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC2, 0x10), LEqual (Arg0, 
-                    0x81))))
+                If (LOr (LAnd (And (PDC2, 0x08), LOr (LEqual (Arg0, 0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC2, 0x10), LEqual (Arg0, 0x81))))
                 {
                     Notify (\_PR.CPU2, Arg0)
                 }
 
-                If (LOr (LAnd (And (PDC3, 0x08), LOr (LEqual (Arg0, 
-                    0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC3, 0x10), LEqual (Arg0, 
-                    0x81))))
+                If (LOr (LAnd (And (PDC3, 0x08), LOr (LEqual (Arg0, 0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC3, 0x10), LEqual (Arg0, 0x81))))
                 {
                     Notify (\_PR.CPU3, Arg0)
                 }
 
-                If (LOr (LAnd (And (PDC4, 0x08), LOr (LEqual (Arg0, 
-                    0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC4, 0x10), LEqual (Arg0, 
-                    0x81))))
+                If (LOr (LAnd (And (PDC4, 0x08), LOr (LEqual (Arg0, 0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC4, 0x10), LEqual (Arg0, 0x81))))
                 {
                     Notify (\_PR.CPU4, Arg0)
                 }
 
-                If (LOr (LAnd (And (PDC5, 0x08), LOr (LEqual (Arg0, 
-                    0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC5, 0x10), LEqual (Arg0, 
-                    0x81))))
+                If (LOr (LAnd (And (PDC5, 0x08), LOr (LEqual (Arg0, 0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC5, 0x10), LEqual (Arg0, 0x81))))
                 {
                     Notify (\_PR.CPU5, Arg0)
                 }
 
-                If (LOr (LAnd (And (PDC6, 0x08), LOr (LEqual (Arg0, 
-                    0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC6, 0x10), LEqual (Arg0, 
-                    0x81))))
+                If (LOr (LAnd (And (PDC6, 0x08), LOr (LEqual (Arg0, 0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC6, 0x10), LEqual (Arg0, 0x81))))
                 {
                     Notify (\_PR.CPU6, Arg0)
                 }
 
-                If (LOr (LAnd (And (PDC7, 0x08), LOr (LEqual (Arg0, 
-                    0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC7, 0x10), LEqual (Arg0, 
-                    0x81))))
+                If (LOr (LAnd (And (PDC7, 0x08), LOr (LEqual (Arg0, 0x80), LEqual (Arg0, 0x82))), LAnd (And (PDC7, 0x10), LEqual (Arg0, 0x81))))
                 {
                     Notify (\_PR.CPU7, Arg0)
                 }
             }
-            Else
+            ElseIf (LOr (LEqual (Arg0, 0x80), LOr (LEqual (Arg0, 0x81), LEqual (Arg0, 0x82))))
             {
-                If (LOr (LEqual (Arg0, 0x80), LOr (LEqual (Arg0, 0x81), LEqual (
-                    Arg0, 0x82))))
-                {
-                    Notify (\_PR.CPU0, Arg0)
-                }
+                Notify (\_PR.CPU0, Arg0)
             }
         }
     }
@@ -122,7 +131,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
     OperationRegion (MNVS, SystemMemory, 0xDAF9D018, 0x1000)
     Field (MNVS, DWordAcc, NoLock, Preserve)
     {
-                Offset (0xD00), 
+        Offset (0xD00), 
         GAPA,   32, 
         GAPL,   32, 
         DCKI,   32, 
@@ -143,21 +152,21 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         PMOD,   2, 
         PDIR,   1, 
         PDMA,   1, 
-                Offset (0xD17), 
+        Offset (0xD17), 
         LFDC,   1, 
-                Offset (0xD18), 
+        Offset (0xD18), 
         C2NA,   1, 
         C3NA,   1, 
         C4NA,   1, 
         C6NA,   1, 
         C7NA,   1, 
-                Offset (0xD19), 
-                Offset (0xD1A), 
+        Offset (0xD19), 
+        Offset (0xD1A), 
             ,   2, 
             ,   1, 
         NHPS,   1, 
         NPME,   1, 
-                Offset (0xD1B), 
+        Offset (0xD1B), 
         UOPT,   8, 
         BTID,   32, 
         DPP0,   1, 
@@ -166,8 +175,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         DPP3,   1, 
         DPP4,   1, 
         DPP5,   1, 
-                Offset (0xD21), 
-                Offset (0xD22), 
+        Offset (0xD21), 
+        Offset (0xD22), 
         TCRT,   16, 
         TPSV,   16, 
         TTC1,   16, 
@@ -196,11 +205,11 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         CWAS,   1, 
         CWUE,   1, 
         CWUS,   1, 
-                Offset (0xD40), 
+        Offset (0xD40), 
         CWAP,   16, 
         CWAT,   16, 
         DBGC,   1, 
-                Offset (0xD45), 
+        Offset (0xD45), 
         FS1L,   16, 
         FS1M,   16, 
         FS1H,   16, 
@@ -238,29 +247,29 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         TIF0,   8, 
         TIF1,   8, 
         TIF2,   8, 
-                Offset (0xD78), 
+        Offset (0xD78), 
         BTHI,   1, 
-                Offset (0xD79), 
+        Offset (0xD79), 
         HDIR,   1, 
         HDEH,   1, 
         HDSP,   1, 
         HDPP,   1, 
         HDUB,   1, 
         HDMC,   1, 
-                Offset (0xD7A), 
+        Offset (0xD7A), 
         TPME,   8, 
         BIDE,   4, 
         IDET,   4, 
             ,   1, 
         DTSE,   1, 
-                Offset (0xD7D), 
+        Offset (0xD7D), 
         DTS0,   8, 
         DTS1,   8, 
         DT00,   1, 
         DT01,   1, 
         DT02,   1, 
         DT03,   1, 
-                Offset (0xD80), 
+        Offset (0xD80), 
         LIDB,   1, 
         C4WR,   1, 
         C4AC,   1, 
@@ -268,23 +277,23 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         CMPR,   1, 
         ILNF,   1, 
         PLUX,   1, 
-                Offset (0xD81), 
-                Offset (0xD8C), 
+        Offset (0xD81), 
+        Offset (0xD8C), 
             ,   4, 
             ,   1, 
         IDMM,   1, 
-                Offset (0xD8D), 
+        Offset (0xD8D), 
             ,   3, 
             ,   1, 
             ,   1, 
         LIDS,   1, 
-                Offset (0xD8E), 
-                Offset (0xD8F), 
+        Offset (0xD8E), 
+        Offset (0xD8F), 
             ,   4, 
-                Offset (0xD90), 
+        Offset (0xD90), 
         TCG0,   1, 
         TCG1,   1, 
-                Offset (0xD91), 
+        Offset (0xD91), 
         SWGP,   8, 
         IPMS,   8, 
         IPMB,   120, 
@@ -295,41 +304,41 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         VDSC,   1, 
             ,   2, 
         VDSP,   1, 
-                Offset (0xDAA), 
-                Offset (0xDAD), 
+        Offset (0xDAA), 
+        Offset (0xDAD), 
         ASFT,   8, 
         PL1L,   8, 
         PL1M,   8, 
         CHKC,   32, 
         CHKE,   32, 
         ATRB,   32, 
-                Offset (0xDBD), 
+        Offset (0xDBD), 
         PPCR,   8, 
         TPCR,   5, 
-                Offset (0xDBF), 
-                Offset (0xDCE), 
+        Offset (0xDBF), 
+        Offset (0xDCE), 
         CTDP,   8, 
         PPCA,   8, 
         TPCA,   5, 
-                Offset (0xDD1), 
+        Offset (0xDD1), 
         BFWB,   296, 
         OSPX,   1, 
         OSC4,   1, 
-                Offset (0xDF7), 
+        Offset (0xDF7), 
         SPEN,   1, 
         SCRM,   1, 
         GFPL,   1, 
         ETAU,   1, 
         IHBC,   1, 
         APMD,   1, 
-                Offset (0xDF8), 
+        Offset (0xDF8), 
         FTPS,   8, 
         HIST,   8, 
         LPST,   8, 
         LWST,   8, 
-                Offset (0xDFF), 
+        Offset (0xDFF), 
         MTAU,   8, 
-                Offset (0xE20), 
+        Offset (0xE20), 
         HPET,   32, 
         PKLI,   16, 
         VLCX,   16, 
@@ -345,23 +354,23 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         ISCG,   32, 
         ISSP,   1, 
         ISWK,   2, 
-                Offset (0xEC7), 
+        Offset (0xEC7), 
         SHA1,   160, 
         FFDT,   1, 
-                Offset (0xEDC), 
+        Offset (0xEDC), 
         LWCP,   1, 
         LWEN,   1, 
-                Offset (0xEDD), 
+        Offset (0xEDD), 
         USBR,   1, 
-                Offset (0xEDE), 
-                Offset (0xEE1), 
+        Offset (0xEDE), 
+        Offset (0xEE1), 
         APST,   8, 
-                Offset (0xEE3)
+        Offset (0xEE3)
     }
 
     Field (MNVS, ByteAcc, NoLock, Preserve)
     {
-                Offset (0xB00), 
+        Offset (0xB00), 
         WITM,   8, 
         WSEL,   8, 
         WLS0,   8, 
@@ -397,7 +406,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
     Field (MNVS, ByteAcc, NoLock, Preserve)
     {
-                Offset (0xA00), 
+        Offset (0xA00), 
         DBGS,   1024
     }
 
@@ -408,12 +417,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         SMIF,   8, 
         PRM0,   8, 
         PRM1,   8, 
-                Offset (0x10), 
+        Offset (0x10), 
         PWRS,   8, 
-                Offset (0x1E), 
-                Offset (0x25), 
+        Offset (0x1E), 
+        Offset (0x25), 
         REVN,   8, 
-                Offset (0x28), 
+        Offset (0x28), 
         APIC,   8, 
         TCNT,   8, 
         PCP0,   8, 
@@ -421,7 +430,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         PPCM,   8, 
         PPMF,   32, 
         C67L,   8, 
-                Offset (0x3C), 
+        Offset (0x3C), 
         IGDS,   8, 
         TLST,   8, 
         CADL,   8, 
@@ -437,12 +446,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         DID5,   32, 
         KSV0,   32, 
         KSV1,   8, 
-                Offset (0x67), 
+        Offset (0x67), 
         BLCS,   8, 
         BRTL,   8, 
-                Offset (0x78), 
+        Offset (0x78), 
         TPMP,   8, 
-                Offset (0x7A), 
+        Offset (0x7A), 
         MORD,   8, 
         TCGP,   8, 
         PPRP,   32, 
@@ -457,7 +466,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         AOAC,   8, 
         SLDR,   32, 
         WAKR,   8, 
-                Offset (0xAA), 
+        Offset (0xAA), 
         ASLB,   32, 
         IBTT,   8, 
         IPAT,   8, 
@@ -485,20 +494,20 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         NXD8,   32, 
         GSMI,   8, 
         PAVP,   8, 
-                Offset (0xE1), 
+        Offset (0xE1), 
         OSCC,   8, 
         NEXP,   8, 
         SDGV,   8, 
         SDDV,   8, 
-                Offset (0xEB), 
+        Offset (0xEB), 
         DSEN,   8, 
         ECON,   8, 
-                Offset (0xEE), 
+        Offset (0xEE), 
         CTYP,   8, 
         L01C,   8, 
         VFN0,   8, 
         VFN1,   8, 
-                Offset (0x100), 
+        Offset (0x100), 
         NVGA,   32, 
         NVHA,   32, 
         AMDA,   32, 
@@ -518,7 +527,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         OBS6,   32, 
         OBS7,   32, 
         OBS8,   32, 
-                Offset (0x157), 
+        Offset (0x157), 
         ATMC,   8, 
         PTMC,   8, 
         ATRA,   8, 
@@ -550,14 +559,14 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         PAMT,   8, 
         AC0F,   8, 
         AC1F,   8, 
-                Offset (0x1B2), 
+        Offset (0x1B2), 
         XHCM,   8, 
         XHPM,   8
     }
 
     Scope (_SB)
     {
-        Method (_INI, 0, NotSerialized)
+        Method (_INI, 0, NotSerialized)  // _INI: Initialize
         {
             If (CondRefOf (\_OSI, Local0))
             {
@@ -605,12 +614,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Store (One, LNUX)
                 }
             }
-            Else
+            ElseIf (LEqual (SCMP (_OS, "Microsoft Windows NT"), Zero))
             {
-                If (LEqual (SCMP (_OS, "Microsoft Windows NT"), Zero))
-                {
-                    Store (One, WNTF)
-                }
+                Store (One, WNTF)
             }
 
             If (LGreaterEqual (_REV, 0x02))
@@ -657,12 +663,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             VHYB (0x06, 0x03)
                         }
                     }
-                    Else
+                    ElseIf (LEqual (And (Local1, 0x03), 0x03))
                     {
-                        If (LEqual (And (Local1, 0x03), 0x03))
-                        {
-                            VHYB (0x06, 0x02)
-                        }
+                        VHYB (0x06, 0x02)
                     }
                 }
             }
@@ -672,9 +675,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (LNKA)
         {
-            Name (_HID, EisaId ("PNP0C0F"))
-            Name (_UID, One)
-            Method (_STA, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+            Name (_UID, One)  // _UID: Unique ID
+            Method (_STA, 0, NotSerialized)  // _STA: Status
             {
                 If (LNot (VPIR (^^PCI0.LPC.PIRA)))
                 {
@@ -686,12 +689,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Name (_PRS, ResourceTemplate ()
+            Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
             {
                 IRQ (Level, ActiveLow, Shared, )
                     {3,4,5,6,7,9,10,11}
             })
-            Method (_DIS, 0, NotSerialized)
+            Method (_DIS, 0, NotSerialized)  // _DIS: Disable Device
             {
                 Or (^^PCI0.LPC.PIRA, 0x80, ^^PCI0.LPC.PIRA)
             }
@@ -702,7 +705,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {}
             })
             CreateWordField (BUFA, One, IRA1)
-            Method (_CRS, 0, NotSerialized)
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
             {
                 And (^^PCI0.LPC.PIRA, 0x8F, Local0)
                 If (VPIR (Local0))
@@ -717,7 +720,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Return (BUFA)
             }
 
-            Method (_SRS, 1, NotSerialized)
+            Method (_SRS, 1, NotSerialized)  // _SRS: Set Resource Settings
             {
                 CreateWordField (Arg0, One, IRA2)
                 FindSetRightBit (IRA2, Local0)
@@ -729,9 +732,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (LNKB)
         {
-            Name (_HID, EisaId ("PNP0C0F"))
-            Name (_UID, 0x02)
-            Method (_STA, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+            Name (_UID, 0x02)  // _UID: Unique ID
+            Method (_STA, 0, NotSerialized)  // _STA: Status
             {
                 If (LNot (VPIR (^^PCI0.LPC.PIRB)))
                 {
@@ -743,12 +746,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Name (_PRS, ResourceTemplate ()
+            Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
             {
                 IRQ (Level, ActiveLow, Shared, )
                     {3,4,5,6,7,9,10,11}
             })
-            Method (_DIS, 0, NotSerialized)
+            Method (_DIS, 0, NotSerialized)  // _DIS: Disable Device
             {
                 Or (^^PCI0.LPC.PIRB, 0x80, ^^PCI0.LPC.PIRB)
             }
@@ -759,7 +762,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {}
             })
             CreateWordField (BUFB, One, IRB1)
-            Method (_CRS, 0, NotSerialized)
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
             {
                 And (^^PCI0.LPC.PIRB, 0x8F, Local0)
                 If (VPIR (Local0))
@@ -774,7 +777,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Return (BUFB)
             }
 
-            Method (_SRS, 1, NotSerialized)
+            Method (_SRS, 1, NotSerialized)  // _SRS: Set Resource Settings
             {
                 CreateWordField (Arg0, One, IRB2)
                 FindSetRightBit (IRB2, Local0)
@@ -786,9 +789,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (LNKC)
         {
-            Name (_HID, EisaId ("PNP0C0F"))
-            Name (_UID, 0x03)
-            Method (_STA, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+            Name (_UID, 0x03)  // _UID: Unique ID
+            Method (_STA, 0, NotSerialized)  // _STA: Status
             {
                 If (LNot (VPIR (^^PCI0.LPC.PIRC)))
                 {
@@ -800,12 +803,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Name (_PRS, ResourceTemplate ()
+            Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
             {
                 IRQ (Level, ActiveLow, Shared, )
                     {3,4,5,6,7,9,10,11}
             })
-            Method (_DIS, 0, NotSerialized)
+            Method (_DIS, 0, NotSerialized)  // _DIS: Disable Device
             {
                 Or (^^PCI0.LPC.PIRC, 0x80, ^^PCI0.LPC.PIRC)
             }
@@ -816,7 +819,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {}
             })
             CreateWordField (BUFC, One, IRC1)
-            Method (_CRS, 0, NotSerialized)
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
             {
                 And (^^PCI0.LPC.PIRC, 0x8F, Local0)
                 If (VPIR (Local0))
@@ -831,7 +834,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Return (BUFC)
             }
 
-            Method (_SRS, 1, NotSerialized)
+            Method (_SRS, 1, NotSerialized)  // _SRS: Set Resource Settings
             {
                 CreateWordField (Arg0, One, IRC2)
                 FindSetRightBit (IRC2, Local0)
@@ -843,9 +846,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (LNKD)
         {
-            Name (_HID, EisaId ("PNP0C0F"))
-            Name (_UID, 0x04)
-            Method (_STA, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+            Name (_UID, 0x04)  // _UID: Unique ID
+            Method (_STA, 0, NotSerialized)  // _STA: Status
             {
                 If (LNot (VPIR (^^PCI0.LPC.PIRD)))
                 {
@@ -857,12 +860,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Name (_PRS, ResourceTemplate ()
+            Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
             {
                 IRQ (Level, ActiveLow, Shared, )
                     {3,4,5,6,7,9,10,11}
             })
-            Method (_DIS, 0, NotSerialized)
+            Method (_DIS, 0, NotSerialized)  // _DIS: Disable Device
             {
                 Or (^^PCI0.LPC.PIRD, 0x80, ^^PCI0.LPC.PIRD)
             }
@@ -873,7 +876,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {}
             })
             CreateWordField (BUFD, One, IRD1)
-            Method (_CRS, 0, NotSerialized)
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
             {
                 And (^^PCI0.LPC.PIRD, 0x8F, Local0)
                 If (VPIR (Local0))
@@ -888,7 +891,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Return (BUFD)
             }
 
-            Method (_SRS, 1, NotSerialized)
+            Method (_SRS, 1, NotSerialized)  // _SRS: Set Resource Settings
             {
                 CreateWordField (Arg0, One, IRD2)
                 FindSetRightBit (IRD2, Local0)
@@ -900,9 +903,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (LNKE)
         {
-            Name (_HID, EisaId ("PNP0C0F"))
-            Name (_UID, 0x05)
-            Method (_STA, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+            Name (_UID, 0x05)  // _UID: Unique ID
+            Method (_STA, 0, NotSerialized)  // _STA: Status
             {
                 If (LNot (VPIR (^^PCI0.LPC.PIRE)))
                 {
@@ -914,12 +917,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Name (_PRS, ResourceTemplate ()
+            Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
             {
                 IRQ (Level, ActiveLow, Shared, )
                     {3,4,5,6,7,9,10,11}
             })
-            Method (_DIS, 0, NotSerialized)
+            Method (_DIS, 0, NotSerialized)  // _DIS: Disable Device
             {
                 Or (^^PCI0.LPC.PIRE, 0x80, ^^PCI0.LPC.PIRE)
             }
@@ -930,7 +933,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {}
             })
             CreateWordField (BUFE, One, IRE1)
-            Method (_CRS, 0, NotSerialized)
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
             {
                 And (^^PCI0.LPC.PIRE, 0x8F, Local0)
                 If (VPIR (Local0))
@@ -945,7 +948,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Return (BUFE)
             }
 
-            Method (_SRS, 1, NotSerialized)
+            Method (_SRS, 1, NotSerialized)  // _SRS: Set Resource Settings
             {
                 CreateWordField (Arg0, One, IRE2)
                 FindSetRightBit (IRE2, Local0)
@@ -957,9 +960,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (LNKF)
         {
-            Name (_HID, EisaId ("PNP0C0F"))
-            Name (_UID, 0x06)
-            Method (_STA, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+            Name (_UID, 0x06)  // _UID: Unique ID
+            Method (_STA, 0, NotSerialized)  // _STA: Status
             {
                 If (LNot (VPIR (^^PCI0.LPC.PIRF)))
                 {
@@ -971,12 +974,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Name (_PRS, ResourceTemplate ()
+            Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
             {
                 IRQ (Level, ActiveLow, Shared, )
                     {3,4,5,6,7,9,10,11}
             })
-            Method (_DIS, 0, NotSerialized)
+            Method (_DIS, 0, NotSerialized)  // _DIS: Disable Device
             {
                 Or (^^PCI0.LPC.PIRF, 0x80, ^^PCI0.LPC.PIRF)
             }
@@ -987,7 +990,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {}
             })
             CreateWordField (BUFF, One, IRF1)
-            Method (_CRS, 0, NotSerialized)
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
             {
                 And (^^PCI0.LPC.PIRF, 0x8F, Local0)
                 If (VPIR (Local0))
@@ -1002,7 +1005,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Return (BUFF)
             }
 
-            Method (_SRS, 1, NotSerialized)
+            Method (_SRS, 1, NotSerialized)  // _SRS: Set Resource Settings
             {
                 CreateWordField (Arg0, One, IRF2)
                 FindSetRightBit (IRF2, Local0)
@@ -1014,9 +1017,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (LNKG)
         {
-            Name (_HID, EisaId ("PNP0C0F"))
-            Name (_UID, 0x07)
-            Method (_STA, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+            Name (_UID, 0x07)  // _UID: Unique ID
+            Method (_STA, 0, NotSerialized)  // _STA: Status
             {
                 If (LNot (VPIR (^^PCI0.LPC.PIRG)))
                 {
@@ -1028,12 +1031,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Name (_PRS, ResourceTemplate ()
+            Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
             {
                 IRQ (Level, ActiveLow, Shared, )
                     {3,4,5,6,7,9,10,11}
             })
-            Method (_DIS, 0, NotSerialized)
+            Method (_DIS, 0, NotSerialized)  // _DIS: Disable Device
             {
                 Or (^^PCI0.LPC.PIRG, 0x80, ^^PCI0.LPC.PIRG)
             }
@@ -1044,7 +1047,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {}
             })
             CreateWordField (BUFG, One, IRG1)
-            Method (_CRS, 0, NotSerialized)
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
             {
                 And (^^PCI0.LPC.PIRG, 0x8F, Local0)
                 If (VPIR (Local0))
@@ -1059,7 +1062,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Return (BUFG)
             }
 
-            Method (_SRS, 1, NotSerialized)
+            Method (_SRS, 1, NotSerialized)  // _SRS: Set Resource Settings
             {
                 CreateWordField (Arg0, One, IRG2)
                 FindSetRightBit (IRG2, Local0)
@@ -1071,9 +1074,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (LNKH)
         {
-            Name (_HID, EisaId ("PNP0C0F"))
-            Name (_UID, 0x08)
-            Method (_STA, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0F"))  // _HID: Hardware ID
+            Name (_UID, 0x08)  // _UID: Unique ID
+            Method (_STA, 0, NotSerialized)  // _STA: Status
             {
                 If (LNot (VPIR (^^PCI0.LPC.PIRH)))
                 {
@@ -1085,12 +1088,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Name (_PRS, ResourceTemplate ()
+            Name (_PRS, ResourceTemplate ()  // _PRS: Possible Resource Settings
             {
                 IRQ (Level, ActiveLow, Shared, )
                     {3,4,5,6,7,9,10,11}
             })
-            Method (_DIS, 0, NotSerialized)
+            Method (_DIS, 0, NotSerialized)  // _DIS: Disable Device
             {
                 Or (^^PCI0.LPC.PIRH, 0x80, ^^PCI0.LPC.PIRH)
             }
@@ -1101,7 +1104,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {}
             })
             CreateWordField (BUFH, One, IRH1)
-            Method (_CRS, 0, NotSerialized)
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
             {
                 And (^^PCI0.LPC.PIRH, 0x8F, Local0)
                 If (VPIR (Local0))
@@ -1116,7 +1119,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Return (BUFH)
             }
 
-            Method (_SRS, 1, NotSerialized)
+            Method (_SRS, 1, NotSerialized)  // _SRS: Set Resource Settings
             {
                 CreateWordField (Arg0, One, IRH2)
                 FindSetRightBit (IRH2, Local0)
@@ -1140,12 +1143,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     Store (Zero, Local0)
                 }
-                Else
+                ElseIf (LOr (LEqual (Local1, 0x08), LEqual (Local1, 0x0D)))
                 {
-                    If (LOr (LEqual (Local1, 0x08), LEqual (Local1, 0x0D)))
-                    {
-                        Store (Zero, Local0)
-                    }
+                    Store (Zero, Local0)
                 }
             }
 
@@ -1154,7 +1154,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (MEM)
         {
-            Name (_HID, EisaId ("PNP0C01"))
+            Name (_HID, EisaId ("PNP0C01"))  // _HID: Hardware ID
             Name (MEMS, ResourceTemplate ()
             {
                 Memory32Fixed (ReadWrite,
@@ -1164,51 +1164,51 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Memory32Fixed (ReadOnly,
                     0x000C0000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y00)
                 Memory32Fixed (ReadOnly,
                     0x000C4000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y01)
                 Memory32Fixed (ReadOnly,
                     0x000C8000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y02)
                 Memory32Fixed (ReadOnly,
                     0x000CC000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y03)
                 Memory32Fixed (ReadOnly,
                     0x000D0000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y04)
                 Memory32Fixed (ReadOnly,
                     0x000D4000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y05)
                 Memory32Fixed (ReadOnly,
                     0x000D8000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y06)
                 Memory32Fixed (ReadOnly,
                     0x000DC000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y07)
                 Memory32Fixed (ReadOnly,
                     0x000E0000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y08)
                 Memory32Fixed (ReadOnly,
                     0x000E4000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y09)
                 Memory32Fixed (ReadOnly,
                     0x000E8000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y0A)
                 Memory32Fixed (ReadOnly,
                     0x000EC000,         // Address Base
                     0x00000000,         // Address Length
-                    )
+                    _Y0B)
                 Memory32Fixed (ReadOnly,
                     0x000F0000,         // Address Base
                     0x00010000,         // Address Length
@@ -1216,45 +1216,45 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Memory32Fixed (ReadWrite,
                     0x00100000,         // Address Base
                     0x01EE0000,         // Address Length
-                    )
+                    _Y0C)
                 Memory32Fixed (ReadOnly,
                     0xFEC00000,         // Address Base
                     0x00140000,         // Address Length
-                    )
+                    _Y0D)
                 Memory32Fixed (ReadOnly,
                     0xFED4C000,         // Address Base
                     0x012B4000,         // Address Length
-                    )
+                    _Y0E)
             })
-            CreateDWordField (MEMS, 0x14, MC0L)
-            CreateDWordField (MEMS, 0x20, MC4L)
-            CreateDWordField (MEMS, 0x2C, MC8L)
-            CreateDWordField (MEMS, 0x38, MCCL)
-            CreateDWordField (MEMS, 0x44, MD0L)
-            CreateDWordField (MEMS, 0x50, MD4L)
-            CreateDWordField (MEMS, 0x5C, MD8L)
-            CreateDWordField (MEMS, 0x68, MDCL)
-            CreateDWordField (MEMS, 0x74, ME0L)
-            CreateDWordField (MEMS, 0x80, ME4L)
-            CreateDWordField (MEMS, 0x8C, ME8L)
-            CreateDWordField (MEMS, 0x98, MECL)
-            CreateBitField (MEMS, 0x78, MC0W)
-            CreateBitField (MEMS, 0xD8, MC4W)
-            CreateBitField (MEMS, 0x0138, MC8W)
-            CreateBitField (MEMS, 0x0198, MCCW)
-            CreateBitField (MEMS, 0x01F8, MD0W)
-            CreateBitField (MEMS, 0x0258, MD4W)
-            CreateBitField (MEMS, 0x02B8, MD8W)
-            CreateBitField (MEMS, 0x0318, MDCW)
-            CreateBitField (MEMS, 0x0378, ME0W)
-            CreateBitField (MEMS, 0x03D8, ME4W)
-            CreateBitField (MEMS, 0x0438, ME8W)
-            CreateBitField (MEMS, 0x0498, MECW)
-            CreateDWordField (MEMS, 0xAC, MEB1)
-            CreateDWordField (MEMS, 0xB0, MEL1)
-            CreateDWordField (MEMS, 0xBC, MEL2)
-            CreateDWordField (MEMS, 0xC8, MEL3)
-            Method (_CRS, 0, NotSerialized)
+            CreateDWordField (MEMS, \_SB.MEM._Y00._LEN, MC0L)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y01._LEN, MC4L)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y02._LEN, MC8L)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y03._LEN, MCCL)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y04._LEN, MD0L)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y05._LEN, MD4L)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y06._LEN, MD8L)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y07._LEN, MDCL)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y08._LEN, ME0L)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y09._LEN, ME4L)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y0A._LEN, ME8L)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y0B._LEN, MECL)  // _LEN: Length
+            CreateBitField (MEMS, \_SB.MEM._Y00._RW, MC0W)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y01._RW, MC4W)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y02._RW, MC8W)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y03._RW, MCCW)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y04._RW, MD0W)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y05._RW, MD4W)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y06._RW, MD8W)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y07._RW, MDCW)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y08._RW, ME0W)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y09._RW, ME4W)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y0A._RW, ME8W)  // _RW_: Read-Write Status
+            CreateBitField (MEMS, \_SB.MEM._Y0B._RW, MECW)  // _RW_: Read-Write Status
+            CreateDWordField (MEMS, \_SB.MEM._Y0C._BAS, MEB1)  // _BAS: Base Address
+            CreateDWordField (MEMS, \_SB.MEM._Y0C._LEN, MEL1)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y0D._LEN, MEL2)  // _LEN: Length
+            CreateDWordField (MEMS, \_SB.MEM._Y0E._LEN, MEL3)  // _LEN: Length
+            Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
             {
                 And (^^PCI0.PAM1, 0x03, Local0)
                 If (Local0)
@@ -1389,8 +1389,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (LID)
         {
-            Name (_HID, EisaId ("PNP0C0D"))
-            Method (_LID, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0D"))  // _HID: Hardware ID
+            Method (_LID, 0, NotSerialized)  // _LID: Lid Status
             {
                 If (LAnd (LEqual (ILNF, Zero), LEqual (PLUX, Zero)))
                 {
@@ -1398,16 +1398,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {
                         Return (^^PCI0.LPC.EC.HPLD)
                     }
+                    ElseIf (And (RBEC (0x46), 0x04))
+                    {
+                        Return (One)
+                    }
                     Else
                     {
-                        If (And (RBEC (0x46), 0x04))
-                        {
-                            Return (One)
-                        }
-                        Else
-                        {
-                            Return (Zero)
-                        }
+                        Return (Zero)
                     }
                 }
                 Else
@@ -1416,7 +1413,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Method (_PRW, 0, NotSerialized)
+            Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
             {
                 If (LWCP)
                 {
@@ -1436,7 +1433,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Method (_PSW, 1, NotSerialized)
+            Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
             {
                 If (H8DR)
                 {
@@ -1449,16 +1446,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (Zero, ^^PCI0.LPC.EC.HWLO)
                     }
                 }
+                ElseIf (Arg0)
+                {
+                    MBEC (0x32, 0xFF, 0x04)
+                }
                 Else
                 {
-                    If (Arg0)
-                    {
-                        MBEC (0x32, 0xFF, 0x04)
-                    }
-                    Else
-                    {
-                        MBEC (0x32, 0xFB, Zero)
-                    }
+                    MBEC (0x32, 0xFB, Zero)
                 }
 
                 If (LWCP)
@@ -1477,8 +1471,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (SLPB)
         {
-            Name (_HID, EisaId ("PNP0C0E"))
-            Method (_PRW, 0, NotSerialized)
+            Name (_HID, EisaId ("PNP0C0E"))  // _HID: Hardware ID
+            Method (_PRW, 0, NotSerialized)  // _PRW: Power Resources for Wake
             {
                 Return (Package (0x02)
                 {
@@ -1487,7 +1481,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 })
             }
 
-            Method (_PSW, 1, NotSerialized)
+            Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
             {
                 If (H8DR)
                 {
@@ -1500,16 +1494,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (Zero, ^^PCI0.LPC.EC.HWFN)
                     }
                 }
+                ElseIf (Arg0)
+                {
+                    MBEC (0x32, 0xFF, 0x10)
+                }
                 Else
                 {
-                    If (Arg0)
-                    {
-                        MBEC (0x32, 0xFF, 0x10)
-                    }
-                    Else
-                    {
-                        MBEC (0x32, 0xEF, Zero)
-                    }
+                    MBEC (0x32, 0xEF, Zero)
                 }
             }
         }
@@ -1525,8 +1516,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLD0, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x91, 0x12, 0x80, 0x00, 0x03, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x91, 0x12, 0x80, 0x00, 0x03, 0x00, 0x00, 0x00 
             })
             Name (UPC1, Package (0x04)
             {
@@ -1537,8 +1528,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLD1, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x91, 0x12, 0x00, 0x01, 0x03, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x91, 0x12, 0x00, 0x01, 0x03, 0x00, 0x00, 0x00 
             })
             Name (UPC2, Package (0x04)
             {
@@ -1549,8 +1540,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLD2, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x33, 0x1C, 0x80, 0x01, 0x03, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x33, 0x1C, 0x80, 0x01, 0x03, 0x00, 0x00, 0x00 
             })
             Name (UPC3, Package (0x04)
             {
@@ -1561,8 +1552,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLD3, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x48, 0x1D, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x48, 0x1D, 0x00, 0x02, 0x00, 0x00, 0x00, 0x00 
             })
             Name (UPC4, Package (0x04)
             {
@@ -1573,8 +1564,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLD4, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x69, 0x0C, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x69, 0x0C, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00 
             })
             Name (UPC5, Package (0x04)
             {
@@ -1585,8 +1576,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLD5, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x19, 0x12, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x19, 0x12, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00 
             })
             Name (UPC6, Package (0x04)
             {
@@ -1597,8 +1588,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLD6, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x30, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x30, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
             })
             Name (UPC7, Package (0x04)
             {
@@ -1609,8 +1600,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLD7, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x33, 0x1C, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x33, 0x1C, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00 
             })
             Name (UPC9, Package (0x04)
             {
@@ -1621,8 +1612,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLD9, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x59, 0x12, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x59, 0x12, 0x00, 0x00, 0x03, 0x00, 0x00, 0x00 
             })
             Name (UPCI, Package (0x04)
             {
@@ -1633,23 +1624,23 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             })
             Name (PLDI, Buffer (0x10)
             {
-                /* 0000 */    0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x30, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                /* 0000 */  0x81, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x30, 0x1C, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
             })
             Name (PLDC, Buffer (0x14)
             {
-                /* 0000 */    0x82, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x24, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                /* 0010 */    0xC2, 0x00, 0x8A, 0x00
+                /* 0000 */  0x82, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0008 */  0x24, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                /* 0010 */  0xC2, 0x00, 0x8A, 0x00                         
             })
         }
 
         Device (PCI0)
         {
-            Name (_BBN, Zero)
-            Name (_ADR, Zero)
+            Name (_BBN, Zero)  // _BBN: BIOS Bus Number
+            Name (_ADR, Zero)  // _ADR: Address
             Name (RID, Zero)
-            Name (_S3D, 0x02)
+            Name (_S3D, 0x02)  // _S3D: S3 Device State
             Name (LRRT, Package (0x16)
             {
                 Package (0x04)
@@ -2006,7 +1997,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     0x10
                 }
             })
-            Method (_PRT, 0, NotSerialized)
+            Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
             {
                 If (GPIC)
                 {
@@ -2018,12 +2009,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Name (_HID, EisaId ("PNP0A08"))
-            Name (_CID, EisaId ("PNP0A03"))
+            Name (_HID, EisaId ("PNP0A08"))  // _HID: Hardware ID
+            Name (_CID, EisaId ("PNP0A03"))  // _CID: Compatible ID
             OperationRegion (MHCS, PCI_Config, 0x40, 0xC0)
             Field (MHCS, DWordAcc, NoLock, Preserve)
             {
-                        Offset (0x40), 
+                Offset (0x40), 
                 PAM0,   8, 
                 PAM1,   8, 
                 PAM2,   8, 
@@ -2031,12 +2022,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 PAM4,   8, 
                 PAM5,   8, 
                 PAM6,   8, 
-                        Offset (0x7C), 
+                Offset (0x7C), 
                     ,   20, 
                 TLUD,   12
             }
 
-            Name (_CRS, ResourceTemplate ()
+            Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
             {
                 WordBusNumber (ResourceProducer, MinFixed, MaxFixed, PosDecode,
                     0x0000,             // Granularity
@@ -2044,7 +2035,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     0x00FF,             // Range Maximum
                     0x0000,             // Translation Offset
                     0x0100,             // Length
-                    ,, )
+                    ,, _Y1D)
                 IO (Decode16,
                     0x0CF8,             // Range Minimum
                     0x0CF8,             // Range Maximum
@@ -2057,14 +2048,14 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     0x0CF7,             // Range Maximum
                     0x0000,             // Translation Offset
                     0x0CF8,             // Length
-                    ,, , TypeStatic)
+                    ,, , TypeStatic, DenseTranslation)
                 WordIO (ResourceProducer, MinFixed, MaxFixed, PosDecode, EntireRange,
                     0x0000,             // Granularity
                     0x0D00,             // Range Minimum
                     0xFFFF,             // Range Maximum
                     0x0000,             // Translation Offset
                     0xF300,             // Length
-                    ,, , TypeStatic)
+                    ,, , TypeStatic, DenseTranslation)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000A0000,         // Range Minimum
@@ -2078,120 +2069,120 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     0x000C3FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y0F, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000C4000,         // Range Minimum
                     0x000C7FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y10, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000C8000,         // Range Minimum
                     0x000CBFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y11, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000CC000,         // Range Minimum
                     0x000CFFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y12, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000D0000,         // Range Minimum
                     0x000D3FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y13, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000D4000,         // Range Minimum
                     0x000D7FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y14, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000D8000,         // Range Minimum
                     0x000DBFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y15, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000DC000,         // Range Minimum
                     0x000DFFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y16, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000E0000,         // Range Minimum
                     0x000E3FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y17, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000E4000,         // Range Minimum
                     0x000E7FFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y18, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000E8000,         // Range Minimum
                     0x000EBFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y19, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x000EC000,         // Range Minimum
                     0x000EFFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x00004000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y1A, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0x00100000,         // Range Minimum
                     0xFEBFFFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0xFEB00000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y1B, AddressRangeMemory, TypeStatic)
                 DWordMemory (ResourceProducer, PosDecode, MinFixed, MaxFixed, Cacheable, ReadWrite,
                     0x00000000,         // Granularity
                     0xFED40000,         // Range Minimum
                     0xFED4BFFF,         // Range Maximum
                     0x00000000,         // Translation Offset
                     0x0000C000,         // Length
-                    ,, , AddressRangeMemory, TypeStatic)
+                    ,, _Y1C, AddressRangeMemory, TypeStatic)
             })
-            CreateDWordField (_CRS, 0x68, C0LN)
-            CreateDWordField (_CRS, 0x82, C4LN)
-            CreateDWordField (_CRS, 0x9C, C8LN)
-            CreateDWordField (_CRS, 0xB6, CCLN)
-            CreateDWordField (_CRS, 0xD0, D0LN)
-            CreateDWordField (_CRS, 0xEA, D4LN)
-            CreateDWordField (_CRS, 0x0104, D8LN)
-            CreateDWordField (_CRS, 0x011E, DCLN)
-            CreateDWordField (_CRS, 0x0138, E0LN)
-            CreateDWordField (_CRS, 0x0152, E4LN)
-            CreateDWordField (_CRS, 0x016C, E8LN)
-            CreateDWordField (_CRS, 0x0186, ECLN)
-            CreateDWordField (_CRS, 0x0194, XXMN)
-            CreateDWordField (_CRS, 0x0198, XXMX)
-            CreateDWordField (_CRS, 0x01A0, XXLN)
-            CreateDWordField (_CRS, 0x01AE, F4MN)
-            CreateDWordField (_CRS, 0x01B2, F4MX)
-            CreateDWordField (_CRS, 0x01BA, F4LN)
-            CreateWordField (_CRS, 0x0A, B0MX)
-            CreateWordField (_CRS, 0x0E, B0LN)
-            Method (_INI, 0, Serialized)
+            CreateDWordField (_CRS, \_SB.PCI0._Y0F._LEN, C0LN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y10._LEN, C4LN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y11._LEN, C8LN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y12._LEN, CCLN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y13._LEN, D0LN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y14._LEN, D4LN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y15._LEN, D8LN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y16._LEN, DCLN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y17._LEN, E0LN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y18._LEN, E4LN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y19._LEN, E8LN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y1A._LEN, ECLN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y1B._MIN, XXMN)  // _MIN: Minimum Base Address
+            CreateDWordField (_CRS, \_SB.PCI0._Y1B._MAX, XXMX)  // _MAX: Maximum Base Address
+            CreateDWordField (_CRS, \_SB.PCI0._Y1B._LEN, XXLN)  // _LEN: Length
+            CreateDWordField (_CRS, \_SB.PCI0._Y1C._MIN, F4MN)  // _MIN: Minimum Base Address
+            CreateDWordField (_CRS, \_SB.PCI0._Y1C._MAX, F4MX)  // _MAX: Maximum Base Address
+            CreateDWordField (_CRS, \_SB.PCI0._Y1C._LEN, F4LN)  // _LEN: Length
+            CreateWordField (_CRS, \_SB.PCI0._Y1D._MAX, B0MX)  // _MAX: Maximum Base Address
+            CreateWordField (_CRS, \_SB.PCI0._Y1D._LEN, B0LN)  // _LEN: Length
+            Method (_INI, 0, Serialized)  // _INI: Initialize
             {
                 Store (0x3F, B0MX)
                 Store (0x40, B0LN)
@@ -2272,7 +2263,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Name (SUPP, Zero)
             Name (CTRL, Zero)
-            Method (_OSC, 4, NotSerialized)
+            Method (_OSC, 4, NotSerialized)  // _OSC: Operating System Capabilities
             {
                 CreateDWordField (Arg3, Zero, CDW1)
                 CreateDWordField (Arg3, 0x04, CDW2)
@@ -2282,11 +2273,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Return (^XHCI.POSC (Arg1, Arg2, Arg3))
                 }
 
-                If (LEqual (Arg0, Buffer (0x10)
-                        {
-                            /* 0000 */    0x5B, 0x4D, 0xDB, 0x33, 0xF7, 0x1F, 0x1C, 0x40, 
-                            /* 0008 */    0x96, 0x57, 0x74, 0x41, 0xC0, 0x3D, 0xD7, 0x66
-                        }))
+                If (LEqual (Arg0, ToUUID ("33db4d5b-1ff7-401c-9657-7441c03dd766") /* PCI Host Bridge Device */))
                 {
                     Store (CDW2, SUPP)
                     Store (CDW3, CTRL)
@@ -2381,12 +2368,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             CreateBitField (VDDA, 0x0E, MSWT)
             Device (IGPU)
             {
-                Name (_ADR, 0x00020000)
+                Name (_ADR, 0x00020000)  // _ADR: Address
                 Name (RID, Zero)
                 OperationRegion (VPCG, PCI_Config, Zero, 0x0100)
                 Field (VPCG, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0xD4), 
+                    Offset (0xD4), 
                     VPWR,   8
                 }
 
@@ -2398,28 +2385,28 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Name (MID3, 0x0303)
                 Name (MID4, 0x0304)
                 Name (MID5, 0x0305)
-                Name (_S3D, 0x03)
-                Method (_INI, 0, NotSerialized)
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
+                Method (_INI, 0, NotSerialized)  // _INI: Initialize
                 {
                     Store (^^^LID._LID (), CLID)
                 }
 
-                Method (_PS0, 0, NotSerialized)
+                Method (_PS0, 0, NotSerialized)  // _PS0: Power State 0
                 {
                     Noop
                 }
 
-                Method (_PS1, 0, NotSerialized)
+                Method (_PS1, 0, NotSerialized)  // _PS1: Power State 1
                 {
                     Noop
                 }
 
-                Method (_PS2, 0, NotSerialized)
+                Method (_PS2, 0, NotSerialized)  // _PS2: Power State 2
                 {
                     Noop
                 }
 
-                Method (_PS3, 0, NotSerialized)
+                Method (_PS3, 0, NotSerialized)  // _PS3: Power State 3
                 {
                     Noop
                 }
@@ -2442,7 +2429,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     }
                 }
 
-                Method (_DOS, 1, NotSerialized)
+                Method (_DOS, 1, NotSerialized)  // _DOS: Disable Output Switching
                 {
                     And (Arg0, 0x03, Arg0)
                     If (LEqual (Arg0, 0x02))
@@ -2484,7 +2471,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     }
                 }
 
-                Method (_DOD, 0, NotSerialized)
+                Method (_DOD, 0, NotSerialized)  // _DOD: Display Output Devices
                 {
                     Store (Zero, NDID)
                     If (LNotEqual (DIDL, Zero))
@@ -2533,8 +2520,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         {
                             Ones
                         })
-                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP1, 
-                            Zero))
+                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP1, Zero))
                         Return (TMP1)
                     }
 
@@ -2545,10 +2531,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Ones, 
                             Ones
                         })
-                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP2, 
-                            Zero))
-                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP2, 
-                            One))
+                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP2, Zero))
+                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP2, One))
                         Return (TMP2)
                     }
 
@@ -2560,12 +2544,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Ones, 
                             Ones
                         })
-                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP3, 
-                            Zero))
-                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP3, 
-                            One))
-                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP3, 
-                            0x02))
+                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP3, Zero))
+                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP3, One))
+                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP3, 0x02))
                         Return (TMP3)
                     }
 
@@ -2578,14 +2559,10 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Ones, 
                             Ones
                         })
-                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP4, 
-                            Zero))
-                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP4, 
-                            One))
-                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP4, 
-                            0x02))
-                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP4, 
-                            0x03))
+                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP4, Zero))
+                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP4, One))
+                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP4, 0x02))
+                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP4, 0x03))
                         Return (TMP4)
                     }
 
@@ -2599,16 +2576,11 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Ones, 
                             Ones
                         })
-                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP5, 
-                            Zero))
-                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP5, 
-                            One))
-                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP5, 
-                            0x02))
-                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP5, 
-                            0x03))
-                        Store (Or (0x80010000, And (0x0F0F, DDL5)), Index (TMP5, 
-                            0x04))
+                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP5, Zero))
+                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP5, One))
+                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP5, 0x02))
+                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP5, 0x03))
+                        Store (Or (0x80010000, And (0x0F0F, DDL5)), Index (TMP5, 0x04))
                         Return (TMP5)
                     }
 
@@ -2623,18 +2595,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Ones, 
                             Ones
                         })
-                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP6, 
-                            Zero))
-                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP6, 
-                            One))
-                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP6, 
-                            0x02))
-                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP6, 
-                            0x03))
-                        Store (Or (0x80010000, And (0x0F0F, DDL5)), Index (TMP6, 
-                            0x04))
-                        Store (Or (0x80010000, And (0x0F0F, DDL6)), Index (TMP6, 
-                            0x05))
+                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP6, Zero))
+                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP6, One))
+                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP6, 0x02))
+                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP6, 0x03))
+                        Store (Or (0x80010000, And (0x0F0F, DDL5)), Index (TMP6, 0x04))
+                        Store (Or (0x80010000, And (0x0F0F, DDL6)), Index (TMP6, 0x05))
                         Return (TMP6)
                     }
 
@@ -2650,20 +2616,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Ones, 
                             Ones
                         })
-                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP7, 
-                            Zero))
-                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP7, 
-                            One))
-                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP7, 
-                            0x02))
-                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP7, 
-                            0x03))
-                        Store (Or (0x80010000, And (0x0F0F, DDL5)), Index (TMP7, 
-                            0x04))
-                        Store (Or (0x80010000, And (0x0F0F, DDL6)), Index (TMP7, 
-                            0x05))
-                        Store (Or (0x80010000, And (0x0F0F, DDL7)), Index (TMP7, 
-                            0x06))
+                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP7, Zero))
+                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP7, One))
+                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP7, 0x02))
+                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP7, 0x03))
+                        Store (Or (0x80010000, And (0x0F0F, DDL5)), Index (TMP7, 0x04))
+                        Store (Or (0x80010000, And (0x0F0F, DDL6)), Index (TMP7, 0x05))
+                        Store (Or (0x80010000, And (0x0F0F, DDL7)), Index (TMP7, 0x06))
                         Return (TMP7)
                     }
 
@@ -2680,22 +2639,14 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Ones, 
                             Ones
                         })
-                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP8, 
-                            Zero))
-                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP8, 
-                            One))
-                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP8, 
-                            0x02))
-                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP8, 
-                            0x03))
-                        Store (Or (0x80010000, And (0x0F0F, DDL5)), Index (TMP8, 
-                            0x04))
-                        Store (Or (0x80010000, And (0x0F0F, DDL6)), Index (TMP8, 
-                            0x05))
-                        Store (Or (0x80010000, And (0x0F0F, DDL7)), Index (TMP8, 
-                            0x06))
-                        Store (Or (0x80010000, And (0x0F0F, DDL8)), Index (TMP8, 
-                            0x07))
+                        Store (Or (0x80010000, And (0x0F0F, DIDL)), Index (TMP8, Zero))
+                        Store (Or (0x80010000, And (0x0F0F, DDL2)), Index (TMP8, One))
+                        Store (Or (0x80010000, And (0x0F0F, DDL3)), Index (TMP8, 0x02))
+                        Store (Or (0x80010000, And (0x0F0F, DDL4)), Index (TMP8, 0x03))
+                        Store (Or (0x80010000, And (0x0F0F, DDL5)), Index (TMP8, 0x04))
+                        Store (Or (0x80010000, And (0x0F0F, DDL6)), Index (TMP8, 0x05))
+                        Store (Or (0x80010000, And (0x0F0F, DDL7)), Index (TMP8, 0x06))
+                        Store (Or (0x80010000, And (0x0F0F, DDL8)), Index (TMP8, 0x07))
                         Return (TMP8)
                     }
 
@@ -2720,162 +2671,99 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {
                         Store (0x0D, Local0)
                     }
-                    Else
+                    ElseIf (LEqual (And (DDL2, 0x0F0F), Arg0))
                     {
-                        If (LEqual (And (DDL2, 0x0F0F), Arg0))
-                        {
-                            Store (0x0D, Local0)
-                        }
-                        Else
-                        {
-                            If (LEqual (And (DDL3, 0x0F0F), Arg0))
-                            {
-                                Store (0x0D, Local0)
-                            }
-                            Else
-                            {
-                                If (LEqual (And (DDL4, 0x0F0F), Arg0))
-                                {
-                                    Store (0x0D, Local0)
-                                }
-                                Else
-                                {
-                                    If (LEqual (And (DDL5, 0x0F0F), Arg0))
-                                    {
-                                        Store (0x0D, Local0)
-                                    }
-                                    Else
-                                    {
-                                        If (LEqual (And (DDL6, 0x0F0F), Arg0))
-                                        {
-                                            Store (0x0D, Local0)
-                                        }
-                                        Else
-                                        {
-                                            If (LEqual (And (DDL7, 0x0F0F), Arg0))
-                                            {
-                                                Store (0x0D, Local0)
-                                            }
-                                            Else
-                                            {
-                                                If (LEqual (And (DDL8, 0x0F0F), Arg0))
-                                                {
-                                                    Store (0x0D, Local0)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Store (0x0D, Local0)
+                    }
+                    ElseIf (LEqual (And (DDL3, 0x0F0F), Arg0))
+                    {
+                        Store (0x0D, Local0)
+                    }
+                    ElseIf (LEqual (And (DDL4, 0x0F0F), Arg0))
+                    {
+                        Store (0x0D, Local0)
+                    }
+                    ElseIf (LEqual (And (DDL5, 0x0F0F), Arg0))
+                    {
+                        Store (0x0D, Local0)
+                    }
+                    ElseIf (LEqual (And (DDL6, 0x0F0F), Arg0))
+                    {
+                        Store (0x0D, Local0)
+                    }
+                    ElseIf (LEqual (And (DDL7, 0x0F0F), Arg0))
+                    {
+                        Store (0x0D, Local0)
+                    }
+                    ElseIf (LEqual (And (DDL8, 0x0F0F), Arg0))
+                    {
+                        Store (0x0D, Local0)
                     }
 
                     If (LEqual (And (CPDL, 0x0F0F), Arg0))
                     {
                         Or (0x10, Local0, Local0)
                     }
-                    Else
+                    ElseIf (LEqual (And (CPL2, 0x0F0F), Arg0))
                     {
-                        If (LEqual (And (CPL2, 0x0F0F), Arg0))
-                        {
-                            Or (0x10, Local0, Local0)
-                        }
-                        Else
-                        {
-                            If (LEqual (And (CPL3, 0x0F0F), Arg0))
-                            {
-                                Or (0x10, Local0, Local0)
-                            }
-                            Else
-                            {
-                                If (LEqual (And (CPL4, 0x0F0F), Arg0))
-                                {
-                                    Or (0x10, Local0, Local0)
-                                }
-                                Else
-                                {
-                                    If (LEqual (And (CPL5, 0x0F0F), Arg0))
-                                    {
-                                        Or (0x10, Local0, Local0)
-                                    }
-                                    Else
-                                    {
-                                        If (LEqual (And (CPL6, 0x0F0F), Arg0))
-                                        {
-                                            Or (0x10, Local0, Local0)
-                                        }
-                                        Else
-                                        {
-                                            If (LEqual (And (CPL7, 0x0F0F), Arg0))
-                                            {
-                                                Or (0x10, Local0, Local0)
-                                            }
-                                            Else
-                                            {
-                                                If (LEqual (And (CPL8, 0x0F0F), Arg0))
-                                                {
-                                                    Or (0x10, Local0, Local0)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Or (0x10, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CPL3, 0x0F0F), Arg0))
+                    {
+                        Or (0x10, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CPL4, 0x0F0F), Arg0))
+                    {
+                        Or (0x10, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CPL5, 0x0F0F), Arg0))
+                    {
+                        Or (0x10, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CPL6, 0x0F0F), Arg0))
+                    {
+                        Or (0x10, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CPL7, 0x0F0F), Arg0))
+                    {
+                        Or (0x10, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CPL8, 0x0F0F), Arg0))
+                    {
+                        Or (0x10, Local0, Local0)
                     }
 
                     If (LEqual (And (CADL, 0x0F0F), Arg0))
                     {
                         Or (0x02, Local0, Local0)
                     }
-                    Else
+                    ElseIf (LEqual (And (CAL2, 0x0F0F), Arg0))
                     {
-                        If (LEqual (And (CAL2, 0x0F0F), Arg0))
-                        {
-                            Or (0x02, Local0, Local0)
-                        }
-                        Else
-                        {
-                            If (LEqual (And (CAL3, 0x0F0F), Arg0))
-                            {
-                                Or (0x02, Local0, Local0)
-                            }
-                            Else
-                            {
-                                If (LEqual (And (CAL4, 0x0F0F), Arg0))
-                                {
-                                    Or (0x02, Local0, Local0)
-                                }
-                                Else
-                                {
-                                    If (LEqual (And (CAL5, 0x0F0F), Arg0))
-                                    {
-                                        Or (0x02, Local0, Local0)
-                                    }
-                                    Else
-                                    {
-                                        If (LEqual (And (CAL6, 0x0F0F), Arg0))
-                                        {
-                                            Or (0x02, Local0, Local0)
-                                        }
-                                        Else
-                                        {
-                                            If (LEqual (And (CAL7, 0x0F0F), Arg0))
-                                            {
-                                                Or (0x02, Local0, Local0)
-                                            }
-                                            Else
-                                            {
-                                                If (LEqual (And (CAL8, 0x0F0F), Arg0))
-                                                {
-                                                    Or (0x02, Local0, Local0)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Or (0x02, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CAL3, 0x0F0F), Arg0))
+                    {
+                        Or (0x02, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CAL4, 0x0F0F), Arg0))
+                    {
+                        Or (0x02, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CAL5, 0x0F0F), Arg0))
+                    {
+                        Or (0x02, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CAL6, 0x0F0F), Arg0))
+                    {
+                        Or (0x02, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CAL7, 0x0F0F), Arg0))
+                    {
+                        Or (0x02, Local0, Local0)
+                    }
+                    ElseIf (LEqual (And (CAL8, 0x0F0F), Arg0))
+                    {
+                        Or (0x02, Local0, Local0)
                     }
 
                     Return (Local0)
@@ -2887,54 +2775,33 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {
                         Return (One)
                     }
-                    Else
+                    ElseIf (LEqual (And (NDL2, 0x0F0F), Arg0))
                     {
-                        If (LEqual (And (NDL2, 0x0F0F), Arg0))
-                        {
-                            Return (One)
-                        }
-                        Else
-                        {
-                            If (LEqual (And (NDL3, 0x0F0F), Arg0))
-                            {
-                                Return (One)
-                            }
-                            Else
-                            {
-                                If (LEqual (And (NDL4, 0x0F0F), Arg0))
-                                {
-                                    Return (One)
-                                }
-                                Else
-                                {
-                                    If (LEqual (And (NDL5, 0x0F0F), Arg0))
-                                    {
-                                        Return (One)
-                                    }
-                                    Else
-                                    {
-                                        If (LEqual (And (NDL6, 0x0F0F), Arg0))
-                                        {
-                                            Return (One)
-                                        }
-                                        Else
-                                        {
-                                            If (LEqual (And (NDL7, 0x0F0F), Arg0))
-                                            {
-                                                Return (One)
-                                            }
-                                            Else
-                                            {
-                                                If (LEqual (And (NDL8, 0x0F0F), Arg0))
-                                                {
-                                                    Return (One)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Return (One)
+                    }
+                    ElseIf (LEqual (And (NDL3, 0x0F0F), Arg0))
+                    {
+                        Return (One)
+                    }
+                    ElseIf (LEqual (And (NDL4, 0x0F0F), Arg0))
+                    {
+                        Return (One)
+                    }
+                    ElseIf (LEqual (And (NDL5, 0x0F0F), Arg0))
+                    {
+                        Return (One)
+                    }
+                    ElseIf (LEqual (And (NDL6, 0x0F0F), Arg0))
+                    {
+                        Return (One)
+                    }
+                    ElseIf (LEqual (And (NDL7, 0x0F0F), Arg0))
+                    {
+                        Return (One)
+                    }
+                    ElseIf (LEqual (And (NDL8, 0x0F0F), Arg0))
+                    {
+                        Return (One)
                     }
 
                     Return (Zero)
@@ -2942,38 +2809,35 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (LCD0)
                 {
-                    Method (_ADR, 0, NotSerialized)
+                    Method (_ADR, 0, NotSerialized)  // _ADR: Address
                     {
                         Return (0x0400)
                     }
 
-                    Method (_DCS, 0, NotSerialized)
+                    Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                     {
                         Return (VCAD (MIDL))
                     }
 
-                    Method (_DGS, 0, NotSerialized)
+                    Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                     {
                         Return (NDDS (MIDL))
                     }
 
-                    Method (_DSS, 1, NotSerialized)
+                    Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                     {
                         And (Arg0, One, VSDL)
                     }
 
-                    Method (_DDC, 1, NotSerialized)
+                    Method (_DDC, 1, NotSerialized)  // _DDC: Display Data Current
                     {
                         If (LEqual (Arg0, One))
                         {
                             Return (VEDI)
                         }
-                        Else
+                        ElseIf (LEqual (Arg0, 0x02))
                         {
-                            If (LEqual (Arg0, 0x02))
-                            {
-                                Return (VEDI)
-                            }
+                            Return (VEDI)
                         }
 
                         Return (Zero)
@@ -2982,22 +2846,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (CRT0)
                 {
-                    Method (_ADR, 0, NotSerialized)
+                    Method (_ADR, 0, NotSerialized)  // _ADR: Address
                     {
                         Return (0x0100)
                     }
 
-                    Method (_DCS, 0, NotSerialized)
+                    Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                     {
                         Return (VCAD (MIDC))
                     }
 
-                    Method (_DGS, 0, NotSerialized)
+                    Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                     {
                         Return (NDDS (MIDC))
                     }
 
-                    Method (_DSS, 1, NotSerialized)
+                    Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                     {
                         And (Arg0, One, VSDC)
                     }
@@ -3005,22 +2869,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (DVI0)
                 {
-                    Method (_ADR, 0, NotSerialized)
+                    Method (_ADR, 0, NotSerialized)  // _ADR: Address
                     {
                         Return (0x0300)
                     }
 
-                    Method (_DCS, 0, NotSerialized)
+                    Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                     {
                         Return (VCAD (MID0))
                     }
 
-                    Method (_DGS, 0, NotSerialized)
+                    Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                     {
                         Return (NDDS (MID0))
                     }
 
-                    Method (_DSS, 1, NotSerialized)
+                    Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                     {
                         And (Arg0, One, VSD0)
                     }
@@ -3028,22 +2892,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (DVI1)
                 {
-                    Method (_ADR, 0, NotSerialized)
+                    Method (_ADR, 0, NotSerialized)  // _ADR: Address
                     {
                         Return (0x0301)
                     }
 
-                    Method (_DCS, 0, NotSerialized)
+                    Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                     {
                         Return (VCAD (MID1))
                     }
 
-                    Method (_DGS, 0, NotSerialized)
+                    Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                     {
                         Return (NDDS (MID1))
                     }
 
-                    Method (_DSS, 1, NotSerialized)
+                    Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                     {
                         And (Arg0, One, VSD1)
                     }
@@ -3051,22 +2915,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (DVI2)
                 {
-                    Method (_ADR, 0, NotSerialized)
+                    Method (_ADR, 0, NotSerialized)  // _ADR: Address
                     {
                         Return (0x0302)
                     }
 
-                    Method (_DCS, 0, NotSerialized)
+                    Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                     {
                         Return (VCAD (MID2))
                     }
 
-                    Method (_DGS, 0, NotSerialized)
+                    Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                     {
                         Return (NDDS (MID2))
                     }
 
-                    Method (_DSS, 1, NotSerialized)
+                    Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                     {
                         And (Arg0, One, VSD2)
                     }
@@ -3074,22 +2938,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (DVI3)
                 {
-                    Method (_ADR, 0, NotSerialized)
+                    Method (_ADR, 0, NotSerialized)  // _ADR: Address
                     {
                         Return (0x0303)
                     }
 
-                    Method (_DCS, 0, NotSerialized)
+                    Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                     {
                         Return (VCAD (MID3))
                     }
 
-                    Method (_DGS, 0, NotSerialized)
+                    Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                     {
                         Return (NDDS (MID3))
                     }
 
-                    Method (_DSS, 1, NotSerialized)
+                    Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                     {
                         And (Arg0, One, VSD3)
                     }
@@ -3097,22 +2961,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (DVI4)
                 {
-                    Method (_ADR, 0, NotSerialized)
+                    Method (_ADR, 0, NotSerialized)  // _ADR: Address
                     {
                         Return (0x0304)
                     }
 
-                    Method (_DCS, 0, NotSerialized)
+                    Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                     {
                         Return (VCAD (MID4))
                     }
 
-                    Method (_DGS, 0, NotSerialized)
+                    Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                     {
                         Return (NDDS (MID4))
                     }
 
-                    Method (_DSS, 1, NotSerialized)
+                    Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                     {
                         And (Arg0, One, VSD4)
                     }
@@ -3120,22 +2984,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (DVI5)
                 {
-                    Method (_ADR, 0, NotSerialized)
+                    Method (_ADR, 0, NotSerialized)  // _ADR: Address
                     {
                         Return (0x0305)
                     }
 
-                    Method (_DCS, 0, NotSerialized)
+                    Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                     {
                         Return (VCAD (MID5))
                     }
 
-                    Method (_DGS, 0, NotSerialized)
+                    Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                     {
                         Return (NDDS (MID5))
                     }
 
-                    Method (_DSS, 1, NotSerialized)
+                    Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                     {
                         And (Arg0, One, VSD5)
                     }
@@ -3144,28 +3008,28 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 OperationRegion (IGDP, PCI_Config, 0x40, 0xC0)
                 Field (IGDP, AnyAcc, NoLock, Preserve)
                 {
-                            Offset (0x12), 
+                    Offset (0x12), 
                         ,   1, 
                     GIVD,   1, 
                         ,   2, 
                     GUMA,   3, 
-                            Offset (0x14), 
+                    Offset (0x14), 
                         ,   4, 
                     GMFN,   1, 
-                            Offset (0x18), 
-                            Offset (0xA4), 
+                    Offset (0x18), 
+                    Offset (0xA4), 
                     ASLE,   8, 
-                            Offset (0xA8), 
+                    Offset (0xA8), 
                     GSSE,   1, 
                     GSSB,   14, 
                     GSES,   1, 
-                            Offset (0xB0), 
+                    Offset (0xB0), 
                         ,   12, 
                     CDVL,   1, 
-                            Offset (0xB2), 
-                            Offset (0xB5), 
+                    Offset (0xB2), 
+                    Offset (0xB5), 
                     LBPC,   8, 
-                            Offset (0xBC), 
+                    Offset (0xBC), 
                     ASLS,   32
                 }
 
@@ -3180,11 +3044,11 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     GVER,   128, 
                     MBOX,   32, 
                     DMOD,   32, 
-                            Offset (0x100), 
+                    Offset (0x100), 
                     DRDY,   32, 
                     CSTS,   32, 
                     CEVT,   32, 
-                            Offset (0x120), 
+                    Offset (0x120), 
                     DIDL,   32, 
                     DDL2,   32, 
                     DDL3,   32, 
@@ -3226,15 +3090,15 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     EVTS,   32, 
                     CNOT,   32, 
                     NRDY,   32, 
-                            Offset (0x200), 
+                    Offset (0x200), 
                     SCIE,   1, 
                     GEFC,   4, 
                     GXFC,   3, 
                     GESF,   8, 
-                            Offset (0x204), 
+                    Offset (0x204), 
                     PARM,   32, 
                     DSLP,   32, 
-                            Offset (0x300), 
+                    Offset (0x300), 
                     ARDY,   32, 
                     ASLC,   32, 
                     TCHE,   32, 
@@ -3253,7 +3117,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     IUER,   32, 
                     FDSP,   64, 
                     FDSS,   32, 
-                            Offset (0x400), 
+                    Offset (0x400), 
                     GVD1,   49152, 
                     PHED,   32, 
                     BDDC,   2048
@@ -3357,8 +3221,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     If (LEqual (GESF, 0x04))
                     {
                         And (PARM, 0xEFFF0000, PARM)
-                        And (PARM, ShiftLeft (DerefOf (Index (DBTB, IBTT)), 0x10), 
-                            PARM)
+                        And (PARM, ShiftLeft (DerefOf (Index (DBTB, IBTT)), 0x10), PARM)
                         Or (IBTT, PARM, PARM)
                         Store (Zero, GESF)
                         Return (SUCC)
@@ -3400,8 +3263,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Or (PARM, ShiftLeft (GMFN, One), PARM)
                         Or (PARM, 0x1800, PARM)
                         Or (PARM, 0x00060000, PARM)
-                        Or (ShiftLeft (DerefOf (Index (DerefOf (Index (CDCT, HVCO)), CDVL
-                            )), 0x15), PARM, PARM)
+                        Or (ShiftLeft (DerefOf (Index (DerefOf (Index (CDCT, HVCO)), CDVL)), 0x15), PARM, PARM)
                         Store (One, GESF)
                         Return (SUCC)
                     }
@@ -3685,34 +3547,25 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Or (PFIT, 0x80000000, PFIT)
                         Store (0x04, ASLC)
                     }
+                    ElseIf (LEqual (Arg0, One))
+                    {
+                        Store (Arg1, BCLP)
+                        Or (BCLP, 0x80000000, BCLP)
+                        Store (0x0A, ASLC)
+                    }
+                    ElseIf (LEqual (Arg0, 0x03))
+                    {
+                        Store (Arg1, PFMB)
+                        Or (PFMB, 0x80000100, PFMB)
+                    }
+                    ElseIf (LEqual (Arg0, Zero))
+                    {
+                        Store (Arg1, ALSI)
+                        Store (One, ASLC)
+                    }
                     Else
                     {
-                        If (LEqual (Arg0, One))
-                        {
-                            Store (Arg1, BCLP)
-                            Or (BCLP, 0x80000000, BCLP)
-                            Store (0x0A, ASLC)
-                        }
-                        Else
-                        {
-                            If (LEqual (Arg0, 0x03))
-                            {
-                                Store (Arg1, PFMB)
-                                Or (PFMB, 0x80000100, PFMB)
-                            }
-                            Else
-                            {
-                                If (LEqual (Arg0, Zero))
-                                {
-                                    Store (Arg1, ALSI)
-                                    Store (One, ASLC)
-                                }
-                                Else
-                                {
-                                    Return (One)
-                                }
-                            }
-                        }
+                        Return (One)
                     }
 
                     Store (One, ASLE)
@@ -3727,30 +3580,30 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (PNLF)
                 {
-                    Name (_ADR, Zero)
-                    Name (_HID, EisaId ("APP0002"))
-                    Name (_CID, "backlight")
-                    Name (_UID, 0x0A)
-                    Name (_STA, 0x0B)
+                    Name (_ADR, Zero)  // _ADR: Address
+                    Name (_HID, EisaId ("APP0002"))  // _HID: Hardware ID
+                    Name (_CID, "backlight")  // _CID: Compatible ID
+                    Name (_UID, 0x0A)  // _UID: Unique ID
+                    Name (_STA, 0x0B)  // _STA: Status
                     OperationRegion (BRIT, SystemMemory, And (BAR1, 0xFFFFFFF0), 0x000E1184)
                     Field (BRIT, AnyAcc, Lock, Preserve)
                     {
-                                Offset (0x48250), 
+                        Offset (0x48250), 
                         LEV2,   32, 
                         LEVL,   32, 
-                                Offset (0x70040), 
+                        Offset (0x70040), 
                         P0BL,   32, 
-                                Offset (0xC8250), 
+                        Offset (0xC8250), 
                         LEVW,   32, 
                         LEVX,   32, 
-                                Offset (0xE1180), 
+                        Offset (0xE1180), 
                         PCHL,   32
                     }
 
                     Name (LMAX, 0x0710)
                     Name (KMAX, 0x0710)
                     Name (KPCH, Ones)
-                    Method (_INI, 0, NotSerialized)
+                    Method (_INI, 0, NotSerialized)  // _INI: Initialize
                     {
                         If (LNot (KPCH))
                         {
@@ -3807,7 +3660,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_BCM, 1, NotSerialized)
+                    Method (_BCM, 1, NotSerialized)  // _BCM: Brightness Control Method
                     {
                         If (LAnd (LNotEqual (KPCH, Ones), LNotEqual (PCHL, KPCH)))
                         {
@@ -3838,7 +3691,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (DerefOf (Index (_BCL, Local0)), LEVL)
                     }
 
-                    Method (_BQC, 0, NotSerialized)
+                    Method (_BQC, 0, NotSerialized)  // _BQC: Brightness Query Current
                     {
                         Store (Match (_BCL, MGE, LEVL, MTR, Zero, 0x02), Local0)
                         If (LEqual (Local0, Ones))
@@ -3849,7 +3702,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Return (DerefOf (Index (_BCL, Local0)))
                     }
 
-                    Method (_DOS, 1, NotSerialized)
+                    Method (_DOS, 1, NotSerialized)  // _DOS: Disable Output Switching
                     {
                         ^^_DOS (Arg0)
                     }
@@ -3909,7 +3762,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Name (XRGL, 0x28)
                     Name (XRGH, 0x0710)
                     Name (KLVX, 0x07100000)
-                    Name (_BCL, Package (0x43)
+                    Name (_BCL, Package (0x43)  // _BCL: Brightness Control Levels
                     {
                         0x0710, 
                         0x01DF, 
@@ -3981,13 +3834,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     })
                 }
 
-                Method (_DSM, 4, NotSerialized)
+                Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
                 {
                     If (LEqual (Arg2, Zero))
                     {
                         Return (Buffer (One)
                         {
-                            0x03
+                             0x03                                           
                         })
                     }
 
@@ -3996,7 +3849,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         "AAPL,ig-platform-id", 
                         Buffer (0x04)
                         {
-                            0x03, 0x00, 0x66, 0x01
+                             0x03, 0x00, 0x66, 0x01                         
                         }, 
 
                         "hda-gfx", 
@@ -4010,13 +3863,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Device (LPC)
             {
-                Name (_ADR, 0x001F0000)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x001F0000)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
                 Device (SIO)
                 {
-                    Name (_HID, EisaId ("PNP0C02"))
-                    Name (_UID, Zero)
+                    Name (_HID, EisaId ("PNP0C02"))  // _HID: Hardware ID
+                    Name (_UID, Zero)  // _UID: Unique ID
                     Name (SCRS, ResourceTemplate ()
                     {
                         IO (Decode16,
@@ -4158,7 +4011,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Memory32Fixed (ReadWrite,
                             0x00000000,         // Address Base
                             0x00001000,         // Address Length
-                            )
+                            _Y1E)
                         Memory32Fixed (ReadWrite,
                             0xFED1C000,         // Address Base
                             0x00004000,         // Address Length
@@ -4180,8 +4033,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             0x00007000,         // Address Length
                             )
                     })
-                    CreateDWordField (SCRS, 0xC0, TRMB)
-                    Method (_CRS, 0, NotSerialized)
+                    CreateDWordField (SCRS, \_SB.PCI0.LPC.SIO._Y1E._BAS, TRMB)  // _BAS: Base Address
+                    Method (_CRS, 0, NotSerialized)  // _CRS: Current Resource Settings
                     {
                         Store (TBAB, TRMB)
                         If (LEqual (^^TPM._STA (), 0x0F))
@@ -4204,49 +4057,49 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 OperationRegion (LPCS, PCI_Config, Zero, 0x0100)
                 Field (LPCS, AnyAcc, NoLock, Preserve)
                 {
-                            Offset (0x60), 
+                    Offset (0x60), 
                     PIRA,   8, 
                     PIRB,   8, 
                     PIRC,   8, 
                     PIRD,   8, 
                     SERQ,   8, 
-                            Offset (0x68), 
+                    Offset (0x68), 
                     PIRE,   8, 
                     PIRF,   8, 
                     PIRG,   8, 
                     PIRH,   8, 
-                            Offset (0x80), 
+                    Offset (0x80), 
                     XU1A,   3, 
                         ,   1, 
                     XU2A,   3, 
-                            Offset (0x81), 
+                    Offset (0x81), 
                     XPA,    2, 
                         ,   2, 
                     XFA,    1, 
-                            Offset (0x82), 
+                    Offset (0x82), 
                     XU1E,   1, 
                     XU2E,   1, 
                     XPE,    1, 
                     XFE,    1, 
-                            Offset (0x84), 
+                    Offset (0x84), 
                     XG1E,   1, 
                         ,   1, 
                     XG1A,   14, 
-                            Offset (0x88), 
+                    Offset (0x88), 
                     XG2E,   1, 
                         ,   1, 
                     XG2A,   14, 
-                            Offset (0xA0), 
+                    Offset (0xA0), 
                         ,   2, 
                     CLKR,   1, 
                         ,   7, 
                     EXPE,   1, 
-                            Offset (0xA2), 
-                            Offset (0xAC), 
-                            Offset (0xAD), 
-                            Offset (0xAE), 
+                    Offset (0xA2), 
+                    Offset (0xAC), 
+                    Offset (0xAD), 
+                    Offset (0xAE), 
                     XUSB,   1, 
-                            Offset (0xB8), 
+                    Offset (0xB8), 
                         ,   12, 
                     GR06,   2
                 }
@@ -4254,22 +4107,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 OperationRegion (LPIO, SystemIO, 0x0500, 0x80)
                 Field (LPIO, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0x0C), 
-                            Offset (0x0D), 
-                            Offset (0x0E), 
+                    Offset (0x0C), 
+                    Offset (0x0D), 
+                    Offset (0x0E), 
                         ,   6, 
                     GLIS,   1, 
-                            Offset (0x0F), 
-                            Offset (0x10), 
-                            Offset (0x2C), 
+                    Offset (0x0F), 
+                    Offset (0x10), 
+                    Offset (0x2C), 
                         ,   6, 
                     XHPD,   1, 
-                            Offset (0x38), 
+                    Offset (0x38), 
                         ,   6, 
                     PIDH,   2, 
-                            Offset (0x3A), 
+                    Offset (0x3A), 
                     PIDL,   2, 
-                            Offset (0x48), 
+                    Offset (0x48), 
                     DOI0,   1, 
                     DOI1,   1, 
                     DOI2,   1, 
@@ -4279,39 +4132,39 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 OperationRegion (PMIO, SystemIO, 0x0400, 0x80)
                 Field (PMIO, AnyAcc, NoLock, Preserve)
                 {
-                            Offset (0x2A), 
+                    Offset (0x2A), 
                         ,   6, 
                     XHPE,   1, 
-                            Offset (0x42), 
+                    Offset (0x42), 
                         ,   1, 
                     SWGE,   1, 
-                            Offset (0x64), 
+                    Offset (0x64), 
                         ,   9, 
                     SCIS,   1, 
-                            Offset (0x66)
+                    Offset (0x66)
                 }
 
                 OperationRegion (IO_T, SystemIO, 0x0800, 0x10)
                 Field (IO_T, ByteAcc, NoLock, Preserve)
                 {
                     TRPI,   16, 
-                            Offset (0x04), 
-                            Offset (0x06), 
-                            Offset (0x08), 
+                    Offset (0x04), 
+                    Offset (0x06), 
+                    Offset (0x08), 
                     TRP0,   8, 
-                            Offset (0x0A), 
-                            Offset (0x0B), 
-                            Offset (0x0C), 
-                            Offset (0x0D), 
-                            Offset (0x0E), 
-                            Offset (0x0F), 
-                            Offset (0x10)
+                    Offset (0x0A), 
+                    Offset (0x0B), 
+                    Offset (0x0C), 
+                    Offset (0x0D), 
+                    Offset (0x0E), 
+                    Offset (0x0F), 
+                    Offset (0x10)
                 }
 
                 Device (PIC)
                 {
-                    Name (_HID, EisaId ("PNP0000"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0000"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0020,             // Range Minimum
@@ -4336,8 +4189,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (TIMR)
                 {
-                    Name (_HID, EisaId ("PNP0100"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0100"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0040,             // Range Minimum
@@ -4350,8 +4203,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (HPET)
                 {
-                    Name (_HID, EisaId ("PNP0103"))
-                    Method (_STA, 0, NotSerialized)
+                    Name (_HID, EisaId ("PNP0103"))  // _HID: Hardware ID
+                    Method (_STA, 0, NotSerialized)  // _STA: Status
                     {
                         If (LAnd (WNTF, LNot (WXPF)))
                         {
@@ -4372,11 +4225,11 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Memory32Fixed (ReadOnly,
                             0xFED00000,         // Address Base
                             0x00000400,         // Address Length
-                            )
+                            _Y1F)
                     })
-                    Method (_CRS, 0, Serialized)
+                    Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                     {
-                        CreateDWordField (BUF0, 0x07, HPT0)
+                        CreateDWordField (BUF0, \_SB.PCI0.LPC.HPET._Y1F._BAS, HPT0)  // _BAS: Base Address
                         Store (\HPET, HPT0)
                         Return (BUF0)
                     }
@@ -4384,8 +4237,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (DMAC)
                 {
-                    Name (_HID, EisaId ("PNP0200"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0200"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0000,             // Range Minimum
@@ -4412,8 +4265,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (SPKR)
                 {
-                    Name (_HID, EisaId ("PNP0800"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0800"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0061,             // Range Minimum
@@ -4426,8 +4279,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (FPU)
                 {
-                    Name (_HID, EisaId ("PNP0C04"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0C04"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x00F0,             // Range Minimum
@@ -4442,8 +4295,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (RTC)
                 {
-                    Name (_HID, EisaId ("PNP0B00"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("PNP0B00"))  // _HID: Hardware ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0070,             // Range Minimum
@@ -4456,7 +4309,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (KBD)
                 {
-                    Method (_HID, 0, NotSerialized)
+                    Method (_HID, 0, NotSerialized)  // _HID: Hardware ID
                     {
                         If (WIN8)
                         {
@@ -4466,8 +4319,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Return (0x0303D041)
                     }
 
-                    Name (_CID, EisaId ("PNP0303"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_CID, EisaId ("PNP0303"))  // _CID: Compatible ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0060,             // Range Minimum
@@ -4488,9 +4341,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (MOU)
                 {
-                    Name (_HID, EisaId ("IBM3780"))
-                    Name (_CID, EisaId ("PNP0F13"))
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_HID, EisaId ("IBM3780"))  // _HID: Hardware ID
+                    Name (_CID, EisaId ("PNP0F13"))  // _CID: Compatible ID
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IRQNoFlags ()
                             {12}
@@ -4511,39 +4364,39 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 OperationRegion (IMGA, SystemIO, 0x15E0, 0x10)
                 Field (IMGA, ByteAcc, NoLock, Preserve)
                 {
-                            Offset (0x01), 
-                            Offset (0x02), 
-                            Offset (0x03), 
+                    Offset (0x01), 
+                    Offset (0x02), 
+                    Offset (0x03), 
                     WAKR,   16, 
-                            Offset (0x0C), 
+                    Offset (0x0C), 
                     GAIX,   8, 
-                            Offset (0x0E), 
+                    Offset (0x0E), 
                     GADT,   8, 
-                            Offset (0x10)
+                    Offset (0x10)
                 }
 
                 IndexField (GAIX, GADT, ByteAcc, NoLock, Preserve)
                 {
-                            Offset (0x50), 
+                    Offset (0x50), 
                         ,   3, 
                     IVPW,   1, 
                     DVPW,   1, 
                     BLPL,   1, 
-                            Offset (0x51), 
+                    Offset (0x51), 
                     TP4R,   1, 
                     PADR,   1, 
                     BPAD,   1, 
                         ,   1, 
                         ,   1, 
                     PADD,   1, 
-                            Offset (0x60), 
+                    Offset (0x60), 
                     EPWG,   1, 
                         ,   1, 
                     CSON,   1, 
                     DSCI,   1, 
                     DSCS,   1, 
                     DLAN,   1, 
-                            Offset (0xC2), 
+                    Offset (0xC2), 
                     GAID,   8
                 }
 
@@ -4551,7 +4404,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     Name (TCGP, Buffer (0x08)
                     {
-                        /* 0000 */    0x1F, 0xE0, 0x1F, 0x01, 0x02, 0x04, 0x08, 0xF0
+                         0x1F, 0xE0, 0x1F, 0x01, 0x02, 0x04, 0x08, 0xF0 
                     })
                     CreateByteField (TCGP, Zero, PPRQ)
                     CreateByteField (TCGP, One, PPL1)
@@ -4570,7 +4423,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     IndexField (TIDX, TPDA, ByteAcc, Lock, Preserve)
                     {
-                                Offset (0x40), 
+                        Offset (0x40), 
                         TPP1,   8, 
                         PPLO,   8, 
                         TPP3,   8
@@ -4587,7 +4440,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Device (TPM)
                 {
                     Name (TMPV, Zero)
-                    Method (_HID, 0, NotSerialized)
+                    Method (_HID, 0, NotSerialized)  // _HID: Hardware ID
                     {
                         If (LEqual (TVID, 0x15D1))
                         {
@@ -4627,32 +4480,29 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Return (0x310CD041)
                     }
 
-                    Name (_CID, EisaId ("PNP0C31"))
-                    Name (_UID, One)
+                    Name (_CID, EisaId ("PNP0C31"))  // _CID: Compatible ID
+                    Name (_UID, One)  // _UID: Unique ID
                     OperationRegion (TMMB, SystemMemory, 0xFED40000, 0x1000)
                     Field (TMMB, ByteAcc, Lock, Preserve)
                     {
                         ACCS,   8, 
-                                Offset (0x18), 
+                        Offset (0x18), 
                         TSTA,   8, 
                         TBCA,   8, 
-                                Offset (0xF00), 
+                        Offset (0xF00), 
                         TVID,   16, 
                         TDID,   16
                     }
 
-                    Method (_STA, 0, NotSerialized)
+                    Method (_STA, 0, NotSerialized)  // _STA: Status
                     {
                         If (LEqual (ACCS, 0xFF))
                         {
                             Return (Zero)
                         }
-                        Else
+                        ElseIf (LEqual (TPME, Zero))
                         {
-                            If (LEqual (TPME, Zero))
-                            {
-                                Return (Zero)
-                            }
+                            Return (Zero)
                         }
 
                         Return (0x0F)
@@ -4665,7 +4515,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             0x00005000,         // Address Length
                             )
                     })
-                    Method (_CRS, 0, Serialized)
+                    Method (_CRS, 0, Serialized)  // _CRS: Current Resource Settings
                     {
                         Return (BUF1)
                     }
@@ -4685,8 +4535,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (Zero, Local0)
                         While (LLess (Local0, 0x10))
                         {
-                            If (LNotEqual (DerefOf (Index (Arg0, Local0)), DerefOf (Index (
-                                Arg1, Local0))))
+                            If (LNotEqual (DerefOf (Index (Arg0, Local0)), DerefOf (Index (Arg1, Local0))))
                             {
                                 Return (Zero)
                             }
@@ -4697,24 +4546,20 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Return (One)
                     }
 
-                    Method (_DSM, 4, Serialized)
+                    Method (_DSM, 4, Serialized)  // _DSM: Device-Specific Method
                     {
                         Name (TTMP, Buffer (One)
                         {
-                            0x00
+                             0x00                                           
                         })
                         CreateByteField (TTMP, Zero, TMPV)
-                        If (LEqual (UCMP (Arg0, Buffer (0x10)
-                                    {
-                                        /* 0000 */    0xA6, 0xFA, 0xDD, 0x3D, 0x1B, 0x36, 0xB4, 0x4E, 
-                                        /* 0008 */    0xA4, 0x24, 0x8D, 0x10, 0x08, 0x9D, 0x16, 0x53
-                                    }), One))
+                        If (LEqual (UCMP (Arg0, ToUUID ("3dddfaa6-361b-4eb4-a424-8d10089d1653") /* Physical Presence Interface */), One))
                         {
                             If (LEqual (Arg2, Zero))
                             {
                                 Return (Buffer (0x02)
                                 {
-                                    0xFF, 0x01
+                                     0xFF, 0x01                                     
                                 })
                             }
 
@@ -4738,8 +4583,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                         Return (Zero)
                                     }
 
-                                    If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x0E), 
-                                        LLessEqual (DerefOf (Index (Arg3, Zero)), 0x12)))
+                                    If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x0E), LLessEqual (DerefOf (Index (Arg3, Zero)), 0x12)))
                                     {
                                         Store (DerefOf (Index (Arg3, Zero)), SMID)
                                         Store (0xC1, SMIT)
@@ -4747,8 +4591,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                         Return (Zero)
                                     }
 
-                                    If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (
-                                        DerefOf (Index (Arg3, Zero)), 0x16)))
+                                    If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (DerefOf (Index (Arg3, Zero)), 0x16)))
                                     {
                                         Store (DerefOf (Index (Arg3, Zero)), SMID)
                                         Store (0xC1, SMIT)
@@ -4788,8 +4631,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                     Ones
                                 })
                                 Store (PPLO, Index (TMP2, One))
-                                If (LOr (LOr (LGreater (PPLO, 0x16), LEqual (PPLO, 0x0C)), LEqual (
-                                    PPLO, 0x0D)))
+                                If (LOr (LOr (LGreater (PPLO, 0x16), LEqual (PPLO, 0x0C)), LEqual (PPLO, 0x0D)))
                                 {
                                     Store (0xFFFFFFF1, Index (TMP2, 0x02))
                                     Return (TMP2)
@@ -4829,8 +4671,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                         Return (Zero)
                                     }
 
-                                    If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x0E), 
-                                        LLessEqual (DerefOf (Index (Arg3, Zero)), 0x12)))
+                                    If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x0E), LLessEqual (DerefOf (Index (Arg3, Zero)), 0x12)))
                                     {
                                         Store (DerefOf (Index (Arg3, Zero)), SMID)
                                         Store (0xC1, SMIT)
@@ -4838,8 +4679,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                         Return (Zero)
                                     }
 
-                                    If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (
-                                        DerefOf (Index (Arg3, Zero)), 0x16)))
+                                    If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x15), LEqual (DerefOf (Index (Arg3, Zero)), 0x16)))
                                     {
                                         Store (DerefOf (Index (Arg3, Zero)), SMID)
                                         Store (0xC1, SMIT)
@@ -4878,8 +4718,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                     Return (0x03)
                                 }
 
-                                If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), One), 
-                                    LLessEqual (DerefOf (Index (Arg3, Zero)), 0x04)))
+                                If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), One), LLessEqual (DerefOf (Index (Arg3, Zero)), 0x04)))
                                 {
                                     If (LGreater (PPIP, Zero))
                                     {
@@ -4889,8 +4728,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                     Return (0x03)
                                 }
 
-                                If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x06), 
-                                    LLessEqual (DerefOf (Index (Arg3, Zero)), 0x0B)))
+                                If (LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x06), LLessEqual (DerefOf (Index (Arg3, Zero)), 0x0B)))
                                 {
                                     If (LGreater (PPIP, Zero))
                                     {
@@ -4900,9 +4738,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                     Return (0x03)
                                 }
 
-                                If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x0E), LAnd (
-                                    LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x15), LLessEqual (DerefOf (
-                                    Index (Arg3, Zero)), 0x16))))
+                                If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x0E), LAnd (LGreaterEqual (DerefOf (Index (Arg3, Zero)), 0x15), LLessEqual (DerefOf (Index (Arg3, Zero)), 0x16))))
                                 {
                                     If (LAnd (LGreater (PPIP, Zero), LGreater (PPIC, Zero)))
                                     {
@@ -4912,15 +4748,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                     Return (0x03)
                                 }
 
-                                If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x10), LEqual (
-                                    DerefOf (Index (Arg3, Zero)), 0x12)))
+                                If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x10), LEqual (DerefOf (Index (Arg3, Zero)), 0x12)))
                                 {
                                     Return (0x03)
                                 }
 
-                                If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), Zero), LOr (
-                                    LEqual (DerefOf (Index (Arg3, Zero)), 0x0F), LEqual (DerefOf (Index (Arg3, 
-                                    Zero)), 0x11))))
+                                If (LOr (LEqual (DerefOf (Index (Arg3, Zero)), Zero), LOr (LEqual (DerefOf (Index (Arg3, Zero)), 0x0F), LEqual (DerefOf (Index (Arg3, Zero)), 0x11))))
                                 {
                                     Return (0x04)
                                 }
@@ -4931,17 +4764,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (One)
                         }
 
-                        If (LEqual (UCMP (Arg0, Buffer (0x10)
-                                    {
-                                        /* 0000 */    0xED, 0x54, 0x60, 0x37, 0x13, 0xCC, 0x75, 0x46, 
-                                        /* 0008 */    0x90, 0x1C, 0x47, 0x56, 0xD7, 0xF2, 0xD4, 0x5D
-                                    }), One))
+                        If (LEqual (UCMP (Arg0, ToUUID ("376054ed-cc13-4675-901c-4756d7f2d45d")), One))
                         {
                             If (LEqual (Arg2, Zero))
                             {
                                 Return (Buffer (One)
                                 {
-                                    0x01
+                                     0x01                                           
                                 })
                             }
 
@@ -4984,7 +4813,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Return (Buffer (One)
                         {
-                            0x00
+                             0x00                                           
                         })
                     }
 
@@ -4998,10 +4827,10 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (EC)
                 {
-                    Name (_HID, EisaId ("PNP0C09"))
-                    Name (_UID, Zero)
-                    Name (_GPE, 0x11)
-                    Method (_REG, 2, NotSerialized)
+                    Name (_HID, EisaId ("PNP0C09"))  // _HID: Hardware ID
+                    Name (_UID, Zero)  // _UID: Unique ID
+                    Name (_GPE, 0x11)  // _GPE: General Purpose Events
+                    Method (_REG, 2, NotSerialized)  // _REG: Region Availability
                     {
                         If (LEqual (Arg0, 0x03))
                         {
@@ -5019,7 +4848,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             ,   1, 
                             ,   1, 
                         HLDM,   1, 
-                                Offset (0x01), 
+                        Offset (0x01), 
                         BBLS,   1, 
                         BTCM,   1, 
                             ,   1, 
@@ -5027,28 +4856,28 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             ,   1, 
                         HBPR,   1, 
                         BTPC,   1, 
-                                Offset (0x02), 
+                        Offset (0x02), 
                         SLIS,   1, 
                             ,   4, 
                         SNLK,   1, 
-                                Offset (0x03), 
+                        Offset (0x03), 
                             ,   5, 
                         HAUM,   2, 
-                                Offset (0x05), 
+                        Offset (0x05), 
                         HSPA,   1, 
-                                Offset (0x06), 
+                        Offset (0x06), 
                         HSUN,   8, 
                         HSRP,   8, 
-                                Offset (0x0C), 
+                        Offset (0x0C), 
                         HLCL,   8, 
                             ,   4, 
                         CALM,   1, 
-                                Offset (0x0E), 
+                        Offset (0x0E), 
                         HFNS,   2, 
-                                Offset (0x0F), 
+                        Offset (0x0F), 
                             ,   6, 
                         NULS,   1, 
-                                Offset (0x10), 
+                        Offset (0x10), 
                         HAM0,   8, 
                         HAM1,   8, 
                         HAM2,   8, 
@@ -5065,13 +4894,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         HAMD,   8, 
                         HAME,   8, 
                         HAMF,   8, 
-                                Offset (0x23), 
+                        Offset (0x23), 
                         HANT,   8, 
-                                Offset (0x26), 
+                        Offset (0x26), 
                             ,   2, 
                         HANA,   2, 
-                                Offset (0x27), 
-                                Offset (0x2A), 
+                        Offset (0x27), 
+                        Offset (0x2A), 
                         HATR,   8, 
                         HT0H,   8, 
                         HT0L,   8, 
@@ -5080,10 +4909,10 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         HFSP,   8, 
                             ,   6, 
                         HMUT,   1, 
-                                Offset (0x31), 
+                        Offset (0x31), 
                             ,   2, 
                         HUWB,   1, 
-                                Offset (0x32), 
+                        Offset (0x32), 
                         HWPM,   1, 
                         HWLB,   1, 
                         HWLO,   1, 
@@ -5093,13 +4922,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         HWRI,   1, 
                         HWBU,   1, 
                         HWLU,   1, 
-                                Offset (0x34), 
+                        Offset (0x34), 
                             ,   3, 
                         PIBS,   1, 
                             ,   3, 
                         HPLO,   1, 
-                                Offset (0x36), 
-                                Offset (0x38), 
+                        Offset (0x36), 
+                        Offset (0x38), 
                         HB0S,   7, 
                         HB0A,   1, 
                         HB1S,   7, 
@@ -5119,7 +4948,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         BDPW,   1, 
                         BDDT,   1, 
                         HUBB,   1, 
-                                Offset (0x46), 
+                        Offset (0x46), 
                             ,   1, 
                         BTWK,   1, 
                         HPLD,   1, 
@@ -5127,7 +4956,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         HPAC,   1, 
                         BTST,   1, 
                         HPBU,   1, 
-                                Offset (0x47), 
+                        Offset (0x47), 
                         ACSB,   1, 
                             ,   1, 
                         HBID,   1, 
@@ -5140,7 +4969,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         HLBU,   1, 
                         DOCD,   1, 
                         HCBL,   1, 
-                                Offset (0x4C), 
+                        Offset (0x4C), 
                         HTMH,   8, 
                         HTML,   8, 
                         AK00,   8, 
@@ -5148,15 +4977,15 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         HMPR,   8, 
                             ,   7, 
                         HMDN,   1, 
-                                Offset (0x78), 
+                        Offset (0x78), 
                         TMP0,   8, 
-                                Offset (0x80), 
-                                Offset (0x81), 
+                        Offset (0x80), 
+                        Offset (0x81), 
                         HIID,   8, 
-                                Offset (0x83), 
+                        Offset (0x83), 
                         HFNI,   8, 
                         HSPD,   16, 
-                                Offset (0x88), 
+                        Offset (0x88), 
                         TSL0,   7, 
                         TSR0,   1, 
                         TSL1,   7, 
@@ -5165,32 +4994,32 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         TSR2,   1, 
                         TSL3,   7, 
                         TSR3,   1, 
-                                Offset (0x8D), 
+                        Offset (0x8D), 
                         HDAA,   3, 
                         HDAB,   3, 
                         HDAC,   2, 
-                                Offset (0xB0), 
+                        Offset (0xB0), 
                         HDEN,   32, 
                         HDEP,   32, 
                         HDEM,   8, 
                         HDES,   8, 
-                                Offset (0xBB), 
+                        Offset (0xBB), 
                         PLSL,   8, 
                         PLMS,   8, 
                         PLLS,   8, 
                         PLTU,   8, 
-                                Offset (0xC8), 
+                        Offset (0xC8), 
                         ATMX,   8, 
                         HWAT,   8, 
-                                Offset (0xCC), 
+                        Offset (0xCC), 
                         PWMH,   8, 
                         PWML,   8, 
-                                Offset (0xED), 
+                        Offset (0xED), 
                             ,   4, 
                         HDDD,   1
                     }
 
-                    Method (_INI, 0, NotSerialized)
+                    Method (_INI, 0, NotSerialized)  // _INI: Initialize
                     {
                         If (H8DR)
                         {
@@ -5205,7 +5034,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         ^HKEY.WGIN ()
                     }
 
-                    Name (_CRS, ResourceTemplate ()
+                    Name (_CRS, ResourceTemplate ()  // _CRS: Current Resource Settings
                     {
                         IO (Decode16,
                             0x0062,             // Range Minimum
@@ -5386,25 +5215,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 And (HAM5, 0xFB, HAM5)
                             }
                         }
+                        ElseIf (Arg0)
+                        {
+                            MBEC (0x17, 0xFF, One)
+                            MBEC (0x15, 0xFF, 0x04)
+                        }
                         Else
                         {
-                            If (Arg0)
-                            {
-                                MBEC (0x17, 0xFF, One)
-                                MBEC (0x15, 0xFF, 0x04)
-                            }
-                            Else
-                            {
-                                MBEC (0x17, 0xFE, Zero)
-                                MBEC (0x15, 0xFB, Zero)
-                            }
+                            MBEC (0x17, 0xFE, Zero)
+                            MBEC (0x15, 0xFB, Zero)
                         }
                     }
 
                     Name (USPS, Zero)
                     PowerResource (PUBS, 0x03, 0x0000)
                     {
-                        Method (_STA, 0, NotSerialized)
+                        Method (_STA, 0, NotSerialized)  // _STA: Status
                         {
                             If (H8DR)
                             {
@@ -5425,7 +5251,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_ON, 0, NotSerialized)
+                        Method (_ON, 0, NotSerialized)  // _ON_: Power On
                         {
                             Store (0x64, Local0)
                             While (LAnd (USPS, Local0))
@@ -5444,7 +5270,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_OFF, 0, NotSerialized)
+                        Method (_OFF, 0, NotSerialized)  // _OFF: Power Off
                         {
                             Store (One, USPS)
                             If (H8DR)
@@ -5495,89 +5321,76 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 {
                                     Store (LPST, Local0)
                                 }
-                                Else
+                                ElseIf (LLess (HWAT, 0x5A))
                                 {
-                                    If (LLess (HWAT, 0x5A))
+                                    If (HB0A)
                                     {
-                                        If (HB0A)
-                                        {
-                                            If (LOr (And (HB0S, 0x10), LLess (And (HB0S, 0x07
-                                                ), 0x02)))
-                                            {
-                                                Store (One, Local1)
-                                            }
-                                        }
-                                        Else
+                                        If (LOr (And (HB0S, 0x10), LLess (And (HB0S, 0x07), 0x02)))
                                         {
                                             Store (One, Local1)
                                         }
+                                    }
+                                    Else
+                                    {
+                                        Store (One, Local1)
+                                    }
 
-                                        If (HB1A)
-                                        {
-                                            If (LOr (And (HB1S, 0x10), LLess (And (HB1S, 0x07
-                                                ), 0x02)))
-                                            {
-                                                Store (One, Local2)
-                                            }
-                                        }
-                                        Else
+                                    If (HB1A)
+                                    {
+                                        If (LOr (And (HB1S, 0x10), LLess (And (HB1S, 0x07), 0x02)))
                                         {
                                             Store (One, Local2)
                                         }
+                                    }
+                                    Else
+                                    {
+                                        Store (One, Local2)
+                                    }
 
-                                        If (LAnd (Local1, Local2))
-                                        {
-                                            Store (LPST, Local0)
-                                        }
+                                    If (LAnd (Local1, Local2))
+                                    {
+                                        Store (LPST, Local0)
                                     }
                                 }
                             }
                         }
-                        Else
+                        ElseIf (And (RBEC (0x46), 0x10))
                         {
-                            If (And (RBEC (0x46), 0x10))
+                            If (And (RBEC (0x34), 0x80))
                             {
-                                If (And (RBEC (0x34), 0x80))
+                                Store (LPST, Local0)
+                            }
+                            ElseIf (LLess (RBEC (0xC9), 0x5A))
+                            {
+                                Store (RBEC (0x38), Local3)
+                                If (And (Local3, 0x80))
                                 {
-                                    Store (LPST, Local0)
+                                    If (LOr (And (Local3, 0x10), LLess (And (Local3, 0x07), 0x02)))
+                                    {
+                                        Store (One, Local1)
+                                    }
                                 }
                                 Else
                                 {
-                                    If (LLess (RBEC (0xC9), 0x5A))
+                                    Store (One, Local2)
+                                }
+
+                                Store (RBEC (0x39), Local3)
+                                If (And (Local3, 0x80))
+                                {
+                                    If (LOr (And (Local3, 0x10), LLess (And (Local3, 0x07), 0x02)))
                                     {
-                                        Store (RBEC (0x38), Local3)
-                                        If (And (Local3, 0x80))
-                                        {
-                                            If (LOr (And (Local3, 0x10), LLess (And (Local3, 0x07
-                                                ), 0x02)))
-                                            {
-                                                Store (One, Local1)
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            Store (One, Local2)
-                                        }
-
-                                        Store (RBEC (0x39), Local3)
-                                        If (And (Local3, 0x80))
-                                        {
-                                            If (LOr (And (Local3, 0x10), LLess (And (Local3, 0x07
-                                                ), 0x02)))
-                                            {
-                                                Store (One, Local1)
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            Store (One, Local2)
-                                        }
-
-                                        If (LAnd (Local1, Local2))
-                                        {
-                                            Store (LPST, Local0)
-                                        }
+                                        Store (One, Local1)
                                     }
+                                }
+                                Else
+                                {
+                                    Store (One, Local2)
+                                }
+
+                                If (LAnd (Local1, Local2))
+                                {
+                                    Store (LPST, Local0)
                                 }
                             }
                         }
@@ -5609,7 +5422,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     }
 
                     Mutex (MCPU, 0x00)
-                    Method (_Q10, 0, NotSerialized)
+                    Method (_Q10, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (One))
                         {
@@ -5617,12 +5430,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q11, 0, NotSerialized)
+                    Method (_Q11, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         Noop
                     }
 
-                    Method (_Q12, 0, NotSerialized)
+                    Method (_Q12, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x02))
                         {
@@ -5630,7 +5443,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q13, 0, NotSerialized)
+                    Method (_Q13, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.DHKC)
                         {
@@ -5642,7 +5455,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q64, 0, NotSerialized)
+                    Method (_Q64, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x10))
                         {
@@ -5650,7 +5463,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q65, 0, NotSerialized)
+                    Method (_Q65, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x20))
                         {
@@ -5658,7 +5471,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q16, 0, NotSerialized)
+                    Method (_Q16, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x40))
                         {
@@ -5683,22 +5496,19 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q17, 0, NotSerialized)
+                    Method (_Q17, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x80))
                         {
                             ^HKEY.MHKQ (0x1008)
                         }
-                        Else
+                        ElseIf (LNot (WNTF))
                         {
-                            If (LNot (WNTF))
-                            {
-                                VEXP ()
-                            }
+                            VEXP ()
                         }
                     }
 
-                    Method (_Q18, 0, NotSerialized)
+                    Method (_Q18, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x0100))
                         {
@@ -5708,7 +5518,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Noop
                     }
 
-                    Method (_Q66, 0, NotSerialized)
+                    Method (_Q66, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x0200))
                         {
@@ -5716,7 +5526,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q1A, 0, NotSerialized)
+                    Method (_Q1A, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x0400))
                         {
@@ -5724,12 +5534,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q1B, 0, NotSerialized)
+                    Method (_Q1B, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         ^HKEY.MHKQ (0x100C)
                     }
 
-                    Method (_Q62, 0, NotSerialized)
+                    Method (_Q62, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x1000))
                         {
@@ -5737,7 +5547,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q60, 0, NotSerialized)
+                    Method (_Q60, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x2000))
                         {
@@ -5745,7 +5555,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q61, 0, NotSerialized)
+                    Method (_Q61, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x4000))
                         {
@@ -5753,7 +5563,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q1F, 0, NotSerialized)
+                    Method (_Q1F, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x00020000))
                         {
@@ -5763,7 +5573,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         UCMS (0x0E)
                     }
 
-                    Method (_Q67, 0, NotSerialized)
+                    Method (_Q67, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x00040000))
                         {
@@ -5771,7 +5581,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q1C, 0, NotSerialized)
+                    Method (_Q1C, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x01000000))
                         {
@@ -5779,7 +5589,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q1D, 0, NotSerialized)
+                    Method (_Q1D, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (^HKEY.MHKK (0x02000000))
                         {
@@ -5787,7 +5597,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q26, 0, NotSerialized)
+                    Method (_Q26, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (VIGD)
                         {
@@ -5844,12 +5654,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         ATMC ()
                     }
 
-                    Method (_Q2E, 0, NotSerialized)
+                    Method (_Q2E, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         ^HKEY.MHKQ (0x6040)
                     }
 
-                    Method (_Q27, 0, NotSerialized)
+                    Method (_Q27, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (VIGD)
                         {
@@ -5906,12 +5716,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         ATMC ()
                     }
 
-                    Method (_Q2F, 0, NotSerialized)
+                    Method (_Q2F, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         ^HKEY.MHKQ (0x6040)
                     }
 
-                    Method (_Q2A, 0, NotSerialized)
+                    Method (_Q2A, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         VCMS (One, ^^^^LID._LID ())
                         If (LEqual (ILNF, Zero))
@@ -5934,7 +5744,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q2B, 0, NotSerialized)
+                    Method (_Q2B, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         UCMS (0x0D)
                         VCMS (One, ^^^^LID._LID ())
@@ -5957,11 +5767,11 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q3D, 0, NotSerialized)
+                    Method (_Q3D, 0, NotSerialized)  // _Qxx: EC Query
                     {
                     }
 
-                    Method (_Q48, 0, NotSerialized)
+                    Method (_Q48, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (And (PPMF, One))
                         {
@@ -5978,7 +5788,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q49, 0, NotSerialized)
+                    Method (_Q49, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (And (PPMF, One))
                         {
@@ -5993,27 +5803,27 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q7F, 0, NotSerialized)
+                    Method (_Q7F, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         Fatal (0x01, 0x80010000, 0x02C3)
                     }
 
-                    Method (_Q4E, 0, NotSerialized)
+                    Method (_Q4E, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         ^HKEY.MHKQ (0x6011)
                     }
 
-                    Method (_Q4F, 0, NotSerialized)
+                    Method (_Q4F, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         ^HKEY.MHKQ (0x6012)
                     }
 
-                    Method (_Q46, 0, NotSerialized)
+                    Method (_Q46, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         ^HKEY.MHKQ (0x6012)
                     }
 
-                    Method (_Q22, 0, NotSerialized)
+                    Method (_Q22, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         CLPM ()
                         If (HB0A)
@@ -6027,19 +5837,19 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q4A, 0, NotSerialized)
+                    Method (_Q4A, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         CLPM ()
                         Notify (BAT0, 0x81)
                     }
 
-                    Method (_Q4B, 0, NotSerialized)
+                    Method (_Q4B, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         CLPM ()
                         Notify (BAT0, 0x80)
                     }
 
-                    Method (_Q4C, 0, NotSerialized)
+                    Method (_Q4C, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         CLPM ()
                         If (WNTF)
@@ -6060,7 +5870,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q4D, 0, NotSerialized)
+                    Method (_Q4D, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         CLPM ()
                         If (And (^BAT1.B1ST, ^BAT1.XB1S))
@@ -6069,13 +5879,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_Q24, 0, NotSerialized)
+                    Method (_Q24, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         CLPM ()
                         Notify (BAT0, 0x80)
                     }
 
-                    Method (_Q25, 0, NotSerialized)
+                    Method (_Q25, 0, NotSerialized)  // _Qxx: EC Query
                     {
                         If (And (^BAT1.B1ST, ^BAT1.XB1S))
                         {
@@ -6091,16 +5901,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         {
                             Store (HB1A, Local1)
                         }
+                        ElseIf (And (RBEC (0x39), 0x80))
+                        {
+                            Store (One, Local1)
+                        }
                         Else
                         {
-                            If (And (RBEC (0x39), 0x80))
-                            {
-                                Store (One, Local1)
-                            }
-                            Else
-                            {
-                                Store (Zero, Local1)
-                            }
+                            Store (Zero, Local1)
                         }
 
                         If (XOr (Local0, Local1))
@@ -6112,7 +5919,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Field (ECOR, ByteAcc, NoLock, Preserve)
                     {
-                                Offset (0xA0), 
+                        Offset (0xA0), 
                         RC00,   8, 
                         RC01,   8, 
                         FC00,   8, 
@@ -6129,7 +5936,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Field (ECOR, ByteAcc, NoLock, Preserve)
                     {
-                                Offset (0xA0), 
+                        Offset (0xA0), 
                         SB00,   8, 
                         SB01,   8, 
                         SBMD,   16, 
@@ -6138,7 +5945,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Field (ECOR, ByteAcc, NoLock, Preserve)
                     {
-                                Offset (0xA0), 
+                        Offset (0xA0), 
                         DC00,   8, 
                         DC01,   8, 
                         DV00,   8, 
@@ -6152,7 +5959,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Field (ECOR, ByteAcc, NoLock, Preserve)
                     {
-                                Offset (0xA0), 
+                        Offset (0xA0), 
                         CH00,   8, 
                         CH01,   8, 
                         CH02,   8, 
@@ -6161,13 +5968,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Field (ECOR, ByteAcc, NoLock, Preserve)
                     {
-                                Offset (0xA0), 
+                        Offset (0xA0), 
                         BMNX,   128
                     }
 
                     Field (ECOR, ByteAcc, NoLock, Preserve)
                     {
-                                Offset (0xA0), 
+                        Offset (0xA0), 
                         BDNX,   128
                     }
 
@@ -6208,16 +6015,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             {
                                 Store (0xC8, Index (Arg1, 0x06))
                             }
+                            ElseIf (B1B2 (DV00, DV01))
+                            {
+                                Divide (0x00030D40, B1B2 (DV00, DV01), Local2, Index (Arg1, 0x06))
+                            }
                             Else
                             {
-                                If (B1B2 (DV00, DV01))
-                                {
-                                    Divide (0x00030D40, B1B2 (DV00, DV01), Local2, Index (Arg1, 0x06))
-                                }
-                                Else
-                                {
-                                    Store (Zero, Index (Arg1, 0x06))
-                                }
+                                Store (Zero, Index (Arg1, 0x06))
                             }
 
                             Store (B1B2 (DV00, DV01), Index (Arg1, 0x04))
@@ -6240,7 +6044,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Or (Arg0, 0x04, HIID)
                             Name (BTYP, Buffer (0x05)
                             {
-                                0x00, 0x00, 0x00, 0x00, 0x00
+                                 0x00, 0x00, 0x00, 0x00, 0x00                   
                             })
                             Store (B1B4 (CH00, CH01, CH02, CH03), BTYP)
                             Store (BTYP, Index (Arg1, 0x0B))
@@ -6266,16 +6070,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         {
                             Store (0x02, Local0)
                         }
+                        ElseIf (And (Arg1, 0x40))
+                        {
+                            Store (One, Local0)
+                        }
                         Else
                         {
-                            If (And (Arg1, 0x40))
-                            {
-                                Store (One, Local0)
-                            }
-                            Else
-                            {
-                                Store (Zero, Local0)
-                            }
+                            Store (Zero, Local0)
                         }
 
                         If (And (Arg1, 0x07)) {}
@@ -6316,12 +6117,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                     Store (Zero, Local1)
                                 }
                             }
-                            Else
+                            ElseIf (LNot (And (Local0, 0x02)))
                             {
-                                If (LNot (And (Local0, 0x02)))
-                                {
-                                    Store (Zero, Local1)
-                                }
+                                Store (Zero, Local1)
                             }
 
                             If (Arg2)
@@ -6341,9 +6139,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (BAT0)
                     {
-                        Name (_HID, EisaId ("PNP0C0A"))
-                        Name (_UID, Zero)
-                        Name (_PCL, Package (0x01)
+                        Name (_HID, EisaId ("PNP0C0A"))  // _HID: Hardware ID
+                        Name (_UID, Zero)  // _UID: Unique ID
+                        Name (_PCL, Package (0x01)  // _PCL: Power Consumer List
                         {
                             _SB
                         })
@@ -6365,22 +6163,19 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             ""
                         })
                         Name (BT0P, Package (0x04) {})
-                        Method (_STA, 0, NotSerialized)
+                        Method (_STA, 0, NotSerialized)  // _STA: Status
                         {
                             If (H8DR)
                             {
                                 Store (HB0A, B0ST)
                             }
+                            ElseIf (And (RBEC (0x38), 0x80))
+                            {
+                                Store (One, B0ST)
+                            }
                             Else
                             {
-                                If (And (RBEC (0x38), 0x80))
-                                {
-                                    Store (One, B0ST)
-                                }
-                                Else
-                                {
-                                    Store (Zero, B0ST)
-                                }
+                                Store (Zero, B0ST)
                             }
 
                             If (B0ST)
@@ -6393,7 +6188,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_BIF, 0, NotSerialized)
+                        Method (_BIF, 0, NotSerialized)  // _BIF: Battery Information
                         {
                             Store (Zero, Local7)
                             Store (0x0A, Local6)
@@ -6420,13 +6215,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (GBIF (Zero, BT0I, Local7))
                         }
 
-                        Method (_BST, 0, NotSerialized)
+                        Method (_BST, 0, NotSerialized)  // _BST: Battery Status
                         {
                             XOr (DerefOf (Index (BT0I, Zero)), One, Local0)
                             Return (GBST (Zero, HB0S, Local0, BT0P))
                         }
 
-                        Method (_BTP, 1, NotSerialized)
+                        Method (_BTP, 1, NotSerialized)  // _BTP: Battery Trip Point
                         {
                             And (HAM4, 0xEF, HAM4)
                             If (Arg0)
@@ -6446,9 +6241,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (BAT1)
                     {
-                        Name (_HID, EisaId ("PNP0C0A"))
-                        Name (_UID, One)
-                        Name (_PCL, Package (0x01)
+                        Name (_HID, EisaId ("PNP0C0A"))  // _HID: Hardware ID
+                        Name (_UID, One)  // _UID: Unique ID
+                        Name (_PCL, Package (0x01)  // _PCL: Power Consumer List
                         {
                             _SB
                         })
@@ -6471,12 +6266,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             ""
                         })
                         Name (BT1P, Package (0x04) {})
-                        Method (_STA, 0, NotSerialized)
+                        Method (_STA, 0, NotSerialized)  // _STA: Status
                         {
                             Return (Zero)
                         }
 
-                        Method (_BIF, 0, NotSerialized)
+                        Method (_BIF, 0, NotSerialized)  // _BIF: Battery Information
                         {
                             Store (Zero, Local7)
                             Store (0x0A, Local6)
@@ -6503,13 +6298,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (GBIF (0x10, BT1I, Local7))
                         }
 
-                        Method (_BST, 0, NotSerialized)
+                        Method (_BST, 0, NotSerialized)  // _BST: Battery Status
                         {
                             XOr (DerefOf (Index (BT1I, Zero)), One, Local0)
                             Return (GBST (0x10, HB1S, Local0, BT1P))
                         }
 
-                        Method (_BTP, 1, NotSerialized)
+                        Method (_BTP, 1, NotSerialized)  // _BTP: Battery Trip Point
                         {
                             And (HAM4, 0xDF, HAM4)
                             If (Arg0)
@@ -6526,7 +6321,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_EJ0, 1, NotSerialized)
+                        Method (_EJ0, 1, NotSerialized)  // _EJx: Eject Device
                         {
                             If (Arg0)
                             {
@@ -6538,32 +6333,29 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (AC)
                     {
-                        Name (_HID, "ACPI0003")
-                        Name (_UID, Zero)
-                        Name (_PCL, Package (0x01)
+                        Name (_HID, "ACPI0003")  // _HID: Hardware ID
+                        Name (_UID, Zero)  // _UID: Unique ID
+                        Name (_PCL, Package (0x01)  // _PCL: Power Consumer List
                         {
                             _SB
                         })
-                        Method (_PSR, 0, NotSerialized)
+                        Method (_PSR, 0, NotSerialized)  // _PSR: Power Source
                         {
                             If (H8DR)
                             {
                                 Return (HPAC)
                             }
+                            ElseIf (And (RBEC (0x46), 0x10))
+                            {
+                                Return (One)
+                            }
                             Else
                             {
-                                If (And (RBEC (0x46), 0x10))
-                                {
-                                    Return (One)
-                                }
-                                Else
-                                {
-                                    Return (Zero)
-                                }
+                                Return (Zero)
                             }
                         }
 
-                        Method (_STA, 0, NotSerialized)
+                        Method (_STA, 0, NotSerialized)  // _STA: Status
                         {
                             Return (0x0F)
                         }
@@ -6571,8 +6363,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (WGSH)
                     {
-                        Name (_HID, EisaId ("LEN0078"))
-                        Method (_STA, 0, NotSerialized)
+                        Name (_HID, EisaId ("LEN0078"))  // _HID: Hardware ID
+                        Method (_STA, 0, NotSerialized)  // _STA: Status
                         {
                             If (WIN8)
                             {
@@ -6592,8 +6384,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (HKEY)
                     {
-                        Name (_HID, EisaId ("LEN0068"))
-                        Method (_STA, 0, NotSerialized)
+                        Name (_HID, EisaId ("LEN0068"))  // _HID: Hardware ID
+                        Method (_STA, 0, NotSerialized)  // _STA: Status
                         {
                             Return (0x0F)
                         }
@@ -6683,42 +6475,30 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 Store (DHWW, Local1)
                                 Store (Zero, DHWW)
                             }
+                            ElseIf (DHKW)
+                            {
+                                Store (DHKW, Local1)
+                                Store (Zero, DHKW)
+                            }
+                            ElseIf (DHKD)
+                            {
+                                Store (DHKD, Local1)
+                                Store (Zero, DHKD)
+                            }
+                            ElseIf (DHKS)
+                            {
+                                Store (DHKS, Local1)
+                                Store (Zero, DHKS)
+                            }
+                            ElseIf (DHKT)
+                            {
+                                Store (DHKT, Local1)
+                                Store (Zero, DHKT)
+                            }
                             Else
                             {
-                                If (DHKW)
-                                {
-                                    Store (DHKW, Local1)
-                                    Store (Zero, DHKW)
-                                }
-                                Else
-                                {
-                                    If (DHKD)
-                                    {
-                                        Store (DHKD, Local1)
-                                        Store (Zero, DHKD)
-                                    }
-                                    Else
-                                    {
-                                        If (DHKS)
-                                        {
-                                            Store (DHKS, Local1)
-                                            Store (Zero, DHKS)
-                                        }
-                                        Else
-                                        {
-                                            If (DHKT)
-                                            {
-                                                Store (DHKT, Local1)
-                                                Store (Zero, DHKT)
-                                            }
-                                            Else
-                                            {
-                                                Store (DHKH, Local1)
-                                                Store (Zero, DHKH)
-                                            }
-                                        }
-                                    }
-                                }
+                                Store (DHKH, Local1)
+                                Store (Zero, DHKH)
                             }
 
                             Release (XDHK)
@@ -6746,68 +6526,44 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 {
                                     Acquire (XDHK, 0xFFFF)
                                     If (LLess (Arg0, 0x1000)) {}
+                                    ElseIf (LLess (Arg0, 0x2000))
+                                    {
+                                        Store (Arg0, DHKH)
+                                    }
+                                    ElseIf (LLess (Arg0, 0x3000))
+                                    {
+                                        Store (Arg0, DHKW)
+                                    }
+                                    ElseIf (LLess (Arg0, 0x4000))
+                                    {
+                                        Store (Arg0, DHKS)
+                                    }
+                                    ElseIf (LLess (Arg0, 0x5000))
+                                    {
+                                        Store (Arg0, DHKD)
+                                    }
+                                    ElseIf (LLess (Arg0, 0x6000))
+                                    {
+                                        Store (Arg0, DHKH)
+                                    }
+                                    ElseIf (LLess (Arg0, 0x7000))
+                                    {
+                                        Store (Arg0, DHKT)
+                                    }
+                                    ElseIf (LLess (Arg0, 0x8000))
+                                    {
+                                        Store (Arg0, DHWW)
+                                    }
                                     Else
                                     {
-                                        If (LLess (Arg0, 0x2000))
-                                        {
-                                            Store (Arg0, DHKH)
-                                        }
-                                        Else
-                                        {
-                                            If (LLess (Arg0, 0x3000))
-                                            {
-                                                Store (Arg0, DHKW)
-                                            }
-                                            Else
-                                            {
-                                                If (LLess (Arg0, 0x4000))
-                                                {
-                                                    Store (Arg0, DHKS)
-                                                }
-                                                Else
-                                                {
-                                                    If (LLess (Arg0, 0x5000))
-                                                    {
-                                                        Store (Arg0, DHKD)
-                                                    }
-                                                    Else
-                                                    {
-                                                        If (LLess (Arg0, 0x6000))
-                                                        {
-                                                            Store (Arg0, DHKH)
-                                                        }
-                                                        Else
-                                                        {
-                                                            If (LLess (Arg0, 0x7000))
-                                                            {
-                                                                Store (Arg0, DHKT)
-                                                            }
-                                                            Else
-                                                            {
-                                                                If (LLess (Arg0, 0x8000))
-                                                                {
-                                                                    Store (Arg0, DHWW)
-                                                                }
-                                                                Else
-                                                                {
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
                                     }
 
                                     Release (XDHK)
                                     Notify (HKEY, 0x80)
                                 }
-                                Else
+                                ElseIf (LEqual (Arg0, 0x1004))
                                 {
-                                    If (LEqual (Arg0, 0x1004))
-                                    {
-                                        Notify (SLPB, 0x80)
-                                    }
+                                    Notify (SLPB, 0x80)
                                 }
                             }
                         }
@@ -6819,16 +6575,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 BEEP (0x11)
                                 Store (Zero, LIDB)
                             }
+                            ElseIf (LEqual (Arg0, One))
+                            {
+                                BEEP (0x10)
+                                Store (One, LIDB)
+                            }
                             Else
                             {
-                                If (LEqual (Arg0, One))
-                                {
-                                    BEEP (0x10)
-                                    Store (One, LIDB)
-                                }
-                                Else
-                                {
-                                }
                             }
                         }
 
@@ -6855,23 +6608,17 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 {
                                     Return (CWAC)
                                 }
+                                ElseIf (LEqual (Arg0, One))
+                                {
+                                    Return (CWAP)
+                                }
+                                ElseIf (LEqual (Arg0, 0x02))
+                                {
+                                    Return (CWAT)
+                                }
                                 Else
                                 {
-                                    If (LEqual (Arg0, One))
-                                    {
-                                        Return (CWAP)
-                                    }
-                                    Else
-                                    {
-                                        If (LEqual (Arg0, 0x02))
-                                        {
-                                            Return (CWAT)
-                                        }
-                                        Else
-                                        {
-                                            Noop
-                                        }
-                                    }
+                                    Noop
                                 }
                             }
                             Else
@@ -6922,20 +6669,17 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                             Store (One, CWAS)
                                         }
                                     }
+                                    ElseIf (LEqual (Arg0, 0x04))
+                                    {
+                                        If (CWAS)
+                                        {
+                                            PNTF (0x81)
+                                            Store (Zero, CWAS)
+                                        }
+                                    }
                                     Else
                                     {
-                                        If (LEqual (Arg0, 0x04))
-                                        {
-                                            If (CWAS)
-                                            {
-                                                PNTF (0x81)
-                                                Store (Zero, CWAS)
-                                            }
-                                        }
-                                        Else
-                                        {
-                                            Noop
-                                        }
+                                        Noop
                                     }
                                 }
 
@@ -7008,17 +6752,14 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                         }
                                     }
                                 }
-                                Else
+                                ElseIf (LEqual (Arg0, 0x04))
                                 {
-                                    If (LEqual (Arg0, 0x04))
+                                    Store (One, C4AC)
+                                    If (XOr (Local0, C4AC))
                                     {
-                                        Store (One, C4AC)
-                                        If (XOr (Local0, C4AC))
+                                        If (OSC4)
                                         {
-                                            If (OSC4)
-                                            {
-                                                PNTF (0x81)
-                                            }
+                                            PNTF (0x81)
                                         }
                                     }
                                 }
@@ -7045,12 +6786,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 {
                                     MHKQ (0x6001)
                                 }
-                                Else
+                                ElseIf (MHKK (0x00020000))
                                 {
-                                    If (MHKK (0x00020000))
-                                    {
-                                        MHKQ (0x1012)
-                                    }
+                                    MHKQ (0x1012)
                                 }
                             }
 
@@ -7133,8 +6871,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Method (PMSS, 1, NotSerialized)
                         {
                             PRSM (One, Arg0)
-                            If (LOr (LAnd (LNot (APMD), And (Arg0, 0x10)), LAnd (
-                                APMD, LNot (And (Arg0, 0x10)))))
+                            If (LOr (LAnd (LNot (APMD), And (Arg0, 0x10)), LAnd (APMD, LNot (And (Arg0, 0x10)))))
                             {
                                 If (And (Arg0, 0x10))
                                 {
@@ -7226,68 +6963,56 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                     Store (IPMB, BRBU)
                                     Store (0x10, MHGS)
                                 }
-                                Else
+                                ElseIf (LEqual (Arg0, One))
                                 {
-                                    If (LEqual (Arg0, One))
+                                    CreateField (RETB, 0x08, 0x18, RRBU)
+                                    Store (IPMR, RRBU)
+                                    Store (0x04, MHGS)
+                                }
+                                ElseIf (LEqual (Arg0, 0x08))
+                                {
+                                    CreateField (RETB, 0x10, 0x18, ODBU)
+                                    CreateByteField (RETB, One, MHGZ)
+                                    Store (IPMO, ODBU)
+                                    If (LEqual (BDEV, 0x03))
                                     {
-                                        CreateField (RETB, 0x08, 0x18, RRBU)
-                                        Store (IPMR, RRBU)
-                                        Store (0x04, MHGS)
-                                    }
-                                    Else
-                                    {
-                                        If (LEqual (Arg0, 0x08))
+                                        If (H8DR)
                                         {
-                                            CreateField (RETB, 0x10, 0x18, ODBU)
-                                            CreateByteField (RETB, One, MHGZ)
-                                            Store (IPMO, ODBU)
-                                            If (LEqual (BDEV, 0x03))
-                                            {
-                                                If (H8DR)
-                                                {
-                                                    Store (HPBU, Local1)
-                                                }
-                                                Else
-                                                {
-                                                    And (RBEC (0x47), One, Local1)
-                                                }
-
-                                                If (LNot (Local1))
-                                                {
-                                                    Or (0x04, MHGZ, MHGZ)
-                                                }
-
-                                                If (LEqual (BSTS, Zero))
-                                                {
-                                                    Or (One, MHGZ, MHGZ)
-                                                    Or (0x02, MHGZ, MHGZ)
-                                                }
-                                            }
-
-                                            Store (0x05, MHGS)
+                                            Store (HPBU, Local1)
                                         }
                                         Else
                                         {
-                                            If (LEqual (Arg0, 0x09))
-                                            {
-                                                CreateField (RETB, 0x10, 0x08, AUBU)
-                                                Store (IPMA, AUBU)
-                                                Store (One, Index (RETB, One))
-                                                Store (0x03, MHGS)
-                                            }
-                                            Else
-                                            {
-                                                If (LEqual (Arg0, 0x02))
-                                                {
-                                                    Store (VDYN (Zero, Zero), Local1)
-                                                    And (Local1, 0x0F, Index (RETB, 0x02))
-                                                    ShiftRight (Local1, 0x04, Local1)
-                                                    And (Local1, 0x0F, Index (RETB, One))
-                                                    Store (0x03, MHGS)
-                                                }
-                                            }
+                                            And (RBEC (0x47), One, Local1)
+                                        }
+
+                                        If (LNot (Local1))
+                                        {
+                                            Or (0x04, MHGZ, MHGZ)
+                                        }
+
+                                        If (LEqual (BSTS, Zero))
+                                        {
+                                            Or (One, MHGZ, MHGZ)
+                                            Or (0x02, MHGZ, MHGZ)
                                         }
                                     }
+
+                                    Store (0x05, MHGS)
+                                }
+                                ElseIf (LEqual (Arg0, 0x09))
+                                {
+                                    CreateField (RETB, 0x10, 0x08, AUBU)
+                                    Store (IPMA, AUBU)
+                                    Store (One, Index (RETB, One))
+                                    Store (0x03, MHGS)
+                                }
+                                ElseIf (LEqual (Arg0, 0x02))
+                                {
+                                    Store (VDYN (Zero, Zero), Local1)
+                                    And (Local1, 0x0F, Index (RETB, 0x02))
+                                    ShiftRight (Local1, 0x04, Local1)
+                                    And (Local1, 0x0F, Index (RETB, One))
+                                    Store (0x03, MHGS)
                                 }
                             }
 
@@ -7319,12 +7044,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                         }
                                     }
                                 }
-                                Else
+                                ElseIf (LEqual (Arg0, 0x02))
                                 {
-                                    If (LEqual (Arg0, 0x02))
-                                    {
-                                        VDYN (One, Arg1)
-                                    }
+                                    VDYN (One, Arg1)
                                 }
                             }
                         }
@@ -7332,18 +7054,15 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Scope (\_SB.PCI0.LPC.EC)
                     {
-                        Method (_Q6A, 0, NotSerialized)
+                        Method (_Q6A, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             If (HDMC)
                             {
                                 Noop
                             }
-                            Else
+                            ElseIf (^HKEY.MHKK (0x04000000))
                             {
-                                If (^HKEY.MHKK (0x04000000))
-                                {
-                                    ^HKEY.MHKQ (0x101B)
-                                }
+                                ^HKEY.MHKQ (0x101B)
                             }
                         }
                     }
@@ -7367,23 +7086,17 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             {
                                 Noop
                             }
+                            ElseIf (LEqual (Arg0, 0x02))
+                            {
+                                LED (0x0E, 0x80)
+                            }
+                            ElseIf (LEqual (Arg0, 0x03))
+                            {
+                                LED (0x0E, 0xC0)
+                            }
                             Else
                             {
-                                If (LEqual (Arg0, 0x02))
-                                {
-                                    LED (0x0E, 0x80)
-                                }
-                                Else
-                                {
-                                    If (LEqual (Arg0, 0x03))
-                                    {
-                                        LED (0x0E, 0xC0)
-                                    }
-                                    Else
-                                    {
-                                        LED (0x0E, Zero)
-                                    }
-                                }
+                                LED (0x0E, Zero)
                             }
                         }
                     }
@@ -7406,7 +7119,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Scope (\_SB.PCI0.LPC.EC)
                     {
-                        Method (_Q3F, 0, NotSerialized)
+                        Method (_Q3F, 0, NotSerialized)  // _Qxx: EC Query
                         {
                             ^HKEY.MHKQ (0x6000)
                         }
@@ -7452,8 +7165,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Device (PEG)
             {
-                Name (_ADR, 0x00010000)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x00010000)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
                 Name (LART, Package (0x02)
                 {
@@ -7491,7 +7204,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         0x11
                     }
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (GPIC)
                     {
@@ -7527,15 +7240,15 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 CreateBitField (VDDA, 0x12, VWST)
                 Device (VID)
                 {
-                    Name (_ADR, Zero)
+                    Name (_ADR, Zero)  // _ADR: Address
                     OperationRegion (VPCG, PCI_Config, Zero, 0x0100)
                     Field (VPCG, DWordAcc, NoLock, Preserve)
                     {
-                                Offset (0x2C), 
+                        Offset (0x2C), 
                         VSID,   32, 
-                                Offset (0x40), 
+                        Offset (0x40), 
                         VIDS,   32, 
-                                Offset (0x70), 
+                        Offset (0x70), 
                         VPWR,   8
                     }
 
@@ -7552,9 +7265,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         PBMR,   32
                     }
 
-                    Name (_S3D, 0x03)
+                    Name (_S3D, 0x03)  // _S3D: S3 Device State
                     Name (DGOS, Zero)
-                    Method (_INI, 0, NotSerialized)
+                    Method (_INI, 0, NotSerialized)  // _INI: Initialize
                     {
                         VUPS (0x02)
                         Store (VCDL, VQDL)
@@ -7568,7 +7281,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_PS0, 0, NotSerialized)
+                    Method (_PS0, 0, NotSerialized)  // _PS0: Power State 0
                     {
                         If (ISOP ())
                         {
@@ -7601,12 +7314,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 SWTT (One)
                                 Store (Zero, DGOS)
                             }
-                            Else
+                            ElseIf (LNotEqual (VSID, 0x21F417AA))
                             {
-                                If (LNotEqual (VSID, 0x21F417AA))
-                                {
-                                    VHYB (0x04, Zero)
-                                }
+                                VHYB (0x04, Zero)
                             }
 
                             VHYB (0x09, HDAS)
@@ -7618,17 +7328,17 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_PS1, 0, NotSerialized)
+                    Method (_PS1, 0, NotSerialized)  // _PS1: Power State 1
                     {
                         Noop
                     }
 
-                    Method (_PS2, 0, NotSerialized)
+                    Method (_PS2, 0, NotSerialized)  // _PS2: Power State 2
                     {
                         Noop
                     }
 
-                    Method (_PS3, 0, NotSerialized)
+                    Method (_PS3, 0, NotSerialized)  // _PS3: Power State 3
                     {
                         If (ISOP ())
                         {
@@ -7659,38 +7369,26 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_STA, 0, NotSerialized)
+                    Method (_STA, 0, NotSerialized)  // _STA: Status
                     {
                         Return (0x0F)
                     }
 
-                    Method (_DSM, 4, NotSerialized)
+                    Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
                     {
-                        If (CMPB (Arg0, Buffer (0x10)
-                                {
-                                    /* 0000 */    0xF8, 0xD8, 0x86, 0xA4, 0xDA, 0x0B, 0x1B, 0x47, 
-                                    /* 0008 */    0xA7, 0x2B, 0x60, 0x42, 0xA6, 0xB5, 0xBE, 0xE0
-                                }))
+                        If (CMPB (Arg0, ToUUID ("a486d8f8-0bda-471b-a72b-6042a6b5bee0")))
                         {
                             Return (NVOP (Arg0, Arg1, Arg2, Arg3))
                         }
 
-                        If (CMPB (Arg0, Buffer (0x10)
-                                {
-                                    /* 0000 */    0x01, 0x2D, 0x13, 0xA3, 0xDA, 0x8C, 0xBA, 0x49, 
-                                    /* 0008 */    0xA5, 0x2E, 0xBC, 0x9D, 0x46, 0xDF, 0x6B, 0x81
-                                }))
+                        If (CMPB (Arg0, ToUUID ("a3132d01-8cda-49ba-a52e-bc9d46df6b81")))
                         {
                             Return (NVPS (Arg0, Arg1, Arg2, Arg3))
                         }
 
                         If (WIN8)
                         {
-                            If (CMPB (Arg0, Buffer (0x10)
-                                    {
-                                        /* 0000 */    0x75, 0x0B, 0xA5, 0xD4, 0xC7, 0x65, 0xF7, 0x46, 
-                                        /* 0008 */    0xBF, 0xB7, 0x41, 0x51, 0x4C, 0xEA, 0x02, 0x44
-                                    }))
+                            If (CMPB (Arg0, ToUUID ("d4a50b75-65c7-46f7-bfb7-41514cea0244")))
                             {
                                 Return (NBCI (Arg0, Arg1, Arg2, Arg3))
                             }
@@ -7698,11 +7396,11 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Return (Buffer (0x04)
                         {
-                            0x01, 0x00, 0x00, 0x80
+                             0x01, 0x00, 0x00, 0x80                         
                         })
                     }
 
-                    Method (_IRC, 0, NotSerialized)
+                    Method (_IRC, 0, NotSerialized)  // _IRC: Inrush Current
                     {
                         Return (Zero)
                     }
@@ -7714,7 +7412,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         IDX1,   262144
                     }
 
-                    Method (_ROM, 2, Serialized)
+                    Method (_ROM, 2, Serialized)  // _ROM: Read-Only Memory
                     {
                         If (LGreaterEqual (Arg0, 0x8000))
                         {
@@ -7801,7 +7499,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_DOS, 1, NotSerialized)
+                    Method (_DOS, 1, NotSerialized)  // _DOS: Disable Output Switching
                     {
                         If (LEqual (Arg0, 0x02))
                         {
@@ -7842,7 +7540,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         }
                     }
 
-                    Method (_DOD, 0, NotSerialized)
+                    Method (_DOD, 0, NotSerialized)  // _DOD: Display Output Devices
                     {
                         Return (Package (0x08)
                         {
@@ -7994,12 +7692,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (LCD0)
                     {
-                        Method (_ADR, 0, NotSerialized)
+                        Method (_ADR, 0, NotSerialized)  // _ADR: Address
                         {
                             Return (0x0110)
                         }
 
-                        Method (_DCS, 0, NotSerialized)
+                        Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                         {
                             VUPS (Zero)
                             If (VCDL)
@@ -8012,12 +7710,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_DGS, 0, NotSerialized)
+                        Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                         {
                             Return (VQDL)
                         }
 
-                        Method (_DSS, 1, NotSerialized)
+                        Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                         {
                             And (Arg0, One, VSDL)
                             If (And (Arg0, 0x80000000))
@@ -8033,7 +7731,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_DDC, 1, NotSerialized)
+                        Method (_DDC, 1, NotSerialized)  // _DDC: Display Data Current
                         {
                             If (ISOP ())
                             {
@@ -8044,12 +7742,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             {
                                 Return (VEDI)
                             }
-                            Else
+                            ElseIf (LEqual (Arg0, 0x02))
                             {
-                                If (LEqual (Arg0, 0x02))
-                                {
-                                    Return (VEDI)
-                                }
+                                Return (VEDI)
                             }
 
                             Return (Zero)
@@ -8058,12 +7753,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (CRT0)
                     {
-                        Method (_ADR, 0, NotSerialized)
+                        Method (_ADR, 0, NotSerialized)  // _ADR: Address
                         {
                             Return (0x0100)
                         }
 
-                        Method (_DCS, 0, NotSerialized)
+                        Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                         {
                             VUPS (One)
                             If (VCSS)
@@ -8077,25 +7772,22 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                     Return (0x1D)
                                 }
                             }
+                            ElseIf (VCDC)
+                            {
+                                Return (0x0F)
+                            }
                             Else
                             {
-                                If (VCDC)
-                                {
-                                    Return (0x0F)
-                                }
-                                Else
-                                {
-                                    Return (0x0D)
-                                }
+                                Return (0x0D)
                             }
                         }
 
-                        Method (_DGS, 0, NotSerialized)
+                        Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                         {
                             Return (VQDC)
                         }
 
-                        Method (_DSS, 1, NotSerialized)
+                        Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                         {
                             And (Arg0, One, VSDC)
                             If (And (Arg0, 0x80000000))
@@ -8114,12 +7806,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (DVI0)
                     {
-                        Method (_ADR, 0, NotSerialized)
+                        Method (_ADR, 0, NotSerialized)  // _ADR: Address
                         {
                             Return (0x0111)
                         }
 
-                        Method (_DCS, 0, NotSerialized)
+                        Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                         {
                             VUPS (Zero)
                             If (VCDD)
@@ -8132,12 +7824,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_DGS, 0, NotSerialized)
+                        Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                         {
                             Return (VQD1)
                         }
 
-                        Method (_DSS, 1, NotSerialized)
+                        Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                         {
                             And (Arg0, One, VSD1)
                             If (And (Arg0, 0x80000000))
@@ -8156,12 +7848,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (DP0)
                     {
-                        Method (_ADR, 0, NotSerialized)
+                        Method (_ADR, 0, NotSerialized)  // _ADR: Address
                         {
                             Return (0x0114)
                         }
 
-                        Method (_DCS, 0, NotSerialized)
+                        Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                         {
                             VUPS (Zero)
                             If (VCDT)
@@ -8174,12 +7866,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_DGS, 0, NotSerialized)
+                        Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                         {
                             Return (VQD0)
                         }
 
-                        Method (_DSS, 1, NotSerialized)
+                        Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                         {
                             And (Arg0, One, VSD0)
                             If (And (Arg0, 0x80000000))
@@ -8198,12 +7890,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (DVI1)
                     {
-                        Method (_ADR, 0, NotSerialized)
+                        Method (_ADR, 0, NotSerialized)  // _ADR: Address
                         {
                             Return (0x0112)
                         }
 
-                        Method (_DCS, 0, NotSerialized)
+                        Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                         {
                             VUPS (Zero)
                             If (VCDD)
@@ -8216,12 +7908,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_DGS, 0, NotSerialized)
+                        Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                         {
                             Return (VQD3)
                         }
 
-                        Method (_DSS, 1, NotSerialized)
+                        Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                         {
                             And (Arg0, One, VSD3)
                             If (And (Arg0, 0x80000000))
@@ -8240,12 +7932,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (DP1)
                     {
-                        Method (_ADR, 0, NotSerialized)
+                        Method (_ADR, 0, NotSerialized)  // _ADR: Address
                         {
                             Return (0x0115)
                         }
 
-                        Method (_DCS, 0, NotSerialized)
+                        Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                         {
                             VUPS (Zero)
                             If (VCDT)
@@ -8258,12 +7950,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_DGS, 0, NotSerialized)
+                        Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                         {
                             Return (VQD2)
                         }
 
-                        Method (_DSS, 1, NotSerialized)
+                        Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                         {
                             And (Arg0, One, VSD2)
                             If (And (Arg0, 0x80000000))
@@ -8282,12 +7974,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (DVI2)
                     {
-                        Method (_ADR, 0, NotSerialized)
+                        Method (_ADR, 0, NotSerialized)  // _ADR: Address
                         {
                             Return (0x0113)
                         }
 
-                        Method (_DCS, 0, NotSerialized)
+                        Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                         {
                             VUPS (Zero)
                             If (VCDD)
@@ -8300,12 +7992,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_DGS, 0, NotSerialized)
+                        Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                         {
                             Return (VQD5)
                         }
 
-                        Method (_DSS, 1, NotSerialized)
+                        Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                         {
                             And (Arg0, One, VSD5)
                             If (And (Arg0, 0x80000000))
@@ -8324,12 +8016,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (DP2)
                     {
-                        Method (_ADR, 0, NotSerialized)
+                        Method (_ADR, 0, NotSerialized)  // _ADR: Address
                         {
                             Return (0x0116)
                         }
 
-                        Method (_DCS, 0, NotSerialized)
+                        Method (_DCS, 0, NotSerialized)  // _DCS: Display Current Status
                         {
                             VUPS (Zero)
                             If (VCDT)
@@ -8342,12 +8034,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             }
                         }
 
-                        Method (_DGS, 0, NotSerialized)
+                        Method (_DGS, 0, NotSerialized)  // _DGS: Display Graphics State
                         {
                             Return (VQD4)
                         }
 
-                        Method (_DSS, 1, NotSerialized)
+                        Method (_DSS, 1, NotSerialized)  // _DSS: Device Set State
                         {
                             And (Arg0, One, VSD4)
                             If (And (Arg0, 0x80000000))
@@ -8403,271 +8095,264 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     Method (NBCI, 4, NotSerialized)
                     {
-                        Name (_T_0, Zero)
+                        Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                         Store ("------- NBCI DSM --------", Debug)
                         Store (ToInteger (Arg2), _T_0)
                         If (LEqual (_T_0, Zero))
                         {
                             Store (Buffer (0x04)
                                 {
-                                    0x00, 0x00, 0x00, 0x00
+                                     0x00, 0x00, 0x00, 0x00                         
                                 }, Local0)
                             Divide (Zero, 0x08, Local2, Local1)
                             ShiftLeft (One, Local2, Local2)
-                            Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1
-                                ))
+                            Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1))
                             Divide (0x14, 0x08, Local2, Local1)
                             ShiftLeft (One, Local2, Local2)
-                            Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1
-                                ))
+                            Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1))
                             Return (Local0)
                         }
-                        Else
+                        ElseIf (LEqual (_T_0, 0x14))
                         {
-                            If (LEqual (_T_0, 0x14))
-                            {
-                                Store (Package (0x07)
+                            Store (Package (0x07)
+                                {
+                                    0x0110, 
+                                    0x0200, 
+                                    Zero, 
+                                    Zero, 
+                                    0x05, 
+                                    One, 
+                                    Package (0x04)
                                     {
-                                        0x0110, 
-                                        0x0200, 
+                                        0xDC, 
                                         Zero, 
-                                        Zero, 
-                                        0x05, 
-                                        One, 
-                                        Package (0x04)
+                                        0x03E8, 
+                                        Package (0x03)
                                         {
-                                            0xDC, 
-                                            Zero, 
-                                            0x03E8, 
-                                            Package (0x03)
+                                            0x65, 
+                                            Package (0x65)
                                             {
-                                                0x65, 
-                                                Package (0x65)
-                                                {
-                                                    Zero, 
-                                                    0x0A, 
-                                                    0x14, 
-                                                    0x1E, 
-                                                    0x28, 
-                                                    0x32, 
-                                                    0x3C, 
-                                                    0x46, 
-                                                    0x50, 
-                                                    0x5A, 
-                                                    0x64, 
-                                                    0x6E, 
-                                                    0x78, 
-                                                    0x82, 
-                                                    0x8C, 
-                                                    0x96, 
-                                                    0xA0, 
-                                                    0xAA, 
-                                                    0xB4, 
-                                                    0xBE, 
-                                                    0xC8, 
-                                                    0xD2, 
-                                                    0xDC, 
-                                                    0xE6, 
-                                                    0xF0, 
-                                                    0xFA, 
-                                                    0x0104, 
-                                                    0x010E, 
-                                                    0x0118, 
-                                                    0x0122, 
-                                                    0x012C, 
-                                                    0x0136, 
-                                                    0x0140, 
-                                                    0x014A, 
-                                                    0x0154, 
-                                                    0x015E, 
-                                                    0x0168, 
-                                                    0x0172, 
-                                                    0x017C, 
-                                                    0x0186, 
-                                                    0x0190, 
-                                                    0x019A, 
-                                                    0x01A4, 
-                                                    0x01AE, 
-                                                    0x01B8, 
-                                                    0x01C2, 
-                                                    0x01CC, 
-                                                    0x01D6, 
-                                                    0x01E0, 
-                                                    0x01EA, 
-                                                    0x01F4, 
-                                                    0x01FE, 
-                                                    0x0208, 
-                                                    0x0212, 
-                                                    0x021C, 
-                                                    0x0226, 
-                                                    0x0230, 
-                                                    0x023A, 
-                                                    0x0244, 
-                                                    0x024E, 
-                                                    0x0258, 
-                                                    0x0262, 
-                                                    0x026C, 
-                                                    0x0276, 
-                                                    0x0280, 
-                                                    0x028A, 
-                                                    0x0294, 
-                                                    0x029E, 
-                                                    0x02A8, 
-                                                    0x02B2, 
-                                                    0x02BC, 
-                                                    0x02C6, 
-                                                    0x02D0, 
-                                                    0x02DA, 
-                                                    0x02E4, 
-                                                    0x02EE, 
-                                                    0x02F8, 
-                                                    0x0302, 
-                                                    0x030C, 
-                                                    0x0316, 
-                                                    0x0320, 
-                                                    0x032A, 
-                                                    0x0334, 
-                                                    0x033E, 
-                                                    0x0348, 
-                                                    0x0352, 
-                                                    0x035C, 
-                                                    0x0366, 
-                                                    0x0370, 
-                                                    0x037A, 
-                                                    0x0384, 
-                                                    0x038E, 
-                                                    0x0398, 
-                                                    0x03A2, 
-                                                    0x03AC, 
-                                                    0x03B6, 
-                                                    0x03C0, 
-                                                    0x03CA, 
-                                                    0x03D4, 
-                                                    0x03DE, 
-                                                    0x03E8
-                                                }, 
+                                                Zero, 
+                                                0x0A, 
+                                                0x14, 
+                                                0x1E, 
+                                                0x28, 
+                                                0x32, 
+                                                0x3C, 
+                                                0x46, 
+                                                0x50, 
+                                                0x5A, 
+                                                0x64, 
+                                                0x6E, 
+                                                0x78, 
+                                                0x82, 
+                                                0x8C, 
+                                                0x96, 
+                                                0xA0, 
+                                                0xAA, 
+                                                0xB4, 
+                                                0xBE, 
+                                                0xC8, 
+                                                0xD2, 
+                                                0xDC, 
+                                                0xE6, 
+                                                0xF0, 
+                                                0xFA, 
+                                                0x0104, 
+                                                0x010E, 
+                                                0x0118, 
+                                                0x0122, 
+                                                0x012C, 
+                                                0x0136, 
+                                                0x0140, 
+                                                0x014A, 
+                                                0x0154, 
+                                                0x015E, 
+                                                0x0168, 
+                                                0x0172, 
+                                                0x017C, 
+                                                0x0186, 
+                                                0x0190, 
+                                                0x019A, 
+                                                0x01A4, 
+                                                0x01AE, 
+                                                0x01B8, 
+                                                0x01C2, 
+                                                0x01CC, 
+                                                0x01D6, 
+                                                0x01E0, 
+                                                0x01EA, 
+                                                0x01F4, 
+                                                0x01FE, 
+                                                0x0208, 
+                                                0x0212, 
+                                                0x021C, 
+                                                0x0226, 
+                                                0x0230, 
+                                                0x023A, 
+                                                0x0244, 
+                                                0x024E, 
+                                                0x0258, 
+                                                0x0262, 
+                                                0x026C, 
+                                                0x0276, 
+                                                0x0280, 
+                                                0x028A, 
+                                                0x0294, 
+                                                0x029E, 
+                                                0x02A8, 
+                                                0x02B2, 
+                                                0x02BC, 
+                                                0x02C6, 
+                                                0x02D0, 
+                                                0x02DA, 
+                                                0x02E4, 
+                                                0x02EE, 
+                                                0x02F8, 
+                                                0x0302, 
+                                                0x030C, 
+                                                0x0316, 
+                                                0x0320, 
+                                                0x032A, 
+                                                0x0334, 
+                                                0x033E, 
+                                                0x0348, 
+                                                0x0352, 
+                                                0x035C, 
+                                                0x0366, 
+                                                0x0370, 
+                                                0x037A, 
+                                                0x0384, 
+                                                0x038E, 
+                                                0x0398, 
+                                                0x03A2, 
+                                                0x03AC, 
+                                                0x03B6, 
+                                                0x03C0, 
+                                                0x03CA, 
+                                                0x03D4, 
+                                                0x03DE, 
+                                                0x03E8
+                                            }, 
 
-                                                Package (0x65)
-                                                {
-                                                    Zero, 
-                                                    0x0A, 
-                                                    0x14, 
-                                                    0x1E, 
-                                                    0x28, 
-                                                    0x32, 
-                                                    0x3C, 
-                                                    0x46, 
-                                                    0x50, 
-                                                    0x5A, 
-                                                    0x64, 
-                                                    0x6E, 
-                                                    0x78, 
-                                                    0x82, 
-                                                    0x8C, 
-                                                    0x96, 
-                                                    0xA0, 
-                                                    0xAA, 
-                                                    0xB4, 
-                                                    0xBE, 
-                                                    0xC8, 
-                                                    0xD2, 
-                                                    0xDC, 
-                                                    0xE6, 
-                                                    0xF0, 
-                                                    0xFA, 
-                                                    0x0104, 
-                                                    0x010E, 
-                                                    0x0118, 
-                                                    0x0122, 
-                                                    0x012C, 
-                                                    0x0136, 
-                                                    0x0140, 
-                                                    0x014A, 
-                                                    0x0154, 
-                                                    0x015E, 
-                                                    0x0168, 
-                                                    0x0172, 
-                                                    0x017C, 
-                                                    0x0186, 
-                                                    0x0190, 
-                                                    0x019A, 
-                                                    0x01A4, 
-                                                    0x01AE, 
-                                                    0x01B8, 
-                                                    0x01C2, 
-                                                    0x01CC, 
-                                                    0x01D6, 
-                                                    0x01E0, 
-                                                    0x01EA, 
-                                                    0x01F4, 
-                                                    0x01FE, 
-                                                    0x0208, 
-                                                    0x0212, 
-                                                    0x021C, 
-                                                    0x0226, 
-                                                    0x0230, 
-                                                    0x023A, 
-                                                    0x0244, 
-                                                    0x024E, 
-                                                    0x0258, 
-                                                    0x0262, 
-                                                    0x026C, 
-                                                    0x0276, 
-                                                    0x0280, 
-                                                    0x028A, 
-                                                    0x0294, 
-                                                    0x029E, 
-                                                    0x02A8, 
-                                                    0x02B2, 
-                                                    0x02BC, 
-                                                    0x02C6, 
-                                                    0x02D0, 
-                                                    0x02DA, 
-                                                    0x02E4, 
-                                                    0x02EE, 
-                                                    0x02F8, 
-                                                    0x0302, 
-                                                    0x030C, 
-                                                    0x0316, 
-                                                    0x0320, 
-                                                    0x032A, 
-                                                    0x0334, 
-                                                    0x033E, 
-                                                    0x0348, 
-                                                    0x0352, 
-                                                    0x035C, 
-                                                    0x0366, 
-                                                    0x0370, 
-                                                    0x037A, 
-                                                    0x0384, 
-                                                    0x038E, 
-                                                    0x0398, 
-                                                    0x03A2, 
-                                                    0x03AC, 
-                                                    0x03B6, 
-                                                    0x03C0, 
-                                                    0x03CA, 
-                                                    0x03D4, 
-                                                    0x03DE, 
-                                                    0x03E8
-                                                }
+                                            Package (0x65)
+                                            {
+                                                Zero, 
+                                                0x0A, 
+                                                0x14, 
+                                                0x1E, 
+                                                0x28, 
+                                                0x32, 
+                                                0x3C, 
+                                                0x46, 
+                                                0x50, 
+                                                0x5A, 
+                                                0x64, 
+                                                0x6E, 
+                                                0x78, 
+                                                0x82, 
+                                                0x8C, 
+                                                0x96, 
+                                                0xA0, 
+                                                0xAA, 
+                                                0xB4, 
+                                                0xBE, 
+                                                0xC8, 
+                                                0xD2, 
+                                                0xDC, 
+                                                0xE6, 
+                                                0xF0, 
+                                                0xFA, 
+                                                0x0104, 
+                                                0x010E, 
+                                                0x0118, 
+                                                0x0122, 
+                                                0x012C, 
+                                                0x0136, 
+                                                0x0140, 
+                                                0x014A, 
+                                                0x0154, 
+                                                0x015E, 
+                                                0x0168, 
+                                                0x0172, 
+                                                0x017C, 
+                                                0x0186, 
+                                                0x0190, 
+                                                0x019A, 
+                                                0x01A4, 
+                                                0x01AE, 
+                                                0x01B8, 
+                                                0x01C2, 
+                                                0x01CC, 
+                                                0x01D6, 
+                                                0x01E0, 
+                                                0x01EA, 
+                                                0x01F4, 
+                                                0x01FE, 
+                                                0x0208, 
+                                                0x0212, 
+                                                0x021C, 
+                                                0x0226, 
+                                                0x0230, 
+                                                0x023A, 
+                                                0x0244, 
+                                                0x024E, 
+                                                0x0258, 
+                                                0x0262, 
+                                                0x026C, 
+                                                0x0276, 
+                                                0x0280, 
+                                                0x028A, 
+                                                0x0294, 
+                                                0x029E, 
+                                                0x02A8, 
+                                                0x02B2, 
+                                                0x02BC, 
+                                                0x02C6, 
+                                                0x02D0, 
+                                                0x02DA, 
+                                                0x02E4, 
+                                                0x02EE, 
+                                                0x02F8, 
+                                                0x0302, 
+                                                0x030C, 
+                                                0x0316, 
+                                                0x0320, 
+                                                0x032A, 
+                                                0x0334, 
+                                                0x033E, 
+                                                0x0348, 
+                                                0x0352, 
+                                                0x035C, 
+                                                0x0366, 
+                                                0x0370, 
+                                                0x037A, 
+                                                0x0384, 
+                                                0x038E, 
+                                                0x0398, 
+                                                0x03A2, 
+                                                0x03AC, 
+                                                0x03B6, 
+                                                0x03C0, 
+                                                0x03CA, 
+                                                0x03D4, 
+                                                0x03DE, 
+                                                0x03E8
                                             }
                                         }
-                                    }, Local0)
-                                Store (Zero, Local1)
-                                While (LLessEqual (Local1, 0x64))
-                                {
-                                    Store (DerefOf (Index (DerefOf (Index (^^^LPC.EC.BRTD, BRTN)), Local1)), 
-                                        Local2)
-                                    Multiply (Local2, 0x03E8, Local2)
-                                    Divide (Local2, 0xFF, Local2, Local3)
-                                    Store (Local3, Index (DerefOf (Index (DerefOf (Index (DerefOf (Index (Local0, 
-                                        0x06)), 0x03)), One)), Local1))
-                                    Increment (Local1)
-                                }
-
-                                Return (Local0)
+                                    }
+                                }, Local0)
+                            Store (Zero, Local1)
+                            While (LLessEqual (Local1, 0x64))
+                            {
+                                Store (DerefOf (Index (DerefOf (Index (^^^LPC.EC.BRTD, BRTN)), Local1)), Local2)
+                                Multiply (Local2, 0x03E8, Local2)
+                                Divide (Local2, 0xFF, Local2, Local3)
+                                Store (Local3, Index (DerefOf (Index (DerefOf (Index (DerefOf (Index (Local0, 0x06)), 0x03)), One)), Local1))
+                                Increment (Local1)
                             }
+
+                            Return (Local0)
                         }
 
                         Return (0x80000002)
@@ -8711,7 +8396,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 OperationRegion (PEGC, PCI_Config, Zero, 0x0100)
                 Field (PEGC, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0xEC), 
+                    Offset (0xEC), 
                     GMGP,   1, 
                     HPGP,   1, 
                     PMGP,   1
@@ -8720,10 +8405,10 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Device (IGBE)
             {
-                Name (_ADR, 0x00190000)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x00190000)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x6D, 
                     Zero
@@ -8732,31 +8417,31 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Device (EXP1)
             {
-                Name (_ADR, 0x001C0000)
+                Name (_ADR, 0x001C0000)  // _ADR: Address
                 Name (RID, Zero)
                 OperationRegion (PECS, PCI_Config, Zero, 0x0100)
                 Field (PECS, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0x5A), 
+                    Offset (0x5A), 
                         ,   3, 
                     PDC,    1, 
                         ,   2, 
                     PDS,    1, 
-                            Offset (0x5B), 
-                            Offset (0x62), 
+                    Offset (0x5B), 
+                    Offset (0x62), 
                     PS,     1, 
                     PP,     1, 
-                            Offset (0xDB), 
+                    Offset (0xDB), 
                         ,   6, 
                     HPCE,   1, 
                     PMCE,   1, 
-                            Offset (0xDF), 
+                    Offset (0xDF), 
                         ,   6, 
                     HPCS,   1, 
                     PMCS,   1
                 }
 
-                Method (_INI, 0, NotSerialized)
+                Method (_INI, 0, NotSerialized)  // _INI: Initialize
                 {
                     Store (PDS, PDSF)
                 }
@@ -8829,7 +8514,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         0x13
                     }
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (GPIC)
                     {
@@ -8844,24 +8529,24 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Name (PDSF, Zero)
                 Device (SLOT)
                 {
-                    Name (_ADR, Zero)
+                    Name (_ADR, Zero)  // _ADR: Address
                 }
             }
 
             Device (EXP2)
             {
-                Name (_ADR, 0x001C0001)
+                Name (_ADR, 0x001C0001)  // _ADR: Address
                 Name (RID, Zero)
                 OperationRegion (PECS, PCI_Config, Zero, 0x0100)
                 Field (PECS, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0x62), 
+                    Offset (0x62), 
                     PS,     1, 
                     PP,     1, 
-                            Offset (0xDB), 
+                    Offset (0xDB), 
                         ,   7, 
                     PMCE,   1, 
-                            Offset (0xDF), 
+                    Offset (0xDF), 
                         ,   7, 
                     PMCS,   1
                 }
@@ -8934,7 +8619,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         0x10
                     }
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (GPIC)
                     {
@@ -8948,16 +8633,16 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (ARPT)
                 {
-                    Name (_ADR, Zero)
-                    Name (_SUN, Zero)
-                    Method (_DSM, 4, NotSerialized)
+                    Name (_ADR, Zero)  // _ADR: Address
+                    Name (_SUN, Zero)  // _SUN: Slot User Number
+                    Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
                     {
                         Store (Package (0x12)
                             {
                                 "built-in", 
                                 Buffer (One)
                                 {
-                                    0x00
+                                     0x00                                           
                                 }, 
 
                                 "model", 
@@ -8969,13 +8654,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 "subsystem-id", 
                                 Buffer (0x04)
                                 {
-                                    0x8F, 0x00, 0x00, 0x00
+                                     0x8F, 0x00, 0x00, 0x00                         
                                 }, 
 
                                 "subsystem-vendor-id", 
                                 Buffer (0x04)
                                 {
-                                    0x6B, 0x10, 0x00, 0x00
+                                     0x6B, 0x10, 0x00, 0x00                         
                                 }, 
 
                                 "device_type", 
@@ -8987,13 +8672,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 "device-id", 
                                 Buffer (0x04)
                                 {
-                                    0xA0, 0x43, 0x00, 0x00
+                                     0xA0, 0x43, 0x00, 0x00                         
                                 }, 
 
                                 "vendor-id", 
                                 Buffer (0x04)
                                 {
-                                    0xE4, 0x14, 0x00, 0x00
+                                     0xE4, 0x14, 0x00, 0x00                         
                                 }, 
 
                                 "name", 
@@ -9016,36 +8701,36 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Device (EXP3)
             {
-                Name (_ADR, 0x001C0002)
+                Name (_ADR, 0x001C0002)  // _ADR: Address
                 Name (RID, Zero)
                 OperationRegion (PECS, PCI_Config, Zero, 0x0100)
                 Field (PECS, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0x5A), 
+                    Offset (0x5A), 
                         ,   3, 
                     PDC,    1, 
                         ,   2, 
                     PDS,    1, 
-                            Offset (0x5B), 
-                            Offset (0x62), 
+                    Offset (0x5B), 
+                    Offset (0x62), 
                     PS,     1, 
                     PP,     1, 
-                            Offset (0xDB), 
+                    Offset (0xDB), 
                         ,   6, 
                     HPCE,   1, 
                     PMCE,   1, 
-                            Offset (0xDF), 
+                    Offset (0xDF), 
                         ,   6, 
                     HPCS,   1, 
                     PMCS,   1
                 }
 
-                Method (_INI, 0, NotSerialized)
+                Method (_INI, 0, NotSerialized)  // _INI: Initialize
                 {
                     Store (PDS, PDSF)
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x09, 
                     0x04
@@ -9118,7 +8803,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         0x11
                     }
                 })
-                Method (_PRT, 0, NotSerialized)
+                Method (_PRT, 0, NotSerialized)  // _PRT: PCI Routing Table
                 {
                     If (GPIC)
                     {
@@ -9133,8 +8818,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Name (PDSF, Zero)
                 Device (SLOT)
                 {
-                    Name (_ADR, Zero)
-                    Method (_RMV, 0, NotSerialized)
+                    Name (_ADR, Zero)  // _ADR: Address
+                    Method (_RMV, 0, NotSerialized)  // _RMV: Removal Status
                     {
                         Return (One)
                     }
@@ -9143,34 +8828,34 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Device (SAT1)
             {
-                Name (_ADR, 0x001F0002)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x001F0002)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
             }
 
             Device (SAT2)
             {
-                Name (_ADR, 0x001F0005)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x001F0005)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
             }
 
             Device (SMBU)
             {
-                Name (_ADR, 0x001F0003)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x001F0003)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
             }
 
             Device (XHCI)
             {
-                Name (_ADR, 0x00140000)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x00140000)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
                 OperationRegion (XHCS, PCI_Config, Zero, 0x0100)
                 Field (XHCS, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0xD0), 
+                    Offset (0xD0), 
                     PR2,    32, 
                     PR2M,   32, 
                     PR3,    32, 
@@ -9178,25 +8863,21 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
 
                 Name (XRST, Zero)
-                Name (_PR0, Package (0x01)
+                Name (_PR0, Package (0x01)  // _PR0: Power Resources for D0
                 {
                     ^LPC.EC.PUBS
                 })
-                Name (_PR1, Package (0x01)
+                Name (_PR1, Package (0x01)  // _PR1: Power Resources for D1
                 {
                     ^LPC.EC.PUBS
                 })
-                Name (_PR2, Package (0x01)
+                Name (_PR2, Package (0x01)  // _PR2: Power Resources for D2
                 {
                     ^LPC.EC.PUBS
                 })
                 Method (CUID, 1, Serialized)
                 {
-                    If (LEqual (Arg0, Buffer (0x10)
-                            {
-                                /* 0000 */    0xA9, 0x12, 0x95, 0x7C, 0x05, 0x17, 0xB4, 0x4C, 
-                                /* 0008 */    0xAF, 0x7D, 0x50, 0x6A, 0x24, 0x23, 0xAB, 0x71
-                            }))
+                    If (LEqual (Arg0, ToUUID ("7c9512a9-1705-4cb4-af7d-506a2423ab71")))
                     {
                         Return (One)
                     }
@@ -9219,8 +8900,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (Zero, XRST)
                     }
 
-                    If (LAnd (LNot (And (CDW1, One)), LOr (LEqual (XHCM, 
-                        0x02), LEqual (XHCM, 0x03))))
+                    If (LAnd (LNot (And (CDW1, One)), LOr (LEqual (XHCM, 0x02), LEqual (XHCM, 0x03))))
                     {
                         SXHC ()
                     }
@@ -9254,7 +8934,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Store (One, USBR)
                 }
 
-                Method (_INI, 0, NotSerialized)
+                Method (_INI, 0, NotSerialized)  // _INI: Initialize
                 {
                     If (WIN8)
                     {
@@ -9264,11 +8944,11 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (URTH)
                 {
-                    Name (_ADR, Zero)
+                    Name (_ADR, Zero)  // _ADR: Address
                     Device (HSP0)
                     {
-                        Name (_ADR, One)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, One)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Name (UPCP, Package (0x04)
                             {
@@ -9286,7 +8966,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (UPCP)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
                             Store (PLD0, PLDP)
@@ -9302,8 +8982,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (HSP1)
                     {
-                        Name (_ADR, 0x02)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, 0x02)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Name (UPCP, Package (0x04)
                             {
@@ -9321,7 +9001,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (UPCP)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
                             Store (PLD1, PLDP)
@@ -9337,8 +9017,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (HSP2)
                     {
-                        Name (_ADR, 0x03)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, 0x03)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Name (UPCP, Package (0x04)
                             {
@@ -9356,7 +9036,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (UPCP)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
                             Store (PLD2, PLDP)
@@ -9372,8 +9052,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (HSP3)
                     {
-                        Name (_ADR, 0x04)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, 0x04)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Name (UPCP, Package (0x04)
                             {
@@ -9391,7 +9071,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (UPCP)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
                             Store (PLD3, PLDP)
@@ -9407,8 +9087,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (SSP0)
                     {
-                        Name (_ADR, 0x05)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, 0x05)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Name (UPCP, Package (0x04)
                             {
@@ -9418,8 +9098,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 Zero
                             })
                             CopyObject (UPC0, UPCP)
-                            If (LOr (LNot (And (PR2, One)), LNot (And (PR3, 
-                                One))))
+                            If (LOr (LNot (And (PR2, One)), LNot (And (PR3, One))))
                             {
                                 Store (Zero, Index (UPCP, Zero))
                             }
@@ -9427,13 +9106,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (UPCP)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
                             Store (PLD0, PLDP)
                             CreateBitField (PLDP, 0x40, VIS)
-                            If (LOr (LNot (And (PR2, One)), LNot (And (PR3, 
-                                One))))
+                            If (LOr (LNot (And (PR2, One)), LNot (And (PR3, One))))
                             {
                                 And (VIS, Zero, VIS)
                             }
@@ -9444,8 +9122,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (SSP1)
                     {
-                        Name (_ADR, 0x06)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, 0x06)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Name (UPCP, Package (0x04)
                             {
@@ -9455,8 +9133,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 Zero
                             })
                             CopyObject (UPC1, UPCP)
-                            If (LOr (LNot (And (PR2, 0x02)), LNot (And (PR3, 
-                                0x02))))
+                            If (LOr (LNot (And (PR2, 0x02)), LNot (And (PR3, 0x02))))
                             {
                                 Store (Zero, Index (UPCP, Zero))
                             }
@@ -9464,13 +9141,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (UPCP)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
                             Store (PLD1, PLDP)
                             CreateBitField (PLDP, 0x40, VIS)
-                            If (LOr (LNot (And (PR2, 0x02)), LNot (And (PR3, 
-                                0x02))))
+                            If (LOr (LNot (And (PR2, 0x02)), LNot (And (PR3, 0x02))))
                             {
                                 And (VIS, Zero, VIS)
                             }
@@ -9481,8 +9157,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (SSP2)
                     {
-                        Name (_ADR, 0x07)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, 0x07)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Name (UPCP, Package (0x04)
                             {
@@ -9492,8 +9168,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 Zero
                             })
                             CopyObject (UPC2, UPCP)
-                            If (LOr (LNot (And (PR2, 0x04)), LNot (And (PR3, 
-                                0x04))))
+                            If (LOr (LNot (And (PR2, 0x04)), LNot (And (PR3, 0x04))))
                             {
                                 Store (Zero, Index (UPCP, Zero))
                             }
@@ -9501,13 +9176,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (UPCP)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
                             Store (PLD2, PLDP)
                             CreateBitField (PLDP, 0x40, VIS)
-                            If (LOr (LNot (And (PR2, 0x04)), LNot (And (PR3, 
-                                0x04))))
+                            If (LOr (LNot (And (PR2, 0x04)), LNot (And (PR3, 0x04))))
                             {
                                 And (VIS, Zero, VIS)
                             }
@@ -9518,8 +9192,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                     Device (SSP3)
                     {
-                        Name (_ADR, 0x08)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, 0x08)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Name (UPCP, Package (0x04)
                             {
@@ -9529,8 +9203,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 Zero
                             })
                             CopyObject (UPC3, UPCP)
-                            If (LOr (LNot (And (PR2, 0x08)), LNot (And (PR3, 
-                                0x08))))
+                            If (LOr (LNot (And (PR2, 0x08)), LNot (And (PR3, 0x08))))
                             {
                                 Store (Zero, Index (UPCP, Zero))
                             }
@@ -9538,13 +9211,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Return (UPCP)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Name (PLDP, Buffer (0x10) {})
                             Store (PLD3, PLDP)
                             CreateBitField (PLDP, 0x40, VIS)
-                            If (LOr (LNot (And (PR2, 0x08)), LNot (And (PR3, 
-                                0x08))))
+                            If (LOr (LNot (And (PR2, 0x08)), LNot (And (PR3, 0x08))))
                             {
                                 And (VIS, Zero, VIS)
                             }
@@ -9554,18 +9226,18 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     }
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x6D, 
                     Zero
                 })
-                Method (_DSM, 4, NotSerialized)
+                Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
                 {
                     If (LEqual (Arg2, Zero))
                     {
                         Return (Buffer (One)
                         {
-                            0x03
+                             0x03                                           
                         })
                     }
 
@@ -9574,13 +9246,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         "subsystem-id", 
                         Buffer (0x04)
                         {
-                            0x70, 0x72, 0x00, 0x00
+                             0x70, 0x72, 0x00, 0x00                         
                         }, 
 
                         "subsystem-vendor-id", 
                         Buffer (0x04)
                         {
-                            0x86, 0x80, 0x00, 0x00
+                             0x86, 0x80, 0x00, 0x00                         
                         }, 
 
                         "AAPL,current-available", 
@@ -9599,31 +9271,31 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Device (EHC1)
             {
-                Name (_ADR, 0x001D0000)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x001D0000)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
                 OperationRegion (EHCS, PCI_Config, Zero, 0x0100)
                 Field (EHCS, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0x62), 
+                    Offset (0x62), 
                     PWKI,   1, 
                     PWUC,   8, 
-                            Offset (0x64)
+                    Offset (0x64)
                 }
 
-                Name (_PR0, Package (0x01)
+                Name (_PR0, Package (0x01)  // _PR0: Power Resources for D0
                 {
                     ^LPC.EC.PUBS
                 })
-                Name (_PR1, Package (0x01)
+                Name (_PR1, Package (0x01)  // _PR1: Power Resources for D1
                 {
                     ^LPC.EC.PUBS
                 })
-                Name (_PR2, Package (0x01)
+                Name (_PR2, Package (0x01)  // _PR2: Power Resources for D2
                 {
                     ^LPC.EC.PUBS
                 })
-                Method (_INI, 0, NotSerialized)
+                Method (_INI, 0, NotSerialized)  // _INI: Initialize
                 {
                     Store (One, PWKI)
                     Store (0x23, PWUC)
@@ -9631,24 +9303,24 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (URTH)
                 {
-                    Name (_ADR, Zero)
+                    Name (_ADR, Zero)  // _ADR: Address
                     Device (URMH)
                     {
-                        Name (_ADR, One)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, One)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Return (UPCI)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Return (PLDI)
                         }
 
                         Device (PRT0)
                         {
-                            Name (_ADR, One)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, One)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Name (UPCP, Package (0x04)
                                 {
@@ -9659,18 +9331,15 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 })
                                 CopyObject (UPC0, UPCP)
                                 If (LEqual (XHCM, Zero)) {}
-                                Else
+                                ElseIf (And (^^^^^XHCI.PR2, One))
                                 {
-                                    If (And (^^^^^XHCI.PR2, One))
-                                    {
-                                        Store (Zero, Index (UPCP, Zero))
-                                    }
+                                    Store (Zero, Index (UPCP, Zero))
                                 }
 
                                 Return (UPCP)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
                                 Store (PLD0, PLDP)
@@ -9690,8 +9359,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRT1)
                         {
-                            Name (_ADR, 0x02)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x02)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Name (UPCP, Package (0x04)
                                 {
@@ -9702,29 +9371,23 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 })
                                 CopyObject (UPC1, UPCP)
                                 If (LEqual (XHCM, Zero)) {}
-                                Else
+                                ElseIf (And (^^^^^XHCI.PR2, 0x02))
                                 {
-                                    If (And (^^^^^XHCI.PR2, 0x02))
-                                    {
-                                        Store (Zero, Index (UPCP, Zero))
-                                    }
+                                    Store (Zero, Index (UPCP, Zero))
                                 }
 
                                 Return (UPCP)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
                                 Store (PLD1, PLDP)
                                 CreateBitField (PLDP, 0x40, VIS)
                                 If (LEqual (XHCM, Zero)) {}
-                                Else
+                                ElseIf (And (^^^^^XHCI.PR2, 0x02))
                                 {
-                                    If (And (^^^^^XHCI.PR2, 0x02))
-                                    {
-                                        And (VIS, Zero, VIS)
-                                    }
+                                    And (VIS, Zero, VIS)
                                 }
 
                                 Return (PLDP)
@@ -9733,8 +9396,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRT2)
                         {
-                            Name (_ADR, 0x03)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x03)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Name (UPCP, Package (0x04)
                                 {
@@ -9745,29 +9408,23 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 })
                                 CopyObject (UPC2, UPCP)
                                 If (LEqual (XHCM, Zero)) {}
-                                Else
+                                ElseIf (And (^^^^^XHCI.PR2, 0x04))
                                 {
-                                    If (And (^^^^^XHCI.PR2, 0x04))
-                                    {
-                                        Store (Zero, Index (UPCP, Zero))
-                                    }
+                                    Store (Zero, Index (UPCP, Zero))
                                 }
 
                                 Return (UPCP)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
                                 Store (PLD2, PLDP)
                                 CreateBitField (PLDP, 0x40, VIS)
                                 If (LEqual (XHCM, Zero)) {}
-                                Else
+                                ElseIf (And (^^^^^XHCI.PR2, 0x04))
                                 {
-                                    If (And (^^^^^XHCI.PR2, 0x04))
-                                    {
-                                        And (VIS, Zero, VIS)
-                                    }
+                                    And (VIS, Zero, VIS)
                                 }
 
                                 If (LEqual (\_SB.GDCK.GGID (), 0x05))
@@ -9781,8 +9438,8 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRT3)
                         {
-                            Name (_ADR, 0x04)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x04)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Name (UPCP, Package (0x04)
                                 {
@@ -9793,29 +9450,23 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 })
                                 CopyObject (UPC3, UPCP)
                                 If (LEqual (XHCM, Zero)) {}
-                                Else
+                                ElseIf (And (^^^^^XHCI.PR2, 0x08))
                                 {
-                                    If (And (^^^^^XHCI.PR2, 0x08))
-                                    {
-                                        Store (Zero, Index (UPCP, Zero))
-                                    }
+                                    Store (Zero, Index (UPCP, Zero))
                                 }
 
                                 Return (UPCP)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Name (PLDP, Buffer (0x10) {})
                                 Store (PLD3, PLDP)
                                 CreateBitField (PLDP, 0x40, VIS)
                                 If (LEqual (XHCM, Zero)) {}
-                                Else
+                                ElseIf (And (^^^^^XHCI.PR2, 0x08))
                                 {
-                                    If (And (^^^^^XHCI.PR2, 0x08))
-                                    {
-                                        And (VIS, Zero, VIS)
-                                    }
+                                    And (VIS, Zero, VIS)
                                 }
 
                                 Return (PLDP)
@@ -9824,13 +9475,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRT4)
                         {
-                            Name (_ADR, 0x05)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x05)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPC4)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLD4)
                             }
@@ -9838,13 +9489,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRT5)
                         {
-                            Name (_ADR, 0x06)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x06)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPC5)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLD5)
                             }
@@ -9852,13 +9503,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRT6)
                         {
-                            Name (_ADR, 0x07)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x07)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPC6)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLD6)
                             }
@@ -9866,13 +9517,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRT7)
                         {
-                            Name (_ADR, 0x08)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x08)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPC7)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLD7)
                             }
@@ -9880,18 +9531,18 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     }
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x6D, 
                     Zero
                 })
-                Method (_DSM, 4, NotSerialized)
+                Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
                 {
                     If (LEqual (Arg2, Zero))
                     {
                         Return (Buffer (One)
                         {
-                            0x03
+                             0x03                                           
                         })
                     }
 
@@ -9900,13 +9551,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         "subsystem-id", 
                         Buffer (0x04)
                         {
-                            0x70, 0x72, 0x00, 0x00
+                             0x70, 0x72, 0x00, 0x00                         
                         }, 
 
                         "subsystem-vendor-id", 
                         Buffer (0x04)
                         {
-                            0x86, 0x80, 0x00, 0x00
+                             0x86, 0x80, 0x00, 0x00                         
                         }, 
 
                         "AAPL,current-available", 
@@ -9925,31 +9576,31 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Device (EHC2)
             {
-                Name (_ADR, 0x001A0000)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x001A0000)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
                 OperationRegion (EHCS, PCI_Config, Zero, 0x0100)
                 Field (EHCS, DWordAcc, NoLock, Preserve)
                 {
-                            Offset (0x62), 
+                    Offset (0x62), 
                     PWKI,   1, 
                     PWUC,   6, 
-                            Offset (0x64)
+                    Offset (0x64)
                 }
 
-                Name (_PR0, Package (0x01)
+                Name (_PR0, Package (0x01)  // _PR0: Power Resources for D0
                 {
                     ^LPC.EC.PUBS
                 })
-                Name (_PR1, Package (0x01)
+                Name (_PR1, Package (0x01)  // _PR1: Power Resources for D1
                 {
                     ^LPC.EC.PUBS
                 })
-                Name (_PR2, Package (0x01)
+                Name (_PR2, Package (0x01)  // _PR2: Power Resources for D2
                 {
                     ^LPC.EC.PUBS
                 })
-                Method (_INI, 0, NotSerialized)
+                Method (_INI, 0, NotSerialized)  // _INI: Initialize
                 {
                     Store (One, PWKI)
                     Store (0x13, PWUC)
@@ -9957,29 +9608,29 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                 Device (URTH)
                 {
-                    Name (_ADR, Zero)
+                    Name (_ADR, Zero)  // _ADR: Address
                     Device (URMH)
                     {
-                        Name (_ADR, One)
-                        Method (_UPC, 0, Serialized)
+                        Name (_ADR, One)  // _ADR: Address
+                        Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                         {
                             Return (UPCI)
                         }
 
-                        Method (_PLD, 0, Serialized)
+                        Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                         {
                             Return (PLDI)
                         }
 
                         Device (PRT8)
                         {
-                            Name (_ADR, One)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, One)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPCI)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLDI)
                             }
@@ -9987,13 +9638,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRT9)
                         {
-                            Name (_ADR, 0x02)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x02)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPC9)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLD9)
                             }
@@ -10001,13 +9652,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRTA)
                         {
-                            Name (_ADR, 0x03)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x03)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPCI)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLDI)
                             }
@@ -10015,13 +9666,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRTB)
                         {
-                            Name (_ADR, 0x04)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x04)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPCI)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLDI)
                             }
@@ -10029,13 +9680,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRTC)
                         {
-                            Name (_ADR, 0x05)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x05)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPCI)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLDI)
                             }
@@ -10043,21 +9694,21 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
                         Device (PRTD)
                         {
-                            Name (_ADR, 0x06)
-                            Method (_UPC, 0, Serialized)
+                            Name (_ADR, 0x06)  // _ADR: Address
+                            Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                             {
                                 Return (UPCI)
                             }
 
-                            Method (_PLD, 0, Serialized)
+                            Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                             {
                                 Return (PLDI)
                             }
 
                             Device (WCAM)
                             {
-                                Name (_ADR, 0x06)
-                                Method (_STA, 0, NotSerialized)
+                                Name (_ADR, 0x06)  // _ADR: Address
+                                Method (_STA, 0, NotSerialized)  // _STA: Status
                                 {
                                     If (WIN8)
                                     {
@@ -10069,12 +9720,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                     }
                                 }
 
-                                Method (_UPC, 0, Serialized)
+                                Method (_UPC, 0, Serialized)  // _UPC: USB Port Capabilities
                                 {
                                     Return (UPCI)
                                 }
 
-                                Method (_PLD, 0, Serialized)
+                                Method (_PLD, 0, Serialized)  // _PLD: Physical Location of Device
                                 {
                                     Return (PLDC)
                                 }
@@ -10083,18 +9734,18 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     }
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x6D, 
                     Zero
                 })
-                Method (_DSM, 4, NotSerialized)
+                Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
                 {
                     If (LEqual (Arg2, Zero))
                     {
                         Return (Buffer (One)
                         {
-                            0x03
+                             0x03                                           
                         })
                     }
 
@@ -10103,13 +9754,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         "subsystem-id", 
                         Buffer (0x04)
                         {
-                            0x70, 0x72, 0x00, 0x00
+                             0x70, 0x72, 0x00, 0x00                         
                         }, 
 
                         "subsystem-vendor-id", 
                         Buffer (0x04)
                         {
-                            0x86, 0x80, 0x00, 0x00
+                             0x86, 0x80, 0x00, 0x00                         
                         }, 
 
                         "AAPL,current-available", 
@@ -10128,26 +9779,26 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Device (HDEF)
             {
-                Name (_ADR, 0x001B0000)
-                Name (_S3D, 0x03)
+                Name (_ADR, 0x001B0000)  // _ADR: Address
+                Name (_S3D, 0x03)  // _S3D: S3 Device State
                 Name (RID, Zero)
-                Method (_PSW, 1, NotSerialized)
+                Method (_PSW, 1, NotSerialized)  // _PSW: Power State Wake
                 {
                     Noop
                 }
 
-                Name (_PRW, Package (0x02)
+                Name (_PRW, Package (0x02)  // _PRW: Power Resources for Wake
                 {
                     0x6D, 
                     Zero
                 })
-                Method (_DSM, 4, NotSerialized)
+                Method (_DSM, 4, NotSerialized)  // _DSM: Device-Specific Method
                 {
                     If (LEqual (Arg2, Zero))
                     {
                         Return (Buffer (One)
                         {
-                            0x03
+                             0x03                                           
                         })
                     }
 
@@ -10156,7 +9807,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         "layout-id", 
                         Buffer (0x04)
                         {
-                            0x0C, 0x00, 0x00, 0x00
+                             0x0C, 0x00, 0x00, 0x00                         
                         }, 
 
                         "hda-gfx", 
@@ -10177,7 +9828,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             Name (BDEV, 0xFF)
             Name (BSTS, Zero)
             Name (BHKE, Zero)
-            Method (_Q2C, 0, NotSerialized)
+            Method (_Q2C, 0, NotSerialized)  // _Qxx: EC Query
             {
                 If (LEqual (BSTS, Zero))
                 {
@@ -10186,13 +9837,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Method (_Q2D, 0, NotSerialized)
+            Method (_Q2D, 0, NotSerialized)  // _Qxx: EC Query
             {
                 Store (BGID (Zero), BDEV)
                 NBIN (BDEV)
             }
 
-            Method (_Q38, 0, NotSerialized)
+            Method (_Q38, 0, NotSerialized)  // _Qxx: EC Query
             {
                 Store (BGID (Zero), Local0)
                 If (LEqual (Local0, 0x0F))
@@ -10207,19 +9858,16 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (Zero, ^^^SAT1.SCND.GTME)
                     }
                 }
+                ElseIf (HPBU) {}
                 Else
                 {
-                    If (HPBU) {}
-                    Else
-                    {
-                        Store (Local0, BDEV)
-                        NBIN (Local0)
-                    }
+                    Store (Local0, BDEV)
+                    NBIN (Local0)
                 }
             }
 
             Name (ODEJ, Zero)
-            Method (_Q44, 0, NotSerialized)
+            Method (_Q44, 0, NotSerialized)  // _Qxx: EC Query
             {
                 If (CSON)
                 {
@@ -10368,19 +10016,16 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (Local0, BDEV)
                         NBIN (Local0)
                     }
-                    Else
+                    ElseIf (LOr (LFDC, LNotEqual (BDEV, 0x0D)))
                     {
-                        If (LOr (LFDC, LNotEqual (BDEV, 0x0D)))
+                        If (LNotEqual (Local0, 0x0F))
                         {
-                            If (LNotEqual (Local0, 0x0F))
+                            If (HPBU)
                             {
-                                If (HPBU)
+                                If (LLessEqual (Arg0, 0x02)) {}
+                                Else
                                 {
-                                    If (LLessEqual (Arg0, 0x02)) {}
-                                    Else
-                                    {
-                                        NBRE (Local0)
-                                    }
+                                    NBRE (Local0)
                                 }
                             }
                         }
@@ -10483,16 +10128,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (Zero, HWBU)
                     }
                 }
+                ElseIf (Arg0)
+                {
+                    MBEC (0x32, 0xFF, 0x80)
+                }
                 Else
                 {
-                    If (Arg0)
-                    {
-                        MBEC (0x32, 0xFF, 0x80)
-                    }
-                    Else
-                    {
-                        MBEC (0x32, 0x7F, Zero)
-                    }
+                    MBEC (0x32, 0x7F, Zero)
                 }
             }
 
@@ -10529,23 +10171,17 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {
                         Store (0x0F, Local0)
                     }
+                    ElseIf (HDUB)
+                    {
+                        Store (0x0F, Local0)
+                    }
+                    ElseIf (LOr (LEqual (IDET, 0x03), LEqual (IDET, 0x06)))
+                    {
+                        Store (IDET, Local0)
+                    }
                     Else
                     {
-                        If (HDUB)
-                        {
-                            Store (0x0F, Local0)
-                        }
-                        Else
-                        {
-                            If (LOr (LEqual (IDET, 0x03), LEqual (IDET, 0x06)))
-                            {
-                                Store (IDET, Local0)
-                            }
-                            Else
-                            {
-                                Store (0x07, Local0)
-                            }
-                        }
+                        Store (0x07, Local0)
                     }
 
                     If (LEqual (Local0, 0x0F)) {}
@@ -10590,10 +10226,10 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         {
             Device (GDCK)
             {
-                Name (_HID, EisaId ("IBM0079"))
-                Name (_CID, EisaId ("PNP0C15"))
+                Name (_HID, EisaId ("IBM0079"))  // _HID: Hardware ID
+                Name (_CID, EisaId ("PNP0C15"))  // _CID: Compatible ID
                 Name (XHOS, Zero)
-                Method (_STA, 0, NotSerialized)
+                Method (_STA, 0, NotSerialized)  // _STA: Status
                 {
                     Store (GGID (), Local0)
                     Store (Zero, Local1)
@@ -10605,7 +10241,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Return (Local1)
                 }
 
-                Method (_INI, 0, NotSerialized)
+                Method (_INI, 0, NotSerialized)  // _INI: Initialize
                 {
                     ^^PCI0.LPC.EC.SINI ()
                     ^^PCI0.LPC.EC.DATT (0x02, One)
@@ -10624,7 +10260,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Store (One, ^^PCI0.LPC.DSCI)
                 }
 
-                Method (_DCK, 1, NotSerialized)
+                Method (_DCK, 1, NotSerialized)  // _DCK: Dock Present
                 {
                     Store (Zero, Local0)
                     If (LEqual (GGID (), 0x05))
@@ -10636,7 +10272,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
 
                 Name (UDOP, Zero)
-                Method (_EJ0, 1, NotSerialized)
+                Method (_EJ0, 1, NotSerialized)  // _EJx: Eject Device
                 {
                     If (LEqual (GGID (), 0x05))
                     {
@@ -10644,7 +10280,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     }
                 }
 
-                Method (_EJ3, 1, NotSerialized)
+                Method (_EJ3, 1, NotSerialized)  // _EJx: Eject Device
                 {
                     If (LEqual (GGID (), 0x05))
                     {
@@ -10652,7 +10288,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     }
                 }
 
-                Method (_EJ4, 1, NotSerialized)
+                Method (_EJ4, 1, NotSerialized)  // _EJx: Eject Device
                 {
                     If (LEqual (GGID (), 0x05))
                     {
@@ -10668,7 +10304,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     }
                 }
 
-                Method (_BDN, 0, NotSerialized)
+                Method (_BDN, 0, NotSerialized)  // _BDN: BIOS Dock Name
                 {
                     Store (Zero, Local0)
                     If (LEqual (GGID (), 0x05))
@@ -10679,7 +10315,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Return (Local0)
                 }
 
-                Method (_UID, 0, NotSerialized)
+                Method (_UID, 0, NotSerialized)  // _UID: Unique ID
                 {
                     Store (Zero, Local0)
                     If (LEqual (GGID (), 0x05))
@@ -10725,7 +10361,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Scope (PCI0.LPC.EC)
         {
-            Method (_Q50, 0, NotSerialized)
+            Method (_Q50, 0, NotSerialized)  // _Qxx: EC Query
             {
                 Store (^^^^GDCK.GGID (), Local0)
                 If (LNotEqual (Local0, 0x07))
@@ -10743,7 +10379,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 }
             }
 
-            Method (_Q45, 0, NotSerialized)
+            Method (_Q45, 0, NotSerialized)  // _Qxx: EC Query
             {
                 Store (Ones, ^^^^GDCK.G_ID)
                 Store (Ones, SLID)
@@ -10784,50 +10420,44 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Notify (GDCK, Zero)
                     }
                 }
+                ElseIf (DOCD)
+                {
+                    Sleep (0x64)
+                    If (EPWG)
+                    {
+                        Noop
+                    }
+                    ElseIf (HPAC)
+                    {
+                        _Q27 ()
+                    }
+
+                    ASSI (0x02)
+                    Sleep (0x64)
+                    If (LAnd (LNotEqual (^^^^GDCK.XHOS, Zero), LNotEqual (XHCM, Zero)))
+                    {
+                        If (Not (And (^^^XHCI.PR2, 0x04)))
+                        {
+                            Or (^^^XHCI.PR2, 0x04, ^^^XHCI.PR2)
+                        }
+
+                        If (Not (And (^^^XHCI.PR3, 0x04)))
+                        {
+                            Or (^^^XHCI.PR3, 0x04, ^^^XHCI.PR3)
+                        }
+                    }
+
+                    ^HKEY.MHKQ (0x4010)
+                }
                 Else
                 {
-                    If (DOCD)
+                    Sleep (0x64)
+                    If (HPAC)
                     {
-                        Sleep (0x64)
-                        If (EPWG)
-                        {
-                            Noop
-                        }
-                        Else
-                        {
-                            If (HPAC)
-                            {
-                                _Q27 ()
-                            }
-                        }
-
-                        ASSI (0x02)
-                        Sleep (0x64)
-                        If (LAnd (LNotEqual (^^^^GDCK.XHOS, Zero), LNotEqual (XHCM, Zero)))
-                        {
-                            If (Not (And (^^^XHCI.PR2, 0x04)))
-                            {
-                                Or (^^^XHCI.PR2, 0x04, ^^^XHCI.PR2)
-                            }
-
-                            If (Not (And (^^^XHCI.PR3, 0x04)))
-                            {
-                                Or (^^^XHCI.PR3, 0x04, ^^^XHCI.PR3)
-                            }
-                        }
-
-                        ^HKEY.MHKQ (0x4010)
+                        _Q26 ()
                     }
-                    Else
-                    {
-                        Sleep (0x64)
-                        If (HPAC)
-                        {
-                            _Q26 ()
-                        }
 
-                        ^HKEY.MHKQ (0x4011)
-                    }
+                    ^HKEY.MHKQ (0x4011)
                 }
             }
 
@@ -10843,12 +10473,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         {
                             Notify (^^^EHC1.URTH.URMH.PRT2, 0x03)
                         }
-                        Else
+                        ElseIf (And (^^^XHCI.PR2, 0x04))
                         {
-                            If (And (^^^XHCI.PR2, 0x04))
-                            {
-                                Notify (^^^XHCI.URTH.HSP2, 0x03)
-                            }
+                            Notify (^^^XHCI.URTH.HSP2, 0x03)
                         }
                     }
                 }
@@ -10898,12 +10525,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 Store (One, Local0)
                             }
                         }
-                        Else
+                        ElseIf (And (RBEC (0x16), 0x80))
                         {
-                            If (And (RBEC (0x16), 0x80))
-                            {
-                                Store (One, Local0)
-                            }
+                            Store (One, Local0)
                         }
                     }
                 }
@@ -10945,12 +10569,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 Store (One, Local0)
                             }
                         }
-                        Else
+                        ElseIf (And (RBEC (0x1A), One))
                         {
-                            If (And (RBEC (0x1A), One))
-                            {
-                                Store (One, Local0)
-                            }
+                            Store (One, Local0)
                         }
                     }
                 }
@@ -10992,12 +10613,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                                 Store (One, Local0)
                             }
                         }
-                        Else
+                        ElseIf (And (RBEC (0x1B), One))
                         {
-                            If (And (RBEC (0x1B), One))
-                            {
-                                Store (One, Local0)
-                            }
+                            Store (One, Local0)
                         }
                     }
                 }
@@ -11043,12 +10661,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Store (One, Local0)
                         }
                     }
-                    Else
+                    ElseIf (And (RBEC (0x32), 0x08))
                     {
-                        If (And (RBEC (0x32), 0x08))
-                        {
-                            Store (One, Local0)
-                        }
+                        Store (One, Local0)
                     }
                 }
 
@@ -11109,16 +10724,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     Store (0x0F, Local0)
                 }
+                ElseIf (LNot (W98F))
+                {
+                    Store (Zero, Local0)
+                }
                 Else
                 {
-                    If (LNot (W98F))
-                    {
-                        Store (Zero, Local0)
-                    }
-                    Else
-                    {
-                        Store (0x0C, Local0)
-                    }
+                    Store (0x0C, Local0)
                 }
 
                 If (W98F)
@@ -11186,18 +10798,15 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             And (SFLG, 0xFFFFFBFF, SFLG)
                         }
                     }
+                    ElseIf (LEqual (GSID (), 0x05))
+                    {
+                        ASSI (Zero)
+                        Sleep (0x64)
+                        WSDK ()
+                    }
                     Else
                     {
-                        If (LEqual (GSID (), 0x05))
-                        {
-                            ASSI (Zero)
-                            Sleep (0x64)
-                            WSDK ()
-                        }
-                        Else
-                        {
-                            Noop
-                        }
+                        Noop
                     }
 
                     And (SFLG, 0xFFFFFEFF, SFLG)
@@ -11415,7 +11024,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Scope (PCI0.LPC.EC)
         {
-            Method (_Q43, 0, NotSerialized)
+            Method (_Q43, 0, NotSerialized)  // _Qxx: EC Query
             {
                 UCMS (0x18)
             }
@@ -11426,16 +11035,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     Noop
                 }
+                ElseIf (H8DR)
+                {
+                    Store (Arg0, HAUM)
+                }
                 Else
                 {
-                    If (H8DR)
-                    {
-                        Store (Arg0, HAUM)
-                    }
-                    Else
-                    {
-                        MBEC (0x03, 0x9F, ShiftLeft (Arg0, 0x05))
-                    }
+                    MBEC (0x03, 0x9F, ShiftLeft (Arg0, 0x05))
                 }
             }
         }
@@ -11983,13 +11589,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     0xFF
                 }
             })
-            Method (_Q14, 0, NotSerialized)
+            Method (_Q14, 0, NotSerialized)  // _Qxx: EC Query
             {
                 Notify (KBD, 0x0206)
                 Notify (KBD, 0x0286)
             }
 
-            Method (_Q15, 0, NotSerialized)
+            Method (_Q15, 0, NotSerialized)  // _Qxx: EC Query
             {
                 Notify (KBD, 0x0205)
                 Notify (KBD, 0x0285)
@@ -12003,23 +11609,18 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     If (LEqual (Zero, Local0))
                     {
-                        Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), 0x14)), 
-                            Local1)
-                        Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), 0x12)), 
-                            Local2)
+                        Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), 0x14)), Local1)
+                        Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), 0x12)), Local2)
                     }
                     Else
                     {
-                        Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), 0x15)), 
-                            Local1)
-                        Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), 0x13)), 
-                            Local2)
+                        Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), 0x15)), Local1)
+                        Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), 0x13)), Local2)
                     }
 
                     Or (Local1, ShiftLeft (Local2, 0x09), Local2)
                     ^^^IGPU.AINT (0x03, Local2)
-                    Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), Local0)), 
-                        Local2)
+                    Store (DerefOf (Index (DerefOf (Index (BRTB, Local3)), Local0)), Local2)
                     ^^^IGPU.AINT (One, Local2)
                 }
                 Else
@@ -12048,15 +11649,14 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Method (BRCD, 1, NotSerialized)
             {
-                Store (DerefOf (Index (DerefOf (Index (BRTD, BRTN)), Arg0)), 
-                    Local0)
+                Store (DerefOf (Index (DerefOf (Index (BRTD, BRTN)), Arg0)), Local0)
                 Return (Local0)
             }
         }
 
         Scope (PCI0.LPC.EC)
         {
-            Method (_Q19, 0, NotSerialized)
+            Method (_Q19, 0, NotSerialized)  // _Qxx: EC Query
             {
                 If (^HKEY.MHKK (0x00800000))
                 {
@@ -12069,7 +11669,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Scope (PCI0.LPC.EC)
         {
-            Method (_Q63, 0, NotSerialized)
+            Method (_Q63, 0, NotSerialized)  // _Qxx: EC Query
             {
                 If (^HKEY.MHKK (0x00080000))
                 {
@@ -12082,17 +11682,17 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Scope (PCI0.LPC.EC)
         {
-            Method (_Q70, 0, NotSerialized)
+            Method (_Q70, 0, NotSerialized)  // _Qxx: EC Query
             {
                 FNST ()
             }
 
-            Method (_Q72, 0, NotSerialized)
+            Method (_Q72, 0, NotSerialized)  // _Qxx: EC Query
             {
                 FNST ()
             }
 
-            Method (_Q73, 0, NotSerialized)
+            Method (_Q73, 0, NotSerialized)  // _Qxx: EC Query
             {
                 FNST ()
             }
@@ -12242,8 +11842,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Method (WPWC, 1, NotSerialized)
             {
-                If (LAnd (Arg0, LAnd (And (WGFL, One), LNot (And (
-                    WGFL, 0x08)))))
+                If (LAnd (Arg0, LAnd (And (WGFL, One), LNot (And (WGFL, 0x08)))))
                 {
                     If (H8DR)
                     {
@@ -12287,8 +11886,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Method (BPWC, 1, NotSerialized)
             {
-                If (LAnd (Arg0, LAnd (And (WGFL, 0x10), LNot (And (
-                    WGFL, 0x80)))))
+                If (LAnd (Arg0, LAnd (And (WGFL, 0x10), LNot (And (WGFL, 0x80)))))
                 {
                     If (H8DR)
                     {
@@ -12363,7 +11961,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Scope (PCI0.LPC.EC)
         {
-            Method (_Q41, 0, NotSerialized)
+            Method (_Q41, 0, NotSerialized)  // _Qxx: EC Query
             {
                 ^HKEY.MHKQ (0x7000)
                 If (WIN8)
@@ -12375,33 +11973,33 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
         Device (WMI1)
         {
-            Name (_HID, EisaId ("PNP0C14"))
-            Name (_UID, One)
+            Name (_HID, EisaId ("PNP0C14"))  // _HID: Hardware ID
+            Name (_UID, One)  // _UID: Unique ID
             Name (_WDG, Buffer (0xB4)
             {
-                /* 0000 */    0x0E, 0x23, 0xF5, 0x51, 0x77, 0x96, 0xCD, 0x46, 
-                /* 0008 */    0xA1, 0xCF, 0xC0, 0xB2, 0x3E, 0xE3, 0x4D, 0xB7, 
-                /* 0010 */    0x41, 0x30, 0x50, 0x05, 0x64, 0x9A, 0x47, 0x98, 
-                /* 0018 */    0xF5, 0x33, 0x33, 0x4E, 0xA7, 0x07, 0x8E, 0x25, 
-                /* 0020 */    0x1E, 0xBB, 0xC3, 0xA1, 0x41, 0x31, 0x01, 0x06, 
-                /* 0028 */    0xEF, 0x54, 0x4B, 0x6A, 0xED, 0xA5, 0x33, 0x4D, 
-                /* 0030 */    0x94, 0x55, 0xB0, 0xD9, 0xB4, 0x8D, 0xF4, 0xB3, 
-                /* 0038 */    0x41, 0x32, 0x01, 0x06, 0xB6, 0xEB, 0xF1, 0x74, 
-                /* 0040 */    0x7A, 0x92, 0x7D, 0x4C, 0x95, 0xDF, 0x69, 0x8E, 
-                /* 0048 */    0x21, 0xE8, 0x0E, 0xB5, 0x41, 0x33, 0x01, 0x06, 
-                /* 0050 */    0xFF, 0x04, 0xEF, 0x7E, 0x28, 0x43, 0x7C, 0x44, 
-                /* 0058 */    0xB5, 0xBB, 0xD4, 0x49, 0x92, 0x5D, 0x53, 0x8D, 
-                /* 0060 */    0x41, 0x34, 0x01, 0x06, 0x9E, 0x15, 0xDB, 0x8A, 
-                /* 0068 */    0x32, 0x1E, 0x5C, 0x45, 0xBC, 0x93, 0x30, 0x8A, 
-                /* 0070 */    0x7E, 0xD9, 0x82, 0x46, 0x41, 0x35, 0x01, 0x01, 
-                /* 0078 */    0xFD, 0xD9, 0x51, 0x26, 0x1C, 0x91, 0x69, 0x4B, 
-                /* 0080 */    0xB9, 0x4E, 0xD0, 0xDE, 0xD5, 0x96, 0x3B, 0xD7, 
-                /* 0088 */    0x41, 0x36, 0x01, 0x06, 0x1A, 0x65, 0x64, 0x73, 
-                /* 0090 */    0x2F, 0x13, 0xE7, 0x4F, 0xAD, 0xAA, 0x40, 0xC6, 
-                /* 0098 */    0xC7, 0xEE, 0x2E, 0x3B, 0x41, 0x37, 0x01, 0x06, 
-                /* 00A0 */    0x21, 0x12, 0x90, 0x05, 0x66, 0xD5, 0xD1, 0x11, 
-                /* 00A8 */    0xB2, 0xF0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10, 
-                /* 00B0 */    0x42, 0x41, 0x01, 0x00
+                /* 0000 */  0x0E, 0x23, 0xF5, 0x51, 0x77, 0x96, 0xCD, 0x46,
+                /* 0008 */  0xA1, 0xCF, 0xC0, 0xB2, 0x3E, 0xE3, 0x4D, 0xB7,
+                /* 0010 */  0x41, 0x30, 0x50, 0x05, 0x64, 0x9A, 0x47, 0x98,
+                /* 0018 */  0xF5, 0x33, 0x33, 0x4E, 0xA7, 0x07, 0x8E, 0x25,
+                /* 0020 */  0x1E, 0xBB, 0xC3, 0xA1, 0x41, 0x31, 0x01, 0x06,
+                /* 0028 */  0xEF, 0x54, 0x4B, 0x6A, 0xED, 0xA5, 0x33, 0x4D,
+                /* 0030 */  0x94, 0x55, 0xB0, 0xD9, 0xB4, 0x8D, 0xF4, 0xB3,
+                /* 0038 */  0x41, 0x32, 0x01, 0x06, 0xB6, 0xEB, 0xF1, 0x74,
+                /* 0040 */  0x7A, 0x92, 0x7D, 0x4C, 0x95, 0xDF, 0x69, 0x8E,
+                /* 0048 */  0x21, 0xE8, 0x0E, 0xB5, 0x41, 0x33, 0x01, 0x06,
+                /* 0050 */  0xFF, 0x04, 0xEF, 0x7E, 0x28, 0x43, 0x7C, 0x44,
+                /* 0058 */  0xB5, 0xBB, 0xD4, 0x49, 0x92, 0x5D, 0x53, 0x8D,
+                /* 0060 */  0x41, 0x34, 0x01, 0x06, 0x9E, 0x15, 0xDB, 0x8A,
+                /* 0068 */  0x32, 0x1E, 0x5C, 0x45, 0xBC, 0x93, 0x30, 0x8A,
+                /* 0070 */  0x7E, 0xD9, 0x82, 0x46, 0x41, 0x35, 0x01, 0x01,
+                /* 0078 */  0xFD, 0xD9, 0x51, 0x26, 0x1C, 0x91, 0x69, 0x4B,
+                /* 0080 */  0xB9, 0x4E, 0xD0, 0xDE, 0xD5, 0x96, 0x3B, 0xD7,
+                /* 0088 */  0x41, 0x36, 0x01, 0x06, 0x1A, 0x65, 0x64, 0x73,
+                /* 0090 */  0x2F, 0x13, 0xE7, 0x4F, 0xAD, 0xAA, 0x40, 0xC6,
+                /* 0098 */  0xC7, 0xEE, 0x2E, 0x3B, 0x41, 0x37, 0x01, 0x06,
+                /* 00A0 */  0x21, 0x12, 0x90, 0x05, 0x66, 0xD5, 0xD1, 0x11,
+                /* 00A8 */  0xB2, 0xF0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10,
+                /* 00B0 */  0x42, 0x41, 0x01, 0x00                         
             })
             Name (RETN, Package (0x05)
             {
@@ -13464,8 +13062,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Store (SizeOf (Arg1), Local1)
                 While (LLess (Local0, Local1))
                 {
-                    Store (DerefOf (Index (DerefOf (Index (Arg1, Local0)), One)), 
-                        Local3)
+                    Store (DerefOf (Index (DerefOf (Index (Arg1, Local0)), One)), Local3)
                     If (SCMP (Local3, Arg0, Zero))
                     {
                         Return (Local0)
@@ -13900,308 +13497,308 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Name (WQBA, Buffer (0x089D)
             {
-                /* 0000 */    0x46, 0x4F, 0x4D, 0x42, 0x01, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x8D, 0x08, 0x00, 0x00, 0xF2, 0x36, 0x00, 0x00, 
-                /* 0010 */    0x44, 0x53, 0x00, 0x01, 0x1A, 0x7D, 0xDA, 0x54, 
-                /* 0018 */    0xA8, 0xC9, 0x9A, 0x00, 0x01, 0x06, 0x18, 0x42, 
-                /* 0020 */    0x10, 0x13, 0x10, 0x0A, 0x0D, 0x21, 0x02, 0x0B, 
-                /* 0028 */    0x83, 0x50, 0x4C, 0x18, 0x14, 0xA0, 0x45, 0x41, 
-                /* 0030 */    0xC8, 0x05, 0x14, 0x95, 0x02, 0x21, 0xC3, 0x02, 
-                /* 0038 */    0x14, 0x0B, 0x70, 0x2E, 0x40, 0xBA, 0x00, 0xE5, 
-                /* 0040 */    0x28, 0x72, 0x0C, 0x22, 0x02, 0xF7, 0xEF, 0x0F, 
-                /* 0048 */    0x31, 0x0E, 0x88, 0x14, 0x40, 0x48, 0x26, 0x84, 
-                /* 0050 */    0x44, 0x00, 0x53, 0x21, 0x70, 0x84, 0xA0, 0x5F, 
-                /* 0058 */    0x01, 0x08, 0x1D, 0xA2, 0xC9, 0xA0, 0x00, 0xA7, 
-                /* 0060 */    0x08, 0x82, 0xB4, 0x65, 0x01, 0xBA, 0x05, 0xF8, 
-                /* 0068 */    0x16, 0xA0, 0x1D, 0x42, 0x68, 0x15, 0x0A, 0x30, 
-                /* 0070 */    0x29, 0xC0, 0x27, 0x98, 0x2C, 0x0A, 0x90, 0x0D, 
-                /* 0078 */    0x26, 0xDB, 0x70, 0x64, 0x18, 0x4C, 0xE4, 0x18, 
-                /* 0080 */    0x50, 0x62, 0xC6, 0x80, 0xD2, 0x39, 0x05, 0xD9, 
-                /* 0088 */    0x04, 0x16, 0x74, 0xA1, 0x28, 0x9A, 0x46, 0x94, 
-                /* 0090 */    0x04, 0x07, 0x75, 0x0C, 0x11, 0x82, 0x97, 0x2B, 
-                /* 0098 */    0x40, 0xF2, 0x04, 0xA4, 0x79, 0x5E, 0xB2, 0x3E, 
-                /* 00A0 */    0x08, 0x0D, 0x81, 0x8D, 0x80, 0x47, 0x91, 0x00, 
-                /* 00A8 */    0xC2, 0x62, 0x2C, 0x53, 0xE2, 0x61, 0x50, 0x1E, 
-                /* 00B0 */    0x40, 0x24, 0x67, 0xA8, 0x28, 0x60, 0x7B, 0x9D, 
-                /* 00B8 */    0x88, 0x86, 0x75, 0x9C, 0x4C, 0x12, 0x1C, 0x6A, 
-                /* 00C0 */    0x94, 0x96, 0x28, 0xC0, 0xFC, 0xC8, 0x34, 0x91, 
-                /* 00C8 */    0x63, 0x6B, 0x7A, 0xC4, 0x82, 0x64, 0xD2, 0x86, 
-                /* 00D0 */    0x82, 0x1A, 0xBA, 0xA7, 0x75, 0x52, 0x9E, 0x68, 
-                /* 00D8 */    0xC4, 0x83, 0x32, 0x4C, 0x02, 0x8F, 0x82, 0xA1, 
-                /* 00E0 */    0x71, 0x82, 0xB2, 0x20, 0xE4, 0x60, 0xA0, 0x28, 
-                /* 00E8 */    0xC0, 0x93, 0xF0, 0x1C, 0x8B, 0x17, 0x20, 0x7C, 
-                /* 00F0 */    0xC6, 0xE4, 0x28, 0x10, 0x23, 0x81, 0x8F, 0x04, 
-                /* 00F8 */    0x1E, 0xCD, 0x31, 0x63, 0x81, 0xC2, 0x05, 0x3C, 
-                /* 0100 */    0x9F, 0x63, 0x88, 0x1C, 0xF7, 0x50, 0x63, 0x1C, 
-                /* 0108 */    0x45, 0xE4, 0x04, 0xEF, 0x00, 0x51, 0x8C, 0x56, 
-                /* 0110 */    0xD0, 0xBC, 0x85, 0x18, 0x2C, 0x9A, 0xC1, 0x7A, 
-                /* 0118 */    0x06, 0x27, 0x83, 0x4E, 0xF0, 0xFF, 0x3F, 0x02, 
-                /* 0120 */    0x2E, 0x03, 0x42, 0x1E, 0x05, 0x58, 0x1D, 0x94, 
-                /* 0128 */    0xA6, 0x61, 0x82, 0xEE, 0x05, 0xBC, 0x1A, 0x1A, 
-                /* 0130 */    0x13, 0xA0, 0x11, 0x43, 0xCA, 0x04, 0x38, 0xBB, 
-                /* 0138 */    0x2F, 0x68, 0x46, 0x6D, 0x09, 0x30, 0x27, 0x40, 
-                /* 0140 */    0x9B, 0x00, 0x6F, 0x08, 0x42, 0x39, 0xCF, 0x28, 
-                /* 0148 */    0xC7, 0x72, 0x8A, 0x51, 0x1E, 0x06, 0x62, 0xBE, 
-                /* 0150 */    0x0C, 0x04, 0x8D, 0x12, 0x23, 0xE6, 0xB9, 0xC4, 
-                /* 0158 */    0x35, 0x6C, 0x84, 0x18, 0x21, 0x4F, 0x21, 0x50, 
-                /* 0160 */    0xDC, 0xF6, 0x07, 0x41, 0x06, 0x8D, 0x1B, 0xBD, 
-                /* 0168 */    0x4F, 0x0B, 0x67, 0x75, 0x02, 0x47, 0xFF, 0xA4, 
-                /* 0170 */    0x60, 0x02, 0x4F, 0xF9, 0xC0, 0x9E, 0x0D, 0x4E, 
-                /* 0178 */    0xE0, 0x58, 0xA3, 0xC6, 0x38, 0x95, 0x04, 0x8E, 
-                /* 0180 */    0xFD, 0x80, 0x90, 0x06, 0x10, 0x45, 0x82, 0x47, 
-                /* 0188 */    0x9D, 0x16, 0x7C, 0x2E, 0xF0, 0xD0, 0x0E, 0xDA, 
-                /* 0190 */    0x73, 0x3C, 0x81, 0x20, 0x87, 0x70, 0x04, 0x4F, 
-                /* 0198 */    0x0C, 0x0F, 0x04, 0x1E, 0x03, 0xBB, 0x29, 0xF8, 
-                /* 01A0 */    0x08, 0xE0, 0x13, 0x02, 0xDE, 0x35, 0xA0, 0xAE, 
-                /* 01A8 */    0x06, 0x0F, 0x06, 0x6C, 0xD0, 0xE1, 0x30, 0xE3, 
-                /* 01B0 */    0xF5, 0xF0, 0xC3, 0x9D, 0xC0, 0x49, 0x3E, 0x60, 
-                /* 01B8 */    0xF0, 0xC3, 0x86, 0x07, 0x87, 0x9B, 0xE7, 0xC9, 
-                /* 01C0 */    0x1C, 0x59, 0xA9, 0x02, 0xCC, 0x1E, 0x0E, 0x74, 
-                /* 01C8 */    0x90, 0xF0, 0x69, 0x83, 0x9D, 0x01, 0x30, 0xF2, 
-                /* 01D0 */    0x07, 0x81, 0x1A, 0x99, 0xA1, 0x3D, 0xEE, 0x97, 
-                /* 01D8 */    0x0E, 0x43, 0x3E, 0x27, 0x1C, 0x16, 0x13, 0x7B, 
-                /* 01E0 */    0xEA, 0xA0, 0xE3, 0x01, 0xFF, 0x65, 0xE4, 0x39, 
-                /* 01E8 */    0xC3, 0xD3, 0xF7, 0x7C, 0x4D, 0x30, 0xEC, 0xC0, 
-                /* 01F0 */    0xD1, 0x03, 0x31, 0xF4, 0xC3, 0xC6, 0x61, 0x9C, 
-                /* 01F8 */    0x86, 0xEF, 0x1F, 0x3E, 0x2F, 0xC0, 0x38, 0x05, 
-                /* 0200 */    0x78, 0xE4, 0xFE, 0xFF, 0x1F, 0x52, 0x7C, 0x9A, 
-                /* 0208 */    0xE0, 0x47, 0x0B, 0x9F, 0x26, 0xD8, 0xF5, 0xE0, 
-                /* 0210 */    0x34, 0x9E, 0x03, 0x3C, 0x9C, 0xB3, 0xF2, 0x61, 
-                /* 0218 */    0x02, 0x6C, 0xF7, 0x13, 0x36, 0xA2, 0x77, 0x0B, 
-                /* 0220 */    0x8F, 0x06, 0x7B, 0x0A, 0x00, 0xDF, 0xF9, 0x05, 
-                /* 0228 */    0x9C, 0x77, 0x0D, 0x36, 0x58, 0x18, 0xE7, 0x17, 
-                /* 0230 */    0xE0, 0x71, 0x42, 0xF0, 0x10, 0xF8, 0x41, 0xC2, 
-                /* 0238 */    0x43, 0xE0, 0x03, 0x78, 0xFE, 0x38, 0x43, 0x2B, 
-                /* 0240 */    0x9D, 0x17, 0x72, 0x60, 0xF0, 0xCE, 0x39, 0x30, 
-                /* 0248 */    0x46, 0xC1, 0xF3, 0x3C, 0x36, 0x4C, 0xA0, 0x20, 
-                /* 0250 */    0xAF, 0x01, 0x85, 0x7A, 0x16, 0x50, 0x18, 0x9F, 
-                /* 0258 */    0x6A, 0x80, 0xD7, 0xFF, 0xFF, 0x54, 0x03, 0x5C, 
-                /* 0260 */    0x0E, 0x07, 0xB8, 0x93, 0x03, 0xDC, 0x7B, 0x01, 
-                /* 0268 */    0xBB, 0x38, 0x3C, 0xD7, 0xC0, 0x15, 0x7D, 0xAE, 
-                /* 0270 */    0x81, 0x7A, 0x6F, 0x29, 0x6E, 0x8C, 0xBA, 0xC6, 
-                /* 0278 */    0x04, 0x79, 0x14, 0x78, 0xA4, 0x89, 0xF2, 0x3C, 
-                /* 0280 */    0xF3, 0x2E, 0x13, 0xE1, 0xD9, 0xC6, 0xD7, 0x1A, 
-                /* 0288 */    0x4F, 0x21, 0x8E, 0xAF, 0x35, 0x46, 0x7C, 0x99, 
-                /* 0290 */    0x78, 0xB7, 0x31, 0xEE, 0xC1, 0x3D, 0xD6, 0x3C, 
-                /* 0298 */    0xE4, 0x18, 0xE4, 0x68, 0x22, 0xBC, 0x18, 0x04, 
-                /* 02A0 */    0x7C, 0xBC, 0xF1, 0xB1, 0x06, 0xBC, 0x62, 0x5E, 
-                /* 02A8 */    0x28, 0xB2, 0x70, 0xAC, 0x01, 0x34, 0xFE, 0xFF, 
-                /* 02B0 */    0x8F, 0x35, 0xC0, 0x0D, 0xEB, 0x01, 0x05, 0x7C, 
-                /* 02B8 */    0x47, 0x06, 0x76, 0x43, 0x81, 0x77, 0x42, 0x01, 
-                /* 02C0 */    0xFC, 0x24, 0x7E, 0x01, 0xE8, 0xC8, 0xE1, 0xB4, 
-                /* 02C8 */    0x20, 0xB2, 0xF1, 0x06, 0xF0, 0x29, 0x80, 0xAA, 
-                /* 02D0 */    0x01, 0xD2, 0x34, 0x61, 0x13, 0x4C, 0x4F, 0x2E, 
-                /* 02D8 */    0x78, 0x1F, 0x09, 0x9C, 0x9B, 0x44, 0xC9, 0x87, 
-                /* 02E0 */    0x45, 0xE1, 0x9C, 0xF5, 0x20, 0x42, 0x41, 0x0C, 
-                /* 02E8 */    0xE8, 0x20, 0xC7, 0x09, 0xF4, 0x19, 0xC5, 0x07, 
-                /* 02F0 */    0x91, 0x13, 0x7D, 0x22, 0xF4, 0xA0, 0x3C, 0x8C, 
-                /* 02F8 */    0x77, 0x14, 0x76, 0x02, 0xF1, 0x61, 0xC2, 0x63, 
-                /* 0300 */    0xF7, 0x31, 0x81, 0xFF, 0x63, 0x3C, 0x1B, 0xA3, 
-                /* 0308 */    0x5B, 0x0D, 0x86, 0xFE, 0xFF, 0xE7, 0x14, 0x0E, 
-                /* 0310 */    0xE6, 0x83, 0x08, 0x27, 0xA8, 0xEB, 0x26, 0x01, 
-                /* 0318 */    0x32, 0x7D, 0x47, 0x05, 0x50, 0x00, 0xF9, 0x5E, 
-                /* 0320 */    0xE0, 0x73, 0xC0, 0xB3, 0x01, 0x1B, 0xC3, 0xA3, 
-                /* 0328 */    0x80, 0xD1, 0x8C, 0xCE, 0xC3, 0x4F, 0x16, 0x15, 
-                /* 0330 */    0x77, 0xB2, 0x14, 0xC4, 0x93, 0x75, 0x94, 0xC9, 
-                /* 0338 */    0xA2, 0x67, 0xE2, 0x7B, 0x85, 0x67, 0xF4, 0xA6, 
-                /* 0340 */    0xE5, 0x39, 0x7A, 0xC2, 0xBE, 0x87, 0xC0, 0x3A, 
-                /* 0348 */    0x0C, 0x84, 0x7C, 0x30, 0xF0, 0x34, 0x0C, 0xE7, 
-                /* 0350 */    0xC9, 0x72, 0x38, 0x4F, 0x96, 0x8F, 0xC5, 0xD7, 
-                /* 0358 */    0x10, 0xF0, 0x09, 0x9C, 0x2D, 0xC8, 0xE1, 0x31, 
-                /* 0360 */    0xB1, 0x46, 0x45, 0xAF, 0x42, 0x1E, 0x1E, 0xBF, 
-                /* 0368 */    0x1C, 0x78, 0x3E, 0xCF, 0x08, 0x47, 0xF9, 0x24, 
-                /* 0370 */    0x81, 0xC3, 0x78, 0x26, 0xF1, 0x10, 0x7D, 0x2B, 
-                /* 0378 */    0x82, 0x35, 0x91, 0x93, 0xF6, 0x6D, 0xE1, 0x64, 
-                /* 0380 */    0x83, 0xBE, 0x9E, 0x61, 0x6E, 0x45, 0xB0, 0xFF, 
-                /* 0388 */    0xFF, 0xB7, 0x22, 0x38, 0x17, 0x34, 0x98, 0x99, 
-                /* 0390 */    0xEE, 0x55, 0xA8, 0x58, 0xF7, 0x2A, 0x40, 0xEC, 
-                /* 0398 */    0xB0, 0x5E, 0x7B, 0x7C, 0xB0, 0x82, 0x7B, 0xAF, 
-                /* 03A0 */    0x82, 0x7B, 0xA9, 0x7A, 0x56, 0x38, 0xC6, 0xF0, 
-                /* 03A8 */    0x0F, 0x53, 0x31, 0x4E, 0xE9, 0xB5, 0xD3, 0x40, 
-                /* 03B0 */    0x61, 0xA2, 0xC4, 0x7B, 0xAF, 0xF2, 0x18, 0xDF, 
-                /* 03B8 */    0xAB, 0xD8, 0x15, 0x2A, 0x4C, 0xAC, 0x97, 0x2B, 
-                /* 03C0 */    0xA3, 0xBE, 0x4E, 0x84, 0x0B, 0x14, 0x24, 0xD2, 
-                /* 03C8 */    0xAB, 0x55, 0x94, 0xC8, 0xF1, 0x0D, 0xF9, 0x5E, 
-                /* 03D0 */    0x05, 0x5E, 0x39, 0xF7, 0x2A, 0x90, 0xFD, 0xFF, 
-                /* 03D8 */    0xEF, 0x55, 0x80, 0x79, 0xB4, 0xF7, 0x2A, 0x30, 
-                /* 03E0 */    0x5E, 0x1B, 0xD8, 0x0D, 0x09, 0x16, 0xD0, 0x8B, 
-                /* 03E8 */    0x15, 0x60, 0x28, 0xF3, 0xC5, 0x8A, 0xE6, 0xBD, 
-                /* 03F0 */    0x58, 0x21, 0xFE, 0xFF, 0xE7, 0x12, 0xA6, 0xE7, 
-                /* 03F8 */    0x62, 0x45, 0xE6, 0x09, 0xFF, 0x66, 0x05, 0x70, 
-                /* 0400 */    0xFA, 0xFF, 0x7F, 0xB3, 0x02, 0x8C, 0xDD, 0x8B, 
-                /* 0408 */    0x30, 0x47, 0x2B, 0x78, 0x29, 0x6F, 0x56, 0x34, 
-                /* 0410 */    0xCE, 0x32, 0x14, 0x70, 0x41, 0x14, 0xC6, 0x37, 
-                /* 0418 */    0x2B, 0xC0, 0xD1, 0x75, 0x05, 0x37, 0x64, 0xB8, 
-                /* 0420 */    0x60, 0x51, 0x82, 0xF9, 0x10, 0xE2, 0xE9, 0x1C, 
-                /* 0428 */    0xF1, 0x43, 0xC2, 0x4B, 0xC0, 0x63, 0x8E, 0x07, 
-                /* 0430 */    0xFC, 0x40, 0xE0, 0xCB, 0x15, 0x98, 0xFE, 0xFF, 
-                /* 0438 */    0x04, 0x3E, 0xF9, 0x9E, 0xE5, 0xDB, 0xD4, 0x7B, 
-                /* 0440 */    0x2F, 0x3F, 0x60, 0xBD, 0x57, 0xF9, 0xF0, 0x1B, 
-                /* 0448 */    0xEB, 0x9D, 0xE1, 0xE5, 0xCA, 0x23, 0x89, 0x72, 
-                /* 0450 */    0x12, 0xA1, 0x7C, 0xB7, 0x7A, 0xAF, 0x32, 0x4A, 
-                /* 0458 */    0xC4, 0x17, 0x62, 0x9F, 0x82, 0x0D, 0x6D, 0x94, 
-                /* 0460 */    0xA7, 0x8A, 0xE8, 0xC6, 0x7B, 0xB9, 0x02, 0xAF, 
-                /* 0468 */    0xA4, 0xCB, 0x15, 0x40, 0x93, 0xE1, 0xBF, 0x5C, 
-                /* 0470 */    0x81, 0xEF, 0xE6, 0x80, 0xBD, 0x26, 0xC1, 0xF9, 
-                /* 0478 */    0xFF, 0x5F, 0x93, 0xF8, 0xF5, 0x0A, 0xF0, 0x93, 
-                /* 0480 */    0xFD, 0x7A, 0x45, 0x73, 0x5F, 0xAF, 0x50, 0xA2, 
-                /* 0488 */    0x20, 0xA4, 0x08, 0x48, 0x33, 0x05, 0xCF, 0xFD, 
-                /* 0490 */    0x0A, 0xE0, 0xC4, 0xFF, 0xFF, 0x7E, 0x05, 0x58, 
-                /* 0498 */    0x0E, 0x77, 0xBF, 0x02, 0x7A, 0xB7, 0x23, 0xF0, 
-                /* 04A0 */    0xA2, 0xBC, 0x1D, 0x61, 0xAF, 0x58, 0xF8, 0x8C, 
-                /* 04A8 */    0x57, 0x2C, 0x1A, 0x66, 0x25, 0x8A, 0xB7, 0x26, 
-                /* 04B0 */    0x0A, 0xE3, 0x2B, 0x16, 0x30, 0xF9, 0xFF, 0x5F, 
-                /* 04B8 */    0xB1, 0x80, 0xD9, 0x41, 0x14, 0x37, 0x6A, 0xB8, 
-                /* 04C0 */    0x17, 0x27, 0xDF, 0x7A, 0x3C, 0xDF, 0x88, 0xBE, 
-                /* 04C8 */    0xC3, 0x60, 0x4E, 0x58, 0x30, 0x6E, 0x58, 0xF0, 
-                /* 04D0 */    0x87, 0xF4, 0x30, 0xEC, 0x93, 0xC4, 0x3B, 0x96, 
-                /* 04D8 */    0x8F, 0x56, 0x06, 0x79, 0x03, 0x7E, 0xB2, 0x7A, 
-                /* 04E0 */    0xB0, 0x8A, 0x62, 0x84, 0x80, 0xC7, 0xF3, 0x2E, 
-                /* 04E8 */    0xEC, 0xA3, 0xD5, 0x9B, 0x96, 0x51, 0x62, 0xC7, 
-                /* 04F0 */    0xF2, 0x85, 0xEA, 0x59, 0xCB, 0xD7, 0x2C, 0x43, 
-                /* 04F8 */    0xC4, 0x7D, 0x20, 0xF6, 0x0D, 0x0B, 0xB0, 0xFD, 
-                /* 0500 */    0xFF, 0xBF, 0x61, 0x01, 0x8E, 0x2E, 0x0E, 0xFC, 
-                /* 0508 */    0xE0, 0x80, 0xBD, 0x61, 0x01, 0x3E, 0x67, 0x0A, 
-                /* 0510 */    0x9E, 0x1B, 0x16, 0xB0, 0xF9, 0xFF, 0xDF, 0xB0, 
-                /* 0518 */    0x00, 0xFE, 0xFF, 0xFF, 0x6F, 0x58, 0xC0, 0xE1, 
-                /* 0520 */    0x76, 0x85, 0xBD, 0x65, 0x61, 0x6F, 0x2F, 0x64, 
-                /* 0528 */    0x15, 0x34, 0xD4, 0x4A, 0x14, 0xFC, 0x7B, 0x65, 
-                /* 0530 */    0x18, 0x7A, 0xC3, 0x02, 0x1C, 0x8D, 0xDB, 0xA3, 
-                /* 0538 */    0x06, 0xC7, 0xD9, 0xE0, 0x49, 0x02, 0x73, 0xAE, 
-                /* 0540 */    0xC6, 0xCD, 0xE6, 0xE0, 0x02, 0x47, 0xE8, 0x1D, 
-                /* 0548 */    0x54, 0x73, 0x67, 0x97, 0x14, 0x18, 0xB7, 0x2C, 
-                /* 0550 */    0xB8, 0x97, 0xAA, 0x87, 0x86, 0x28, 0x07, 0xF1, 
-                /* 0558 */    0x2A, 0xFC, 0x60, 0xF5, 0x28, 0x75, 0x64, 0x8F, 
-                /* 0560 */    0x57, 0x4F, 0xC3, 0x3E, 0x66, 0xF9, 0x96, 0x65, 
-                /* 0568 */    0xA8, 0x08, 0x6F, 0x59, 0xEC, 0x0C, 0x11, 0x2F, 
-                /* 0570 */    0x56, 0x94, 0x10, 0xEF, 0x15, 0xA1, 0x7D, 0xE7, 
-                /* 0578 */    0x32, 0xF8, 0xA3, 0xB1, 0x51, 0x83, 0xBE, 0x1C, 
-                /* 0580 */    0xBF, 0x65, 0xC1, 0xFB, 0xFF, 0xDF, 0xB2, 0xE0, 
-                /* 0588 */    0x8B, 0xFC, 0xAB, 0xE8, 0x44, 0xE0, 0x5B, 0x16, 
-                /* 0590 */    0xC0, 0x8F, 0x60, 0x10, 0x72, 0x32, 0x70, 0xF4, 
-                /* 0598 */    0x79, 0x01, 0x3F, 0x80, 0x87, 0x11, 0x0F, 0x89, 
-                /* 05A0 */    0x05, 0x18, 0x38, 0xBD, 0x2F, 0xF9, 0x4C, 0xC1, 
-                /* 05A8 */    0x0F, 0x18, 0x3E, 0x53, 0xB0, 0xEB, 0x41, 0xF4, 
-                /* 05B0 */    0xC7, 0x00, 0x9F, 0x4B, 0x30, 0x83, 0x03, 0xFF, 
-                /* 05B8 */    0xB5, 0xE2, 0xD0, 0x3D, 0x8A, 0xD7, 0x07, 0x13, 
-                /* 05C0 */    0x78, 0x70, 0xFC, 0xFF, 0x3F, 0x38, 0xB8, 0x77, 
-                /* 05C8 */    0x86, 0x23, 0xF2, 0x1D, 0xC6, 0x83, 0x03, 0xDB, 
-                /* 05D0 */    0x41, 0x00, 0x38, 0x0C, 0x0E, 0x1F, 0x6A, 0x70, 
-                /* 05D8 */    0xE8, 0xF1, 0x18, 0x38, 0xA4, 0xCF, 0x63, 0xEC, 
-                /* 05E0 */    0xC2, 0xF0, 0x90, 0xE3, 0xA1, 0x81, 0x0D, 0xD0, 
-                /* 05E8 */    0x43, 0x03, 0x96, 0x93, 0x78, 0x0A, 0x39, 0x34, 
-                /* 05F0 */    0x30, 0x4B, 0x18, 0x1A, 0x50, 0x8A, 0x37, 0x34, 
-                /* 05F8 */    0xFA, 0xFF, 0x1F, 0x1A, 0x1F, 0x92, 0x0F, 0x0B, 
-                /* 0600 */    0x31, 0x9F, 0x72, 0x22, 0xBC, 0x2F, 0xF8, 0x04, 
-                /* 0608 */    0xC5, 0xD0, 0x5F, 0x53, 0x7C, 0xBB, 0xF0, 0x4D, 
-                /* 0610 */    0x10, 0x37, 0x3E, 0x70, 0x5D, 0x3A, 0x3D, 0x3E, 
-                /* 0618 */    0xE0, 0x73, 0xE4, 0xF2, 0xF8, 0x70, 0x47, 0x27, 
-                /* 0620 */    0x8F, 0x0F, 0x86, 0xCB, 0xAB, 0x0C, 0x39, 0x9A, 
-                /* 0628 */    0xF8, 0x68, 0xC5, 0x86, 0x07, 0xB6, 0x9B, 0x9E, 
-                /* 0630 */    0x87, 0x07, 0x7C, 0xAE, 0x9B, 0x60, 0xBC, 0x42, 
-                /* 0638 */    0xF2, 0x6B, 0x09, 0x8C, 0x13, 0x14, 0xFE, 0xBA, 
-                /* 0640 */    0x09, 0xDE, 0xFF, 0xFF, 0x75, 0x13, 0x78, 0x8E, 
-                /* 0648 */    0x82, 0x6B, 0xBD, 0x64, 0xD3, 0x20, 0xAF, 0x1C, 
-                /* 0650 */    0xC5, 0x7A, 0x11, 0x50, 0x18, 0x9F, 0xD9, 0x00, 
-                /* 0658 */    0x47, 0x63, 0x7D, 0x66, 0x03, 0xCB, 0xBD, 0x80, 
-                /* 0660 */    0xDD, 0xD8, 0xE0, 0x9E, 0xD6, 0x60, 0xDF, 0x1D, 
-                /* 0668 */    0x1E, 0xCE, 0x1E, 0xD3, 0x1E, 0xD5, 0x1E, 0xD0, 
-                /* 0670 */    0x7C, 0xC4, 0x8E, 0xF1, 0x96, 0x16, 0x24, 0x4E, 
-                /* 0678 */    0x84, 0xD7, 0x81, 0xA7, 0x35, 0x5F, 0x32, 0xE2, 
-                /* 0680 */    0x05, 0x7A, 0x5A, 0x33, 0x46, 0x9C, 0x97, 0x36, 
-                /* 0688 */    0x23, 0xBE, 0x52, 0x84, 0x78, 0x58, 0xF3, 0xC9, 
-                /* 0690 */    0xCD, 0x78, 0x0F, 0x13, 0xE1, 0xC2, 0xBC, 0xB0, 
-                /* 0698 */    0x3D, 0xAD, 0x81, 0xE3, 0xFF, 0x7F, 0x5A, 0x83, 
-                /* 06A0 */    0x23, 0xE7, 0x8A, 0x0D, 0xD0, 0xE4, 0xA2, 0x8F, 
-                /* 06A8 */    0x3B, 0xA4, 0x80, 0xE5, 0xDA, 0xC0, 0x6E, 0x29, 
-                /* 06B0 */    0xF0, 0x2E, 0xD8, 0xC0, 0xF9, 0xFF, 0x7F, 0x44, 
-                /* 06B8 */    0x01, 0x5F, 0x96, 0x0B, 0x36, 0xCD, 0x71, 0xC1, 
-                /* 06C0 */    0x46, 0x71, 0x58, 0x0D, 0x90, 0xE6, 0x09, 0xFF, 
-                /* 06C8 */    0x7A, 0x0D, 0xFE, 0x49, 0xF8, 0x7A, 0x0D, 0xD8, 
-                /* 06D0 */    0xBE, 0xC5, 0xE2, 0xAE, 0xD7, 0xC0, 0xEA, 0xFF, 
-                /* 06D8 */    0x7F, 0xBD, 0x06, 0x96, 0x82, 0x47, 0x4A, 0xEF, 
-                /* 06E0 */    0xD4, 0xE0, 0xBA, 0x69, 0xE3, 0x41, 0xDF, 0xB4, 
-                /* 06E8 */    0x61, 0x0A, 0xBE, 0x45, 0xD1, 0x28, 0xE4, 0x8A, 
-                /* 06F0 */    0xB6, 0x10, 0x0A, 0xE3, 0x5B, 0x14, 0xE0, 0x08, 
-                /* 06F8 */    0xFB, 0x2D, 0x0A, 0x2C, 0x17, 0xA7, 0xB7, 0x28, 
-                /* 0700 */    0xFC, 0x0C, 0x3C, 0x68, 0xDF, 0x75, 0x18, 0xA6, 
-                /* 0708 */    0xEF, 0xD0, 0xF0, 0x4F, 0x4D, 0xCF, 0x4D, 0x0F, 
-                /* 0710 */    0x4E, 0x0F, 0xCD, 0x3E, 0x48, 0xF9, 0x70, 0xF0, 
-                /* 0718 */    0xFC, 0xF4, 0xFF, 0x8F, 0xF1, 0x5E, 0xE7, 0x9B, 
-                /* 0720 */    0xD4, 0x6B, 0x94, 0x2F, 0x30, 0xC7, 0x10, 0x31, 
-                /* 0728 */    0xCA, 0xCB, 0xB4, 0x21, 0xE2, 0xF9, 0xD4, 0xE4, 
-                /* 0730 */    0xB3, 0x42, 0xDC, 0x10, 0x0F, 0xD1, 0x46, 0x88, 
-                /* 0738 */    0xFA, 0x3C, 0xED, 0x09, 0xBD, 0x46, 0x81, 0x57, 
-                /* 0740 */    0xD0, 0x35, 0x0A, 0xA0, 0xC9, 0xFD, 0x08, 0x77, 
-                /* 0748 */    0x8D, 0x02, 0xCB, 0xBD, 0x81, 0x9D, 0x87, 0xF8, 
-                /* 0750 */    0x95, 0xC8, 0xD7, 0x06, 0x18, 0xF7, 0x28, 0x38, 
-                /* 0758 */    0xFF, 0xFF, 0x7B, 0x14, 0x60, 0x23, 0xCC, 0x3D, 
-                /* 0760 */    0x8A, 0x06, 0xB9, 0x47, 0xA1, 0x4E, 0x26, 0xBE, 
-                /* 0768 */    0xD4, 0x79, 0xA2, 0xE0, 0x08, 0x7F, 0x91, 0x42, 
-                /* 0770 */    0xC5, 0x26, 0x51, 0xE8, 0xC3, 0x10, 0x2A, 0xE6, 
-                /* 0778 */    0x61, 0x84, 0x82, 0x18, 0xD0, 0x19, 0x4E, 0x14, 
-                /* 0780 */    0x68, 0x15, 0x27, 0x0A, 0x72, 0x8B, 0xF1, 0xA4, 
-                /* 0788 */    0x1E, 0xA3, 0x00, 0x5F, 0xCB, 0xF4, 0x50, 0x79, 
-                /* 0790 */    0xE4, 0xA1, 0x52, 0x10, 0x0F, 0xD5, 0x71, 0x86, 
-                /* 0798 */    0x8A, 0x9E, 0xA4, 0xE7, 0x8F, 0xF9, 0xFF, 0x1F, 
-                /* 07A0 */    0x1C, 0xB0, 0x07, 0x29, 0x80, 0x17, 0x0A, 0x6D, 
-                /* 07A8 */    0xFA, 0xD4, 0x68, 0xD4, 0xAA, 0x41, 0x99, 0x1A, 
-                /* 07B0 */    0x65, 0x1A, 0xD4, 0xEA, 0x53, 0xA9, 0x31, 0x63, 
-                /* 07B8 */    0xE7, 0x50, 0x4B, 0x3B, 0x4B, 0x50, 0x31, 0x8B, 
-                /* 07C0 */    0xD1, 0x68, 0x1C, 0x05, 0x84, 0xCA, 0xFE, 0x9B, 
-                /* 07C8 */    0x0B, 0xC4, 0x21, 0x9F, 0x3A, 0x02, 0x74, 0xB0, 
-                /* 07D0 */    0x17, 0x95, 0x80, 0x2C, 0x6B, 0x6D, 0x02, 0x71, 
-                /* 07D8 */    0x7C, 0x13, 0x10, 0x8D, 0x80, 0x48, 0xCB, 0x63, 
-                /* 07E0 */    0x42, 0x40, 0xCE, 0x0D, 0x22, 0x20, 0xAB, 0x58, 
-                /* 07E8 */    0x93, 0x80, 0xAC, 0xF9, 0x01, 0x23, 0x70, 0xEB, 
-                /* 07F0 */    0xD4, 0x01, 0xC4, 0x52, 0x82, 0xD0, 0x44, 0x0B, 
-                /* 07F8 */    0x17, 0xA8, 0xE3, 0x81, 0x68, 0x30, 0x84, 0x46, 
-                /* 0800 */    0x40, 0x0E, 0x46, 0x21, 0x20, 0xCB, 0xF8, 0x74, 
-                /* 0808 */    0x0B, 0xDC, 0x02, 0xAC, 0x00, 0x31, 0xF9, 0x20, 
-                /* 0810 */    0x54, 0xB0, 0x17, 0x50, 0xA6, 0x1E, 0x44, 0x40, 
-                /* 0818 */    0x56, 0xBA, 0x56, 0x01, 0x59, 0x37, 0x88, 0x80, 
-                /* 0820 */    0xFE, 0xFF, 0x2F, 0x83, 0x32, 0x03, 0xCE, 0x32, 
-                /* 0828 */    0xBA, 0x01, 0x62, 0x0A, 0x1F, 0x0A, 0x02, 0xB1, 
-                /* 0830 */    0x26, 0x3D, 0xA0, 0x4C, 0x20, 0x88, 0xAE, 0x1C, 
-                /* 0838 */    0xC4, 0x0F, 0x10, 0x93, 0x06, 0x22, 0x20, 0xC7, 
-                /* 0840 */    0x39, 0x98, 0x08, 0xDC, 0x71, 0x14, 0x01, 0x52, 
-                /* 0848 */    0x47, 0xC3, 0xA5, 0x20, 0x54, 0xFC, 0xF3, 0x44, 
-                /* 0850 */    0x20, 0x16, 0x64, 0x09, 0x8C, 0x82, 0xD0, 0x08, 
-                /* 0858 */    0x9A, 0x40, 0x98, 0x3C, 0x4F, 0x20, 0x2C, 0xD4, 
-                /* 0860 */    0x9F, 0x5C, 0xA7, 0x15, 0xA2, 0x6A, 0x88, 0xD4, 
-                /* 0868 */    0x15, 0x08, 0x0B, 0xFC, 0x30, 0xD0, 0x60, 0x9C, 
-                /* 0870 */    0x1E, 0x44, 0x40, 0x4E, 0xFA, 0xA7, 0x0A, 0x44, 
-                /* 0878 */    0x72, 0x83, 0x08, 0xC8, 0xF9, 0x9F, 0x22, 0x02, 
-                /* 0880 */    0x77, 0xEA, 0xD7, 0x84, 0x86, 0x4F, 0xBE, 0x58, 
-                /* 0888 */    0x41, 0x88, 0xB8, 0x87, 0x55, 0x50, 0xA2, 0x14, 
-                /* 0890 */    0x44, 0x40, 0x56, 0xF6, 0xB4, 0x12, 0x90, 0x75, 
-                /* 0898 */    0x82, 0x08, 0xC8, 0xFF, 0x7F
+                /* 0000 */  0x46, 0x4F, 0x4D, 0x42, 0x01, 0x00, 0x00, 0x00,
+                /* 0008 */  0x8D, 0x08, 0x00, 0x00, 0xF2, 0x36, 0x00, 0x00,
+                /* 0010 */  0x44, 0x53, 0x00, 0x01, 0x1A, 0x7D, 0xDA, 0x54,
+                /* 0018 */  0xA8, 0xC9, 0x9A, 0x00, 0x01, 0x06, 0x18, 0x42,
+                /* 0020 */  0x10, 0x13, 0x10, 0x0A, 0x0D, 0x21, 0x02, 0x0B,
+                /* 0028 */  0x83, 0x50, 0x4C, 0x18, 0x14, 0xA0, 0x45, 0x41,
+                /* 0030 */  0xC8, 0x05, 0x14, 0x95, 0x02, 0x21, 0xC3, 0x02,
+                /* 0038 */  0x14, 0x0B, 0x70, 0x2E, 0x40, 0xBA, 0x00, 0xE5,
+                /* 0040 */  0x28, 0x72, 0x0C, 0x22, 0x02, 0xF7, 0xEF, 0x0F,
+                /* 0048 */  0x31, 0x0E, 0x88, 0x14, 0x40, 0x48, 0x26, 0x84,
+                /* 0050 */  0x44, 0x00, 0x53, 0x21, 0x70, 0x84, 0xA0, 0x5F,
+                /* 0058 */  0x01, 0x08, 0x1D, 0xA2, 0xC9, 0xA0, 0x00, 0xA7,
+                /* 0060 */  0x08, 0x82, 0xB4, 0x65, 0x01, 0xBA, 0x05, 0xF8,
+                /* 0068 */  0x16, 0xA0, 0x1D, 0x42, 0x68, 0x15, 0x0A, 0x30,
+                /* 0070 */  0x29, 0xC0, 0x27, 0x98, 0x2C, 0x0A, 0x90, 0x0D,
+                /* 0078 */  0x26, 0xDB, 0x70, 0x64, 0x18, 0x4C, 0xE4, 0x18,
+                /* 0080 */  0x50, 0x62, 0xC6, 0x80, 0xD2, 0x39, 0x05, 0xD9,
+                /* 0088 */  0x04, 0x16, 0x74, 0xA1, 0x28, 0x9A, 0x46, 0x94,
+                /* 0090 */  0x04, 0x07, 0x75, 0x0C, 0x11, 0x82, 0x97, 0x2B,
+                /* 0098 */  0x40, 0xF2, 0x04, 0xA4, 0x79, 0x5E, 0xB2, 0x3E,
+                /* 00A0 */  0x08, 0x0D, 0x81, 0x8D, 0x80, 0x47, 0x91, 0x00,
+                /* 00A8 */  0xC2, 0x62, 0x2C, 0x53, 0xE2, 0x61, 0x50, 0x1E,
+                /* 00B0 */  0x40, 0x24, 0x67, 0xA8, 0x28, 0x60, 0x7B, 0x9D,
+                /* 00B8 */  0x88, 0x86, 0x75, 0x9C, 0x4C, 0x12, 0x1C, 0x6A,
+                /* 00C0 */  0x94, 0x96, 0x28, 0xC0, 0xFC, 0xC8, 0x34, 0x91,
+                /* 00C8 */  0x63, 0x6B, 0x7A, 0xC4, 0x82, 0x64, 0xD2, 0x86,
+                /* 00D0 */  0x82, 0x1A, 0xBA, 0xA7, 0x75, 0x52, 0x9E, 0x68,
+                /* 00D8 */  0xC4, 0x83, 0x32, 0x4C, 0x02, 0x8F, 0x82, 0xA1,
+                /* 00E0 */  0x71, 0x82, 0xB2, 0x20, 0xE4, 0x60, 0xA0, 0x28,
+                /* 00E8 */  0xC0, 0x93, 0xF0, 0x1C, 0x8B, 0x17, 0x20, 0x7C,
+                /* 00F0 */  0xC6, 0xE4, 0x28, 0x10, 0x23, 0x81, 0x8F, 0x04,
+                /* 00F8 */  0x1E, 0xCD, 0x31, 0x63, 0x81, 0xC2, 0x05, 0x3C,
+                /* 0100 */  0x9F, 0x63, 0x88, 0x1C, 0xF7, 0x50, 0x63, 0x1C,
+                /* 0108 */  0x45, 0xE4, 0x04, 0xEF, 0x00, 0x51, 0x8C, 0x56,
+                /* 0110 */  0xD0, 0xBC, 0x85, 0x18, 0x2C, 0x9A, 0xC1, 0x7A,
+                /* 0118 */  0x06, 0x27, 0x83, 0x4E, 0xF0, 0xFF, 0x3F, 0x02,
+                /* 0120 */  0x2E, 0x03, 0x42, 0x1E, 0x05, 0x58, 0x1D, 0x94,
+                /* 0128 */  0xA6, 0x61, 0x82, 0xEE, 0x05, 0xBC, 0x1A, 0x1A,
+                /* 0130 */  0x13, 0xA0, 0x11, 0x43, 0xCA, 0x04, 0x38, 0xBB,
+                /* 0138 */  0x2F, 0x68, 0x46, 0x6D, 0x09, 0x30, 0x27, 0x40,
+                /* 0140 */  0x9B, 0x00, 0x6F, 0x08, 0x42, 0x39, 0xCF, 0x28,
+                /* 0148 */  0xC7, 0x72, 0x8A, 0x51, 0x1E, 0x06, 0x62, 0xBE,
+                /* 0150 */  0x0C, 0x04, 0x8D, 0x12, 0x23, 0xE6, 0xB9, 0xC4,
+                /* 0158 */  0x35, 0x6C, 0x84, 0x18, 0x21, 0x4F, 0x21, 0x50,
+                /* 0160 */  0xDC, 0xF6, 0x07, 0x41, 0x06, 0x8D, 0x1B, 0xBD,
+                /* 0168 */  0x4F, 0x0B, 0x67, 0x75, 0x02, 0x47, 0xFF, 0xA4,
+                /* 0170 */  0x60, 0x02, 0x4F, 0xF9, 0xC0, 0x9E, 0x0D, 0x4E,
+                /* 0178 */  0xE0, 0x58, 0xA3, 0xC6, 0x38, 0x95, 0x04, 0x8E,
+                /* 0180 */  0xFD, 0x80, 0x90, 0x06, 0x10, 0x45, 0x82, 0x47,
+                /* 0188 */  0x9D, 0x16, 0x7C, 0x2E, 0xF0, 0xD0, 0x0E, 0xDA,
+                /* 0190 */  0x73, 0x3C, 0x81, 0x20, 0x87, 0x70, 0x04, 0x4F,
+                /* 0198 */  0x0C, 0x0F, 0x04, 0x1E, 0x03, 0xBB, 0x29, 0xF8,
+                /* 01A0 */  0x08, 0xE0, 0x13, 0x02, 0xDE, 0x35, 0xA0, 0xAE,
+                /* 01A8 */  0x06, 0x0F, 0x06, 0x6C, 0xD0, 0xE1, 0x30, 0xE3,
+                /* 01B0 */  0xF5, 0xF0, 0xC3, 0x9D, 0xC0, 0x49, 0x3E, 0x60,
+                /* 01B8 */  0xF0, 0xC3, 0x86, 0x07, 0x87, 0x9B, 0xE7, 0xC9,
+                /* 01C0 */  0x1C, 0x59, 0xA9, 0x02, 0xCC, 0x1E, 0x0E, 0x74,
+                /* 01C8 */  0x90, 0xF0, 0x69, 0x83, 0x9D, 0x01, 0x30, 0xF2,
+                /* 01D0 */  0x07, 0x81, 0x1A, 0x99, 0xA1, 0x3D, 0xEE, 0x97,
+                /* 01D8 */  0x0E, 0x43, 0x3E, 0x27, 0x1C, 0x16, 0x13, 0x7B,
+                /* 01E0 */  0xEA, 0xA0, 0xE3, 0x01, 0xFF, 0x65, 0xE4, 0x39,
+                /* 01E8 */  0xC3, 0xD3, 0xF7, 0x7C, 0x4D, 0x30, 0xEC, 0xC0,
+                /* 01F0 */  0xD1, 0x03, 0x31, 0xF4, 0xC3, 0xC6, 0x61, 0x9C,
+                /* 01F8 */  0x86, 0xEF, 0x1F, 0x3E, 0x2F, 0xC0, 0x38, 0x05,
+                /* 0200 */  0x78, 0xE4, 0xFE, 0xFF, 0x1F, 0x52, 0x7C, 0x9A,
+                /* 0208 */  0xE0, 0x47, 0x0B, 0x9F, 0x26, 0xD8, 0xF5, 0xE0,
+                /* 0210 */  0x34, 0x9E, 0x03, 0x3C, 0x9C, 0xB3, 0xF2, 0x61,
+                /* 0218 */  0x02, 0x6C, 0xF7, 0x13, 0x36, 0xA2, 0x77, 0x0B,
+                /* 0220 */  0x8F, 0x06, 0x7B, 0x0A, 0x00, 0xDF, 0xF9, 0x05,
+                /* 0228 */  0x9C, 0x77, 0x0D, 0x36, 0x58, 0x18, 0xE7, 0x17,
+                /* 0230 */  0xE0, 0x71, 0x42, 0xF0, 0x10, 0xF8, 0x41, 0xC2,
+                /* 0238 */  0x43, 0xE0, 0x03, 0x78, 0xFE, 0x38, 0x43, 0x2B,
+                /* 0240 */  0x9D, 0x17, 0x72, 0x60, 0xF0, 0xCE, 0x39, 0x30,
+                /* 0248 */  0x46, 0xC1, 0xF3, 0x3C, 0x36, 0x4C, 0xA0, 0x20,
+                /* 0250 */  0xAF, 0x01, 0x85, 0x7A, 0x16, 0x50, 0x18, 0x9F,
+                /* 0258 */  0x6A, 0x80, 0xD7, 0xFF, 0xFF, 0x54, 0x03, 0x5C,
+                /* 0260 */  0x0E, 0x07, 0xB8, 0x93, 0x03, 0xDC, 0x7B, 0x01,
+                /* 0268 */  0xBB, 0x38, 0x3C, 0xD7, 0xC0, 0x15, 0x7D, 0xAE,
+                /* 0270 */  0x81, 0x7A, 0x6F, 0x29, 0x6E, 0x8C, 0xBA, 0xC6,
+                /* 0278 */  0x04, 0x79, 0x14, 0x78, 0xA4, 0x89, 0xF2, 0x3C,
+                /* 0280 */  0xF3, 0x2E, 0x13, 0xE1, 0xD9, 0xC6, 0xD7, 0x1A,
+                /* 0288 */  0x4F, 0x21, 0x8E, 0xAF, 0x35, 0x46, 0x7C, 0x99,
+                /* 0290 */  0x78, 0xB7, 0x31, 0xEE, 0xC1, 0x3D, 0xD6, 0x3C,
+                /* 0298 */  0xE4, 0x18, 0xE4, 0x68, 0x22, 0xBC, 0x18, 0x04,
+                /* 02A0 */  0x7C, 0xBC, 0xF1, 0xB1, 0x06, 0xBC, 0x62, 0x5E,
+                /* 02A8 */  0x28, 0xB2, 0x70, 0xAC, 0x01, 0x34, 0xFE, 0xFF,
+                /* 02B0 */  0x8F, 0x35, 0xC0, 0x0D, 0xEB, 0x01, 0x05, 0x7C,
+                /* 02B8 */  0x47, 0x06, 0x76, 0x43, 0x81, 0x77, 0x42, 0x01,
+                /* 02C0 */  0xFC, 0x24, 0x7E, 0x01, 0xE8, 0xC8, 0xE1, 0xB4,
+                /* 02C8 */  0x20, 0xB2, 0xF1, 0x06, 0xF0, 0x29, 0x80, 0xAA,
+                /* 02D0 */  0x01, 0xD2, 0x34, 0x61, 0x13, 0x4C, 0x4F, 0x2E,
+                /* 02D8 */  0x78, 0x1F, 0x09, 0x9C, 0x9B, 0x44, 0xC9, 0x87,
+                /* 02E0 */  0x45, 0xE1, 0x9C, 0xF5, 0x20, 0x42, 0x41, 0x0C,
+                /* 02E8 */  0xE8, 0x20, 0xC7, 0x09, 0xF4, 0x19, 0xC5, 0x07,
+                /* 02F0 */  0x91, 0x13, 0x7D, 0x22, 0xF4, 0xA0, 0x3C, 0x8C,
+                /* 02F8 */  0x77, 0x14, 0x76, 0x02, 0xF1, 0x61, 0xC2, 0x63,
+                /* 0300 */  0xF7, 0x31, 0x81, 0xFF, 0x63, 0x3C, 0x1B, 0xA3,
+                /* 0308 */  0x5B, 0x0D, 0x86, 0xFE, 0xFF, 0xE7, 0x14, 0x0E,
+                /* 0310 */  0xE6, 0x83, 0x08, 0x27, 0xA8, 0xEB, 0x26, 0x01,
+                /* 0318 */  0x32, 0x7D, 0x47, 0x05, 0x50, 0x00, 0xF9, 0x5E,
+                /* 0320 */  0xE0, 0x73, 0xC0, 0xB3, 0x01, 0x1B, 0xC3, 0xA3,
+                /* 0328 */  0x80, 0xD1, 0x8C, 0xCE, 0xC3, 0x4F, 0x16, 0x15,
+                /* 0330 */  0x77, 0xB2, 0x14, 0xC4, 0x93, 0x75, 0x94, 0xC9,
+                /* 0338 */  0xA2, 0x67, 0xE2, 0x7B, 0x85, 0x67, 0xF4, 0xA6,
+                /* 0340 */  0xE5, 0x39, 0x7A, 0xC2, 0xBE, 0x87, 0xC0, 0x3A,
+                /* 0348 */  0x0C, 0x84, 0x7C, 0x30, 0xF0, 0x34, 0x0C, 0xE7,
+                /* 0350 */  0xC9, 0x72, 0x38, 0x4F, 0x96, 0x8F, 0xC5, 0xD7,
+                /* 0358 */  0x10, 0xF0, 0x09, 0x9C, 0x2D, 0xC8, 0xE1, 0x31,
+                /* 0360 */  0xB1, 0x46, 0x45, 0xAF, 0x42, 0x1E, 0x1E, 0xBF,
+                /* 0368 */  0x1C, 0x78, 0x3E, 0xCF, 0x08, 0x47, 0xF9, 0x24,
+                /* 0370 */  0x81, 0xC3, 0x78, 0x26, 0xF1, 0x10, 0x7D, 0x2B,
+                /* 0378 */  0x82, 0x35, 0x91, 0x93, 0xF6, 0x6D, 0xE1, 0x64,
+                /* 0380 */  0x83, 0xBE, 0x9E, 0x61, 0x6E, 0x45, 0xB0, 0xFF,
+                /* 0388 */  0xFF, 0xB7, 0x22, 0x38, 0x17, 0x34, 0x98, 0x99,
+                /* 0390 */  0xEE, 0x55, 0xA8, 0x58, 0xF7, 0x2A, 0x40, 0xEC,
+                /* 0398 */  0xB0, 0x5E, 0x7B, 0x7C, 0xB0, 0x82, 0x7B, 0xAF,
+                /* 03A0 */  0x82, 0x7B, 0xA9, 0x7A, 0x56, 0x38, 0xC6, 0xF0,
+                /* 03A8 */  0x0F, 0x53, 0x31, 0x4E, 0xE9, 0xB5, 0xD3, 0x40,
+                /* 03B0 */  0x61, 0xA2, 0xC4, 0x7B, 0xAF, 0xF2, 0x18, 0xDF,
+                /* 03B8 */  0xAB, 0xD8, 0x15, 0x2A, 0x4C, 0xAC, 0x97, 0x2B,
+                /* 03C0 */  0xA3, 0xBE, 0x4E, 0x84, 0x0B, 0x14, 0x24, 0xD2,
+                /* 03C8 */  0xAB, 0x55, 0x94, 0xC8, 0xF1, 0x0D, 0xF9, 0x5E,
+                /* 03D0 */  0x05, 0x5E, 0x39, 0xF7, 0x2A, 0x90, 0xFD, 0xFF,
+                /* 03D8 */  0xEF, 0x55, 0x80, 0x79, 0xB4, 0xF7, 0x2A, 0x30,
+                /* 03E0 */  0x5E, 0x1B, 0xD8, 0x0D, 0x09, 0x16, 0xD0, 0x8B,
+                /* 03E8 */  0x15, 0x60, 0x28, 0xF3, 0xC5, 0x8A, 0xE6, 0xBD,
+                /* 03F0 */  0x58, 0x21, 0xFE, 0xFF, 0xE7, 0x12, 0xA6, 0xE7,
+                /* 03F8 */  0x62, 0x45, 0xE6, 0x09, 0xFF, 0x66, 0x05, 0x70,
+                /* 0400 */  0xFA, 0xFF, 0x7F, 0xB3, 0x02, 0x8C, 0xDD, 0x8B,
+                /* 0408 */  0x30, 0x47, 0x2B, 0x78, 0x29, 0x6F, 0x56, 0x34,
+                /* 0410 */  0xCE, 0x32, 0x14, 0x70, 0x41, 0x14, 0xC6, 0x37,
+                /* 0418 */  0x2B, 0xC0, 0xD1, 0x75, 0x05, 0x37, 0x64, 0xB8,
+                /* 0420 */  0x60, 0x51, 0x82, 0xF9, 0x10, 0xE2, 0xE9, 0x1C,
+                /* 0428 */  0xF1, 0x43, 0xC2, 0x4B, 0xC0, 0x63, 0x8E, 0x07,
+                /* 0430 */  0xFC, 0x40, 0xE0, 0xCB, 0x15, 0x98, 0xFE, 0xFF,
+                /* 0438 */  0x04, 0x3E, 0xF9, 0x9E, 0xE5, 0xDB, 0xD4, 0x7B,
+                /* 0440 */  0x2F, 0x3F, 0x60, 0xBD, 0x57, 0xF9, 0xF0, 0x1B,
+                /* 0448 */  0xEB, 0x9D, 0xE1, 0xE5, 0xCA, 0x23, 0x89, 0x72,
+                /* 0450 */  0x12, 0xA1, 0x7C, 0xB7, 0x7A, 0xAF, 0x32, 0x4A,
+                /* 0458 */  0xC4, 0x17, 0x62, 0x9F, 0x82, 0x0D, 0x6D, 0x94,
+                /* 0460 */  0xA7, 0x8A, 0xE8, 0xC6, 0x7B, 0xB9, 0x02, 0xAF,
+                /* 0468 */  0xA4, 0xCB, 0x15, 0x40, 0x93, 0xE1, 0xBF, 0x5C,
+                /* 0470 */  0x81, 0xEF, 0xE6, 0x80, 0xBD, 0x26, 0xC1, 0xF9,
+                /* 0478 */  0xFF, 0x5F, 0x93, 0xF8, 0xF5, 0x0A, 0xF0, 0x93,
+                /* 0480 */  0xFD, 0x7A, 0x45, 0x73, 0x5F, 0xAF, 0x50, 0xA2,
+                /* 0488 */  0x20, 0xA4, 0x08, 0x48, 0x33, 0x05, 0xCF, 0xFD,
+                /* 0490 */  0x0A, 0xE0, 0xC4, 0xFF, 0xFF, 0x7E, 0x05, 0x58,
+                /* 0498 */  0x0E, 0x77, 0xBF, 0x02, 0x7A, 0xB7, 0x23, 0xF0,
+                /* 04A0 */  0xA2, 0xBC, 0x1D, 0x61, 0xAF, 0x58, 0xF8, 0x8C,
+                /* 04A8 */  0x57, 0x2C, 0x1A, 0x66, 0x25, 0x8A, 0xB7, 0x26,
+                /* 04B0 */  0x0A, 0xE3, 0x2B, 0x16, 0x30, 0xF9, 0xFF, 0x5F,
+                /* 04B8 */  0xB1, 0x80, 0xD9, 0x41, 0x14, 0x37, 0x6A, 0xB8,
+                /* 04C0 */  0x17, 0x27, 0xDF, 0x7A, 0x3C, 0xDF, 0x88, 0xBE,
+                /* 04C8 */  0xC3, 0x60, 0x4E, 0x58, 0x30, 0x6E, 0x58, 0xF0,
+                /* 04D0 */  0x87, 0xF4, 0x30, 0xEC, 0x93, 0xC4, 0x3B, 0x96,
+                /* 04D8 */  0x8F, 0x56, 0x06, 0x79, 0x03, 0x7E, 0xB2, 0x7A,
+                /* 04E0 */  0xB0, 0x8A, 0x62, 0x84, 0x80, 0xC7, 0xF3, 0x2E,
+                /* 04E8 */  0xEC, 0xA3, 0xD5, 0x9B, 0x96, 0x51, 0x62, 0xC7,
+                /* 04F0 */  0xF2, 0x85, 0xEA, 0x59, 0xCB, 0xD7, 0x2C, 0x43,
+                /* 04F8 */  0xC4, 0x7D, 0x20, 0xF6, 0x0D, 0x0B, 0xB0, 0xFD,
+                /* 0500 */  0xFF, 0xBF, 0x61, 0x01, 0x8E, 0x2E, 0x0E, 0xFC,
+                /* 0508 */  0xE0, 0x80, 0xBD, 0x61, 0x01, 0x3E, 0x67, 0x0A,
+                /* 0510 */  0x9E, 0x1B, 0x16, 0xB0, 0xF9, 0xFF, 0xDF, 0xB0,
+                /* 0518 */  0x00, 0xFE, 0xFF, 0xFF, 0x6F, 0x58, 0xC0, 0xE1,
+                /* 0520 */  0x76, 0x85, 0xBD, 0x65, 0x61, 0x6F, 0x2F, 0x64,
+                /* 0528 */  0x15, 0x34, 0xD4, 0x4A, 0x14, 0xFC, 0x7B, 0x65,
+                /* 0530 */  0x18, 0x7A, 0xC3, 0x02, 0x1C, 0x8D, 0xDB, 0xA3,
+                /* 0538 */  0x06, 0xC7, 0xD9, 0xE0, 0x49, 0x02, 0x73, 0xAE,
+                /* 0540 */  0xC6, 0xCD, 0xE6, 0xE0, 0x02, 0x47, 0xE8, 0x1D,
+                /* 0548 */  0x54, 0x73, 0x67, 0x97, 0x14, 0x18, 0xB7, 0x2C,
+                /* 0550 */  0xB8, 0x97, 0xAA, 0x87, 0x86, 0x28, 0x07, 0xF1,
+                /* 0558 */  0x2A, 0xFC, 0x60, 0xF5, 0x28, 0x75, 0x64, 0x8F,
+                /* 0560 */  0x57, 0x4F, 0xC3, 0x3E, 0x66, 0xF9, 0x96, 0x65,
+                /* 0568 */  0xA8, 0x08, 0x6F, 0x59, 0xEC, 0x0C, 0x11, 0x2F,
+                /* 0570 */  0x56, 0x94, 0x10, 0xEF, 0x15, 0xA1, 0x7D, 0xE7,
+                /* 0578 */  0x32, 0xF8, 0xA3, 0xB1, 0x51, 0x83, 0xBE, 0x1C,
+                /* 0580 */  0xBF, 0x65, 0xC1, 0xFB, 0xFF, 0xDF, 0xB2, 0xE0,
+                /* 0588 */  0x8B, 0xFC, 0xAB, 0xE8, 0x44, 0xE0, 0x5B, 0x16,
+                /* 0590 */  0xC0, 0x8F, 0x60, 0x10, 0x72, 0x32, 0x70, 0xF4,
+                /* 0598 */  0x79, 0x01, 0x3F, 0x80, 0x87, 0x11, 0x0F, 0x89,
+                /* 05A0 */  0x05, 0x18, 0x38, 0xBD, 0x2F, 0xF9, 0x4C, 0xC1,
+                /* 05A8 */  0x0F, 0x18, 0x3E, 0x53, 0xB0, 0xEB, 0x41, 0xF4,
+                /* 05B0 */  0xC7, 0x00, 0x9F, 0x4B, 0x30, 0x83, 0x03, 0xFF,
+                /* 05B8 */  0xB5, 0xE2, 0xD0, 0x3D, 0x8A, 0xD7, 0x07, 0x13,
+                /* 05C0 */  0x78, 0x70, 0xFC, 0xFF, 0x3F, 0x38, 0xB8, 0x77,
+                /* 05C8 */  0x86, 0x23, 0xF2, 0x1D, 0xC6, 0x83, 0x03, 0xDB,
+                /* 05D0 */  0x41, 0x00, 0x38, 0x0C, 0x0E, 0x1F, 0x6A, 0x70,
+                /* 05D8 */  0xE8, 0xF1, 0x18, 0x38, 0xA4, 0xCF, 0x63, 0xEC,
+                /* 05E0 */  0xC2, 0xF0, 0x90, 0xE3, 0xA1, 0x81, 0x0D, 0xD0,
+                /* 05E8 */  0x43, 0x03, 0x96, 0x93, 0x78, 0x0A, 0x39, 0x34,
+                /* 05F0 */  0x30, 0x4B, 0x18, 0x1A, 0x50, 0x8A, 0x37, 0x34,
+                /* 05F8 */  0xFA, 0xFF, 0x1F, 0x1A, 0x1F, 0x92, 0x0F, 0x0B,
+                /* 0600 */  0x31, 0x9F, 0x72, 0x22, 0xBC, 0x2F, 0xF8, 0x04,
+                /* 0608 */  0xC5, 0xD0, 0x5F, 0x53, 0x7C, 0xBB, 0xF0, 0x4D,
+                /* 0610 */  0x10, 0x37, 0x3E, 0x70, 0x5D, 0x3A, 0x3D, 0x3E,
+                /* 0618 */  0xE0, 0x73, 0xE4, 0xF2, 0xF8, 0x70, 0x47, 0x27,
+                /* 0620 */  0x8F, 0x0F, 0x86, 0xCB, 0xAB, 0x0C, 0x39, 0x9A,
+                /* 0628 */  0xF8, 0x68, 0xC5, 0x86, 0x07, 0xB6, 0x9B, 0x9E,
+                /* 0630 */  0x87, 0x07, 0x7C, 0xAE, 0x9B, 0x60, 0xBC, 0x42,
+                /* 0638 */  0xF2, 0x6B, 0x09, 0x8C, 0x13, 0x14, 0xFE, 0xBA,
+                /* 0640 */  0x09, 0xDE, 0xFF, 0xFF, 0x75, 0x13, 0x78, 0x8E,
+                /* 0648 */  0x82, 0x6B, 0xBD, 0x64, 0xD3, 0x20, 0xAF, 0x1C,
+                /* 0650 */  0xC5, 0x7A, 0x11, 0x50, 0x18, 0x9F, 0xD9, 0x00,
+                /* 0658 */  0x47, 0x63, 0x7D, 0x66, 0x03, 0xCB, 0xBD, 0x80,
+                /* 0660 */  0xDD, 0xD8, 0xE0, 0x9E, 0xD6, 0x60, 0xDF, 0x1D,
+                /* 0668 */  0x1E, 0xCE, 0x1E, 0xD3, 0x1E, 0xD5, 0x1E, 0xD0,
+                /* 0670 */  0x7C, 0xC4, 0x8E, 0xF1, 0x96, 0x16, 0x24, 0x4E,
+                /* 0678 */  0x84, 0xD7, 0x81, 0xA7, 0x35, 0x5F, 0x32, 0xE2,
+                /* 0680 */  0x05, 0x7A, 0x5A, 0x33, 0x46, 0x9C, 0x97, 0x36,
+                /* 0688 */  0x23, 0xBE, 0x52, 0x84, 0x78, 0x58, 0xF3, 0xC9,
+                /* 0690 */  0xCD, 0x78, 0x0F, 0x13, 0xE1, 0xC2, 0xBC, 0xB0,
+                /* 0698 */  0x3D, 0xAD, 0x81, 0xE3, 0xFF, 0x7F, 0x5A, 0x83,
+                /* 06A0 */  0x23, 0xE7, 0x8A, 0x0D, 0xD0, 0xE4, 0xA2, 0x8F,
+                /* 06A8 */  0x3B, 0xA4, 0x80, 0xE5, 0xDA, 0xC0, 0x6E, 0x29,
+                /* 06B0 */  0xF0, 0x2E, 0xD8, 0xC0, 0xF9, 0xFF, 0x7F, 0x44,
+                /* 06B8 */  0x01, 0x5F, 0x96, 0x0B, 0x36, 0xCD, 0x71, 0xC1,
+                /* 06C0 */  0x46, 0x71, 0x58, 0x0D, 0x90, 0xE6, 0x09, 0xFF,
+                /* 06C8 */  0x7A, 0x0D, 0xFE, 0x49, 0xF8, 0x7A, 0x0D, 0xD8,
+                /* 06D0 */  0xBE, 0xC5, 0xE2, 0xAE, 0xD7, 0xC0, 0xEA, 0xFF,
+                /* 06D8 */  0x7F, 0xBD, 0x06, 0x96, 0x82, 0x47, 0x4A, 0xEF,
+                /* 06E0 */  0xD4, 0xE0, 0xBA, 0x69, 0xE3, 0x41, 0xDF, 0xB4,
+                /* 06E8 */  0x61, 0x0A, 0xBE, 0x45, 0xD1, 0x28, 0xE4, 0x8A,
+                /* 06F0 */  0xB6, 0x10, 0x0A, 0xE3, 0x5B, 0x14, 0xE0, 0x08,
+                /* 06F8 */  0xFB, 0x2D, 0x0A, 0x2C, 0x17, 0xA7, 0xB7, 0x28,
+                /* 0700 */  0xFC, 0x0C, 0x3C, 0x68, 0xDF, 0x75, 0x18, 0xA6,
+                /* 0708 */  0xEF, 0xD0, 0xF0, 0x4F, 0x4D, 0xCF, 0x4D, 0x0F,
+                /* 0710 */  0x4E, 0x0F, 0xCD, 0x3E, 0x48, 0xF9, 0x70, 0xF0,
+                /* 0718 */  0xFC, 0xF4, 0xFF, 0x8F, 0xF1, 0x5E, 0xE7, 0x9B,
+                /* 0720 */  0xD4, 0x6B, 0x94, 0x2F, 0x30, 0xC7, 0x10, 0x31,
+                /* 0728 */  0xCA, 0xCB, 0xB4, 0x21, 0xE2, 0xF9, 0xD4, 0xE4,
+                /* 0730 */  0xB3, 0x42, 0xDC, 0x10, 0x0F, 0xD1, 0x46, 0x88,
+                /* 0738 */  0xFA, 0x3C, 0xED, 0x09, 0xBD, 0x46, 0x81, 0x57,
+                /* 0740 */  0xD0, 0x35, 0x0A, 0xA0, 0xC9, 0xFD, 0x08, 0x77,
+                /* 0748 */  0x8D, 0x02, 0xCB, 0xBD, 0x81, 0x9D, 0x87, 0xF8,
+                /* 0750 */  0x95, 0xC8, 0xD7, 0x06, 0x18, 0xF7, 0x28, 0x38,
+                /* 0758 */  0xFF, 0xFF, 0x7B, 0x14, 0x60, 0x23, 0xCC, 0x3D,
+                /* 0760 */  0x8A, 0x06, 0xB9, 0x47, 0xA1, 0x4E, 0x26, 0xBE,
+                /* 0768 */  0xD4, 0x79, 0xA2, 0xE0, 0x08, 0x7F, 0x91, 0x42,
+                /* 0770 */  0xC5, 0x26, 0x51, 0xE8, 0xC3, 0x10, 0x2A, 0xE6,
+                /* 0778 */  0x61, 0x84, 0x82, 0x18, 0xD0, 0x19, 0x4E, 0x14,
+                /* 0780 */  0x68, 0x15, 0x27, 0x0A, 0x72, 0x8B, 0xF1, 0xA4,
+                /* 0788 */  0x1E, 0xA3, 0x00, 0x5F, 0xCB, 0xF4, 0x50, 0x79,
+                /* 0790 */  0xE4, 0xA1, 0x52, 0x10, 0x0F, 0xD5, 0x71, 0x86,
+                /* 0798 */  0x8A, 0x9E, 0xA4, 0xE7, 0x8F, 0xF9, 0xFF, 0x1F,
+                /* 07A0 */  0x1C, 0xB0, 0x07, 0x29, 0x80, 0x17, 0x0A, 0x6D,
+                /* 07A8 */  0xFA, 0xD4, 0x68, 0xD4, 0xAA, 0x41, 0x99, 0x1A,
+                /* 07B0 */  0x65, 0x1A, 0xD4, 0xEA, 0x53, 0xA9, 0x31, 0x63,
+                /* 07B8 */  0xE7, 0x50, 0x4B, 0x3B, 0x4B, 0x50, 0x31, 0x8B,
+                /* 07C0 */  0xD1, 0x68, 0x1C, 0x05, 0x84, 0xCA, 0xFE, 0x9B,
+                /* 07C8 */  0x0B, 0xC4, 0x21, 0x9F, 0x3A, 0x02, 0x74, 0xB0,
+                /* 07D0 */  0x17, 0x95, 0x80, 0x2C, 0x6B, 0x6D, 0x02, 0x71,
+                /* 07D8 */  0x7C, 0x13, 0x10, 0x8D, 0x80, 0x48, 0xCB, 0x63,
+                /* 07E0 */  0x42, 0x40, 0xCE, 0x0D, 0x22, 0x20, 0xAB, 0x58,
+                /* 07E8 */  0x93, 0x80, 0xAC, 0xF9, 0x01, 0x23, 0x70, 0xEB,
+                /* 07F0 */  0xD4, 0x01, 0xC4, 0x52, 0x82, 0xD0, 0x44, 0x0B,
+                /* 07F8 */  0x17, 0xA8, 0xE3, 0x81, 0x68, 0x30, 0x84, 0x46,
+                /* 0800 */  0x40, 0x0E, 0x46, 0x21, 0x20, 0xCB, 0xF8, 0x74,
+                /* 0808 */  0x0B, 0xDC, 0x02, 0xAC, 0x00, 0x31, 0xF9, 0x20,
+                /* 0810 */  0x54, 0xB0, 0x17, 0x50, 0xA6, 0x1E, 0x44, 0x40,
+                /* 0818 */  0x56, 0xBA, 0x56, 0x01, 0x59, 0x37, 0x88, 0x80,
+                /* 0820 */  0xFE, 0xFF, 0x2F, 0x83, 0x32, 0x03, 0xCE, 0x32,
+                /* 0828 */  0xBA, 0x01, 0x62, 0x0A, 0x1F, 0x0A, 0x02, 0xB1,
+                /* 0830 */  0x26, 0x3D, 0xA0, 0x4C, 0x20, 0x88, 0xAE, 0x1C,
+                /* 0838 */  0xC4, 0x0F, 0x10, 0x93, 0x06, 0x22, 0x20, 0xC7,
+                /* 0840 */  0x39, 0x98, 0x08, 0xDC, 0x71, 0x14, 0x01, 0x52,
+                /* 0848 */  0x47, 0xC3, 0xA5, 0x20, 0x54, 0xFC, 0xF3, 0x44,
+                /* 0850 */  0x20, 0x16, 0x64, 0x09, 0x8C, 0x82, 0xD0, 0x08,
+                /* 0858 */  0x9A, 0x40, 0x98, 0x3C, 0x4F, 0x20, 0x2C, 0xD4,
+                /* 0860 */  0x9F, 0x5C, 0xA7, 0x15, 0xA2, 0x6A, 0x88, 0xD4,
+                /* 0868 */  0x15, 0x08, 0x0B, 0xFC, 0x30, 0xD0, 0x60, 0x9C,
+                /* 0870 */  0x1E, 0x44, 0x40, 0x4E, 0xFA, 0xA7, 0x0A, 0x44,
+                /* 0878 */  0x72, 0x83, 0x08, 0xC8, 0xF9, 0x9F, 0x22, 0x02,
+                /* 0880 */  0x77, 0xEA, 0xD7, 0x84, 0x86, 0x4F, 0xBE, 0x58,
+                /* 0888 */  0x41, 0x88, 0xB8, 0x87, 0x55, 0x50, 0xA2, 0x14,
+                /* 0890 */  0x44, 0x40, 0x56, 0xF6, 0xB4, 0x12, 0x90, 0x75,
+                /* 0898 */  0x82, 0x08, 0xC8, 0xFF, 0x7F                   
             })
         }
 
         Device (WMI2)
         {
-            Name (_HID, EisaId ("PNP0C14"))
-            Name (_UID, 0x02)
+            Name (_HID, EisaId ("PNP0C14"))  // _HID: Hardware ID
+            Name (_UID, 0x02)  // _UID: Unique ID
             Name (_WDG, Buffer (0x64)
             {
-                /* 0000 */    0xF1, 0x24, 0xB4, 0xFC, 0x5A, 0x07, 0x0E, 0x4E, 
-                /* 0008 */    0xBF, 0xC4, 0x62, 0xF3, 0xE7, 0x17, 0x71, 0xFA, 
-                /* 0010 */    0x41, 0x37, 0x01, 0x01, 0xE3, 0x5E, 0xBE, 0xE2, 
-                /* 0018 */    0xDA, 0x42, 0xDB, 0x49, 0x83, 0x78, 0x1F, 0x52, 
-                /* 0020 */    0x47, 0x38, 0x82, 0x02, 0x41, 0x38, 0x01, 0x02, 
-                /* 0028 */    0x9A, 0x01, 0x30, 0x74, 0xE9, 0xDC, 0x48, 0x45, 
-                /* 0030 */    0xBA, 0xB0, 0x9F, 0xDE, 0x09, 0x35, 0xCA, 0xFF, 
-                /* 0038 */    0x41, 0x39, 0x0A, 0x05, 0x03, 0x70, 0xF4, 0x7F, 
-                /* 0040 */    0x6C, 0x3B, 0x5E, 0x4E, 0xA2, 0x27, 0xE9, 0x79, 
-                /* 0048 */    0x82, 0x4A, 0x85, 0xD1, 0x41, 0x41, 0x01, 0x06, 
-                /* 0050 */    0x21, 0x12, 0x90, 0x05, 0x66, 0xD5, 0xD1, 0x11, 
-                /* 0058 */    0xB2, 0xF0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10, 
-                /* 0060 */    0x42, 0x42, 0x01, 0x00
+                /* 0000 */  0xF1, 0x24, 0xB4, 0xFC, 0x5A, 0x07, 0x0E, 0x4E,
+                /* 0008 */  0xBF, 0xC4, 0x62, 0xF3, 0xE7, 0x17, 0x71, 0xFA,
+                /* 0010 */  0x41, 0x37, 0x01, 0x01, 0xE3, 0x5E, 0xBE, 0xE2,
+                /* 0018 */  0xDA, 0x42, 0xDB, 0x49, 0x83, 0x78, 0x1F, 0x52,
+                /* 0020 */  0x47, 0x38, 0x82, 0x02, 0x41, 0x38, 0x01, 0x02,
+                /* 0028 */  0x9A, 0x01, 0x30, 0x74, 0xE9, 0xDC, 0x48, 0x45,
+                /* 0030 */  0xBA, 0xB0, 0x9F, 0xDE, 0x09, 0x35, 0xCA, 0xFF,
+                /* 0038 */  0x41, 0x39, 0x0A, 0x05, 0x03, 0x70, 0xF4, 0x7F,
+                /* 0040 */  0x6C, 0x3B, 0x5E, 0x4E, 0xA2, 0x27, 0xE9, 0x79,
+                /* 0048 */  0x82, 0x4A, 0x85, 0xD1, 0x41, 0x41, 0x01, 0x06,
+                /* 0050 */  0x21, 0x12, 0x90, 0x05, 0x66, 0xD5, 0xD1, 0x11,
+                /* 0058 */  0xB2, 0xF0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10,
+                /* 0060 */  0x42, 0x42, 0x01, 0x00                         
             })
             Name (PREL, Buffer (0x08)
             {
-                /* 0000 */    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
             })
             Method (WQA7, 1, NotSerialized)
             {
@@ -14333,190 +13930,190 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Name (WQBB, Buffer (0x0538)
             {
-                /* 0000 */    0x46, 0x4F, 0x4D, 0x42, 0x01, 0x00, 0x00, 0x00, 
-                /* 0008 */    0x28, 0x05, 0x00, 0x00, 0xAE, 0x18, 0x00, 0x00, 
-                /* 0010 */    0x44, 0x53, 0x00, 0x01, 0x1A, 0x7D, 0xDA, 0x54, 
-                /* 0018 */    0x98, 0xDE, 0x8B, 0x00, 0x01, 0x06, 0x18, 0x42, 
-                /* 0020 */    0x10, 0x0D, 0x10, 0x8A, 0x0D, 0x21, 0x02, 0x0B, 
-                /* 0028 */    0x83, 0x50, 0x50, 0x18, 0x14, 0xA0, 0x45, 0x41, 
-                /* 0030 */    0xC8, 0x05, 0x14, 0x95, 0x02, 0x21, 0xC3, 0x02, 
-                /* 0038 */    0x14, 0x0B, 0x70, 0x2E, 0x40, 0xBA, 0x00, 0xE5, 
-                /* 0040 */    0x28, 0x72, 0x0C, 0x22, 0x02, 0xF7, 0xEF, 0x0F, 
-                /* 0048 */    0x31, 0x10, 0x88, 0x14, 0x40, 0x48, 0x28, 0x84, 
-                /* 0050 */    0x44, 0x00, 0x53, 0x21, 0x70, 0x84, 0xA0, 0x5F, 
-                /* 0058 */    0x01, 0x08, 0x1D, 0x0A, 0x90, 0x29, 0xC0, 0xA0, 
-                /* 0060 */    0x00, 0xA7, 0x08, 0x22, 0x88, 0xD2, 0xB2, 0x00, 
-                /* 0068 */    0xDD, 0x02, 0x7C, 0x0B, 0xD0, 0x0E, 0x21, 0xB4, 
-                /* 0070 */    0xC8, 0x95, 0x0A, 0xB0, 0x08, 0x25, 0x9F, 0x80, 
-                /* 0078 */    0x92, 0x88, 0x22, 0xD9, 0x78, 0xB2, 0x8D, 0x48, 
-                /* 0080 */    0xE6, 0x61, 0x91, 0x83, 0x40, 0x89, 0x19, 0x04, 
-                /* 0088 */    0x4A, 0x27, 0xAE, 0x6C, 0xE2, 0x6A, 0x10, 0x07, 
-                /* 0090 */    0x10, 0xE5, 0x3C, 0xA2, 0x24, 0x38, 0xAA, 0x83, 
-                /* 0098 */    0x88, 0x10, 0xBB, 0x5C, 0x01, 0x92, 0x07, 0x20, 
-                /* 00A0 */    0xCD, 0x13, 0x93, 0xF5, 0x39, 0x68, 0x64, 0x6C, 
-                /* 00A8 */    0x04, 0x3C, 0x98, 0x04, 0x10, 0x16, 0x65, 0x9D, 
-                /* 00B0 */    0x8A, 0x02, 0x83, 0xF2, 0x00, 0x22, 0x39, 0x63, 
-                /* 00B8 */    0x45, 0x01, 0xDB, 0xEB, 0x44, 0x64, 0x72, 0xA0, 
-                /* 00C0 */    0x54, 0x12, 0x1C, 0x6A, 0x98, 0x9E, 0x5A, 0xF3, 
-                /* 00C8 */    0x13, 0xD3, 0x44, 0x4E, 0xAD, 0xE9, 0x21, 0x0B, 
-                /* 00D0 */    0x92, 0x49, 0x1B, 0x0A, 0x6A, 0xEC, 0x9E, 0xD6, 
-                /* 00D8 */    0x49, 0x79, 0xA6, 0x11, 0x0F, 0xCA, 0x30, 0x09, 
-                /* 00E0 */    0x3C, 0x0A, 0x86, 0xC6, 0x09, 0xCA, 0x82, 0x90, 
-                /* 00E8 */    0x83, 0x81, 0xA2, 0x00, 0x4F, 0xC2, 0x73, 0x2C, 
-                /* 00F0 */    0x5E, 0x80, 0xF0, 0x11, 0x93, 0xB3, 0x40, 0x8C, 
-                /* 00F8 */    0x04, 0x3E, 0x13, 0x78, 0xE4, 0xC7, 0x8C, 0x1D, 
-                /* 0100 */    0x51, 0xB8, 0x80, 0xE7, 0x73, 0x0C, 0x91, 0xE3, 
-                /* 0108 */    0x1E, 0x6A, 0x8C, 0xA3, 0x88, 0x7C, 0x38, 0x0C, 
-                /* 0110 */    0xED, 0x74, 0xE3, 0x1C, 0xD8, 0xE9, 0x14, 0x04, 
-                /* 0118 */    0x2E, 0x90, 0x60, 0x3D, 0xCF, 0x59, 0x20, 0xFF, 
-                /* 0120 */    0xFF, 0x18, 0x07, 0xC1, 0xF0, 0x8E, 0x01, 0x23, 
-                /* 0128 */    0x03, 0x42, 0x1E, 0x05, 0x58, 0x1D, 0x96, 0x26, 
-                /* 0130 */    0x91, 0xC0, 0xEE, 0x05, 0x68, 0xBC, 0x04, 0x48, 
-                /* 0138 */    0xE1, 0x20, 0xA5, 0x0C, 0x42, 0x30, 0x8D, 0x09, 
-                /* 0140 */    0xB0, 0x75, 0x68, 0x90, 0x37, 0x01, 0xD6, 0xAE, 
-                /* 0148 */    0x02, 0x42, 0x89, 0x74, 0x02, 0x71, 0x42, 0x44, 
-                /* 0150 */    0x89, 0x18, 0xD4, 0x40, 0x51, 0x6A, 0x43, 0x15, 
-                /* 0158 */    0x4C, 0x67, 0xC3, 0x13, 0x66, 0xDC, 0x10, 0x31, 
-                /* 0160 */    0x0C, 0x14, 0xB7, 0xFD, 0x41, 0x90, 0x61, 0xE3, 
-                /* 0168 */    0xC6, 0xEF, 0x41, 0x9D, 0xD6, 0xD9, 0x1D, 0xD3, 
-                /* 0170 */    0xAB, 0x82, 0x09, 0x3C, 0xE9, 0x37, 0x84, 0xA7, 
-                /* 0178 */    0x83, 0xA3, 0x38, 0xDA, 0xA8, 0x31, 0x9A, 0x23, 
-                /* 0180 */    0x65, 0xAB, 0xD6, 0xB9, 0xC2, 0x91, 0xE0, 0x51, 
-                /* 0188 */    0xE7, 0x05, 0x9F, 0x0C, 0x3C, 0xB4, 0xC3, 0xF6, 
-                /* 0190 */    0x60, 0xCF, 0xD2, 0x43, 0x38, 0x82, 0x67, 0x86, 
-                /* 0198 */    0x47, 0x02, 0x8F, 0x81, 0xDD, 0x15, 0x7C, 0x08, 
-                /* 01A0 */    0xF0, 0x19, 0x01, 0xEF, 0x1A, 0x50, 0x97, 0x83, 
-                /* 01A8 */    0x47, 0x03, 0x36, 0xE9, 0x70, 0x98, 0xF1, 0x7A, 
-                /* 01B0 */    0xEE, 0x9E, 0xBA, 0xCF, 0x18, 0xFC, 0xBC, 0xE1, 
-                /* 01B8 */    0xC1, 0xE1, 0x46, 0x7A, 0x32, 0x47, 0x56, 0xAA, 
-                /* 01C0 */    0x00, 0xB3, 0xD7, 0x00, 0x1D, 0x25, 0x7C, 0xE0, 
-                /* 01C8 */    0x60, 0x77, 0x81, 0xA7, 0x00, 0x13, 0x58, 0xFE, 
-                /* 01D0 */    0x20, 0x50, 0x23, 0x33, 0xB4, 0xC7, 0xFB, 0xDE, 
-                /* 01D8 */    0x61, 0xC8, 0x27, 0x85, 0xC3, 0x62, 0x62, 0x0F, 
-                /* 01E0 */    0x1E, 0x74, 0x3C, 0xE0, 0xBF, 0x8F, 0x3C, 0x69, 
-                /* 01E8 */    0x78, 0xFA, 0x9E, 0xAF, 0x09, 0x06, 0x86, 0x90, 
-                /* 01F0 */    0x95, 0xF1, 0xA0, 0x06, 0x62, 0xE8, 0x57, 0x85, 
-                /* 01F8 */    0xC3, 0x38, 0x0D, 0x9F, 0x40, 0x7C, 0x0E, 0x08, 
-                /* 0200 */    0x12, 0xE3, 0x98, 0x3C, 0x38, 0xFF, 0xFF, 0x09, 
-                /* 0208 */    0x1C, 0x6B, 0xE4, 0xF4, 0x9C, 0xE2, 0xF3, 0x04, 
-                /* 0210 */    0x3F, 0x5C, 0xF8, 0x3C, 0xC1, 0x4E, 0x0C, 0xA7, 
-                /* 0218 */    0xF1, 0x1C, 0xE0, 0xE1, 0x9C, 0x95, 0x8F, 0x13, 
-                /* 0220 */    0xC0, 0x02, 0xE2, 0x75, 0x82, 0x0F, 0x14, 0x3E, 
-                /* 0228 */    0xEC, 0xA1, 0x79, 0x14, 0x2F, 0x11, 0x6F, 0x0F, 
-                /* 0230 */    0x26, 0x88, 0xF6, 0x10, 0x03, 0xC6, 0x19, 0xE1, 
-                /* 0238 */    0xCE, 0x1B, 0x70, 0x4E, 0x31, 0xC0, 0x03, 0xEA, 
-                /* 0240 */    0x10, 0x30, 0x87, 0x09, 0x0F, 0x81, 0x0F, 0xE0, 
-                /* 0248 */    0x19, 0xE4, 0x1C, 0x7D, 0xCC, 0x39, 0x33, 0xDC, 
-                /* 0250 */    0x71, 0x07, 0x6C, 0xC3, 0xE0, 0x91, 0x2D, 0x80, 
-                /* 0258 */    0xB0, 0x38, 0x4F, 0x02, 0x05, 0x7C, 0x1B, 0x50, 
-                /* 0260 */    0x18, 0x1F, 0x6E, 0xC0, 0xFB, 0xFF, 0x3F, 0xDC, 
-                /* 0268 */    0x00, 0xD7, 0xF3, 0x01, 0xEE, 0xF8, 0x00, 0xF7, 
-                /* 0270 */    0x62, 0xC1, 0x0E, 0x0F, 0x8F, 0x37, 0xC0, 0x60, 
-                /* 0278 */    0x48, 0x8F, 0x34, 0x6F, 0x35, 0x31, 0x5E, 0x6D, 
-                /* 0280 */    0x42, 0x44, 0x78, 0xA8, 0x79, 0xB7, 0x31, 0x52, 
-                /* 0288 */    0xBC, 0xC7, 0x1B, 0x76, 0x8D, 0x39, 0x8B, 0x07, 
-                /* 0290 */    0x90, 0x28, 0xC5, 0xA1, 0xE9, 0x62, 0x13, 0x23, 
-                /* 0298 */    0xCA, 0x9B, 0x8D, 0x61, 0xDF, 0x74, 0x0C, 0x14, 
-                /* 02A0 */    0x2A, 0x52, 0x84, 0x30, 0x2F, 0x16, 0x21, 0x1E, 
-                /* 02A8 */    0x6F, 0xC0, 0x2C, 0xE9, 0xA5, 0xA2, 0xCF, 0x81, 
-                /* 02B0 */    0x8F, 0x37, 0x80, 0x97, 0xFF, 0xFF, 0xF1, 0x06, 
-                /* 02B8 */    0xF0, 0x30, 0x0C, 0x1F, 0x53, 0xC0, 0x76, 0x73, 
-                /* 02C0 */    0x60, 0xF7, 0x14, 0xF8, 0xE7, 0x14, 0xC0, 0x91, 
-                /* 02C8 */    0x90, 0x47, 0x80, 0x0E, 0x1E, 0x16, 0x01, 0x22, 
-                /* 02D0 */    0x1B, 0xCF, 0x00, 0x9F, 0x89, 0xA8, 0x40, 0x2A, 
-                /* 02D8 */    0xCD, 0x14, 0x2C, 0xE3, 0x14, 0xAC, 0x4E, 0x88, 
-                /* 02E0 */    0x5C, 0x06, 0x85, 0x44, 0x40, 0x68, 0x64, 0x86, 
-                /* 02E8 */    0xF3, 0x21, 0xD1, 0x60, 0x06, 0xF1, 0xF9, 0xC0, 
-                /* 02F0 */    0x67, 0x0A, 0x9F, 0x9C, 0xF8, 0xFF, 0xFF, 0xE4, 
-                /* 02F8 */    0x04, 0x9E, 0x83, 0xC9, 0x43, 0x05, 0x2C, 0x44, 
-                /* 0300 */    0x9F, 0x16, 0x38, 0x9C, 0xCF, 0x2C, 0x1C, 0xCE, 
-                /* 0308 */    0x47, 0x12, 0x7E, 0x80, 0xE4, 0x47, 0x25, 0x70, 
-                /* 0310 */    0x09, 0x3C, 0x34, 0x80, 0x02, 0xC8, 0xF7, 0x03, 
-                /* 0318 */    0x9F, 0x03, 0x9E, 0x11, 0xD8, 0x1C, 0x1E, 0x09, 
-                /* 0320 */    0x7C, 0x20, 0x60, 0xF0, 0x3C, 0xDA, 0xA8, 0xE8, 
-                /* 0328 */    0xD1, 0xC6, 0xC3, 0xE3, 0x47, 0x06, 0xCF, 0xE7, 
-                /* 0330 */    0x81, 0xE0, 0x28, 0x1F, 0x09, 0x70, 0x18, 0xEF, 
-                /* 0338 */    0x17, 0x1E, 0xA2, 0x4F, 0x39, 0xB0, 0x26, 0x72, 
-                /* 0340 */    0xD4, 0x16, 0x7D, 0x22, 0x10, 0xE8, 0x33, 0x17, 
-                /* 0348 */    0xE6, 0x94, 0x03, 0x9C, 0x82, 0x8F, 0x1E, 0x15, 
-                /* 0350 */    0xF5, 0x40, 0x0A, 0xDA, 0x93, 0x82, 0xCF, 0x0A, 
-                /* 0358 */    0x3E, 0x7C, 0xC1, 0xFF, 0xFF, 0x1F, 0xBE, 0xE0, 
-                /* 0360 */    0xCC, 0xEB, 0x65, 0xCD, 0x07, 0x8E, 0x38, 0x67, 
-                /* 0368 */    0x71, 0xBA, 0xEF, 0x16, 0xF8, 0x13, 0x29, 0x30, 
-                /* 0370 */    0x0B, 0x72, 0x22, 0x45, 0xC1, 0xF8, 0x44, 0x0A, 
-                /* 0378 */    0xD8, 0xBC, 0x05, 0x60, 0xAF, 0x0B, 0x4F, 0x22, 
-                /* 0380 */    0x30, 0xCE, 0x11, 0xCF, 0x58, 0x30, 0x0F, 0x55, 
-                /* 0388 */    0xA7, 0xF8, 0x52, 0xF5, 0xC6, 0x10, 0xE1, 0xC9, 
-                /* 0390 */    0xEA, 0x35, 0xEA, 0x01, 0xCB, 0x60, 0x2F, 0x02, 
-                /* 0398 */    0x86, 0x79, 0xC5, 0xF2, 0xE9, 0x2A, 0xC4, 0x03, 
-                /* 03A0 */    0x96, 0xCF, 0x5A, 0xD1, 0x42, 0x84, 0x8C, 0x12, 
-                /* 03A8 */    0xEC, 0x15, 0xEB, 0x55, 0xC6, 0x47, 0x2A, 0x83, 
-                /* 03B0 */    0x07, 0x0C, 0x1B, 0x2D, 0x52, 0x84, 0x47, 0x2C, 
-                /* 03B8 */    0xFC, 0xFF, 0xFF, 0x88, 0x05, 0x1E, 0x09, 0x07, 
-                /* 03C0 */    0x52, 0x80, 0x2A, 0x03, 0xC7, 0x1D, 0x48, 0x81, 
-                /* 03C8 */    0xFD, 0x69, 0x02, 0x7F, 0xBD, 0xF0, 0x78, 0xB0, 
-                /* 03D0 */    0xFF, 0xFF, 0x73, 0x00, 0xF8, 0x0E, 0x31, 0xC0, 
-                /* 03D8 */    0x60, 0xC0, 0x30, 0x0E, 0x31, 0xC0, 0x43, 0xF0, 
-                /* 03E0 */    0xC9, 0x0C, 0xF4, 0xC7, 0x1D, 0xF8, 0xE3, 0xE0, 
-                /* 03E8 */    0x19, 0x9F, 0x1C, 0x26, 0x50, 0x98, 0x13, 0x29, 
-                /* 03F0 */    0x0A, 0xC6, 0x27, 0x52, 0xC0, 0xD9, 0xFF, 0xFF, 
-                /* 03F8 */    0x70, 0x05, 0x86, 0xE3, 0x0D, 0xF8, 0x6F, 0x33, 
-                /* 0400 */    0x3E, 0x84, 0xFA, 0x7C, 0xE3, 0x0B, 0xA9, 0x21, 
-                /* 0408 */    0x5E, 0x6C, 0xDE, 0xD4, 0x5E, 0x09, 0x5E, 0xDF, 
-                /* 0410 */    0xD9, 0xB5, 0xE6, 0xF5, 0xDD, 0xA7, 0x82, 0x27, 
-                /* 0418 */    0xD1, 0x08, 0x21, 0xA3, 0xBC, 0xE4, 0x18, 0x24, 
-                /* 0420 */    0xC4, 0xEB, 0xA8, 0x01, 0x83, 0x05, 0x89, 0x78, 
-                /* 0428 */    0x0A, 0x4F, 0x3B, 0x8F, 0x37, 0xE0, 0x15, 0x75, 
-                /* 0430 */    0x20, 0x05, 0xE8, 0xF1, 0xFF, 0x3F, 0x90, 0x02, 
-                /* 0438 */    0x83, 0x7B, 0x0A, 0xEC, 0x73, 0x0A, 0xE0, 0x29, 
-                /* 0440 */    0xF9, 0x89, 0x94, 0xA6, 0x3E, 0x91, 0xA2, 0x15, 
-                /* 0448 */    0x01, 0x69, 0xAA, 0x60, 0x21, 0x98, 0xFE, 0x44, 
-                /* 0450 */    0x4A, 0x0F, 0x06, 0xCE, 0x4D, 0xA2, 0xE4, 0x43, 
-                /* 0458 */    0xA3, 0x70, 0xCE, 0x7A, 0x20, 0xA1, 0x20, 0x06, 
-                /* 0460 */    0x74, 0x90, 0x43, 0x05, 0xFA, 0xAC, 0xE2, 0x03, 
-                /* 0468 */    0xC9, 0x81, 0x3C, 0x22, 0x7A, 0x58, 0x3E, 0x54, 
-                /* 0470 */    0xFA, 0xAE, 0xE2, 0x73, 0x88, 0x8F, 0x14, 0x1E, 
-                /* 0478 */    0xBF, 0x0F, 0x0B, 0xFC, 0x3F, 0xE3, 0xE3, 0x28, 
-                /* 0480 */    0x03, 0xAF, 0xE6, 0xBC, 0x82, 0x02, 0xF3, 0x69, 
-                /* 0488 */    0x14, 0xA3, 0xEB, 0x3E, 0x01, 0x92, 0xFF, 0xFF, 
-                /* 0490 */    0xFC, 0xB8, 0xBE, 0xC3, 0x28, 0xC8, 0xD1, 0x79, 
-                /* 0498 */    0xF8, 0xC9, 0xA2, 0xE2, 0x4E, 0x96, 0x82, 0x78, 
-                /* 04A0 */    0xB2, 0x8E, 0x32, 0x59, 0xF4, 0x4C, 0x7C, 0xBB, 
-                /* 04A8 */    0xF0, 0x8C, 0xDE, 0xBB, 0x7C, 0x83, 0x65, 0x37, 
-                /* 04B0 */    0x59, 0x78, 0x97, 0x81, 0x90, 0x8F, 0x06, 0xBE, 
-                /* 04B8 */    0xC9, 0xC2, 0x1D, 0x8B, 0x2F, 0x23, 0xE0, 0xBB, 
-                /* 04C0 */    0xC9, 0x02, 0x5E, 0x47, 0xE3, 0xB3, 0x05, 0x3B, 
-                /* 04C8 */    0x85, 0xF8, 0xBA, 0x06, 0x4B, 0xA1, 0x4D, 0x9F, 
-                /* 04D0 */    0x1A, 0x8D, 0x5A, 0xFD, 0xFF, 0x1B, 0x94, 0xA9, 
-                /* 04D8 */    0x51, 0xA6, 0x41, 0xAD, 0x3E, 0x95, 0x1A, 0x33, 
-                /* 04E0 */    0x76, 0xA1, 0xB0, 0xB8, 0x0B, 0x06, 0x95, 0xB4, 
-                /* 04E8 */    0x2C, 0x8D, 0xCB, 0x81, 0x40, 0x68, 0x80, 0x5B, 
-                /* 04F0 */    0xA9, 0x40, 0x1C, 0xFA, 0x0B, 0xA4, 0x53, 0x02, 
-                /* 04F8 */    0xF9, 0x6A, 0x09, 0xC8, 0x62, 0x57, 0x25, 0x10, 
-                /* 0500 */    0xCB, 0x54, 0x01, 0xD1, 0xC8, 0xDD, 0xC2, 0x20, 
-                /* 0508 */    0x02, 0x72, 0xBC, 0x4F, 0x8D, 0x40, 0x1D, 0x49, 
-                /* 0510 */    0x07, 0x10, 0x13, 0xE4, 0x63, 0xAC, 0xF4, 0x25, 
-                /* 0518 */    0x20, 0x10, 0xCB, 0xA6, 0x15, 0xA0, 0xE5, 0x3A, 
-                /* 0520 */    0x01, 0x62, 0x61, 0x41, 0x68, 0xC0, 0x5F, 0xB5, 
-                /* 0528 */    0x86, 0xE0, 0xB4, 0x20, 0x02, 0x72, 0x32, 0x2D, 
-                /* 0530 */    0x40, 0x2C, 0x27, 0x88, 0x80, 0xFC, 0xFF, 0x07
+                /* 0000 */  0x46, 0x4F, 0x4D, 0x42, 0x01, 0x00, 0x00, 0x00,
+                /* 0008 */  0x28, 0x05, 0x00, 0x00, 0xAE, 0x18, 0x00, 0x00,
+                /* 0010 */  0x44, 0x53, 0x00, 0x01, 0x1A, 0x7D, 0xDA, 0x54,
+                /* 0018 */  0x98, 0xDE, 0x8B, 0x00, 0x01, 0x06, 0x18, 0x42,
+                /* 0020 */  0x10, 0x0D, 0x10, 0x8A, 0x0D, 0x21, 0x02, 0x0B,
+                /* 0028 */  0x83, 0x50, 0x50, 0x18, 0x14, 0xA0, 0x45, 0x41,
+                /* 0030 */  0xC8, 0x05, 0x14, 0x95, 0x02, 0x21, 0xC3, 0x02,
+                /* 0038 */  0x14, 0x0B, 0x70, 0x2E, 0x40, 0xBA, 0x00, 0xE5,
+                /* 0040 */  0x28, 0x72, 0x0C, 0x22, 0x02, 0xF7, 0xEF, 0x0F,
+                /* 0048 */  0x31, 0x10, 0x88, 0x14, 0x40, 0x48, 0x28, 0x84,
+                /* 0050 */  0x44, 0x00, 0x53, 0x21, 0x70, 0x84, 0xA0, 0x5F,
+                /* 0058 */  0x01, 0x08, 0x1D, 0x0A, 0x90, 0x29, 0xC0, 0xA0,
+                /* 0060 */  0x00, 0xA7, 0x08, 0x22, 0x88, 0xD2, 0xB2, 0x00,
+                /* 0068 */  0xDD, 0x02, 0x7C, 0x0B, 0xD0, 0x0E, 0x21, 0xB4,
+                /* 0070 */  0xC8, 0x95, 0x0A, 0xB0, 0x08, 0x25, 0x9F, 0x80,
+                /* 0078 */  0x92, 0x88, 0x22, 0xD9, 0x78, 0xB2, 0x8D, 0x48,
+                /* 0080 */  0xE6, 0x61, 0x91, 0x83, 0x40, 0x89, 0x19, 0x04,
+                /* 0088 */  0x4A, 0x27, 0xAE, 0x6C, 0xE2, 0x6A, 0x10, 0x07,
+                /* 0090 */  0x10, 0xE5, 0x3C, 0xA2, 0x24, 0x38, 0xAA, 0x83,
+                /* 0098 */  0x88, 0x10, 0xBB, 0x5C, 0x01, 0x92, 0x07, 0x20,
+                /* 00A0 */  0xCD, 0x13, 0x93, 0xF5, 0x39, 0x68, 0x64, 0x6C,
+                /* 00A8 */  0x04, 0x3C, 0x98, 0x04, 0x10, 0x16, 0x65, 0x9D,
+                /* 00B0 */  0x8A, 0x02, 0x83, 0xF2, 0x00, 0x22, 0x39, 0x63,
+                /* 00B8 */  0x45, 0x01, 0xDB, 0xEB, 0x44, 0x64, 0x72, 0xA0,
+                /* 00C0 */  0x54, 0x12, 0x1C, 0x6A, 0x98, 0x9E, 0x5A, 0xF3,
+                /* 00C8 */  0x13, 0xD3, 0x44, 0x4E, 0xAD, 0xE9, 0x21, 0x0B,
+                /* 00D0 */  0x92, 0x49, 0x1B, 0x0A, 0x6A, 0xEC, 0x9E, 0xD6,
+                /* 00D8 */  0x49, 0x79, 0xA6, 0x11, 0x0F, 0xCA, 0x30, 0x09,
+                /* 00E0 */  0x3C, 0x0A, 0x86, 0xC6, 0x09, 0xCA, 0x82, 0x90,
+                /* 00E8 */  0x83, 0x81, 0xA2, 0x00, 0x4F, 0xC2, 0x73, 0x2C,
+                /* 00F0 */  0x5E, 0x80, 0xF0, 0x11, 0x93, 0xB3, 0x40, 0x8C,
+                /* 00F8 */  0x04, 0x3E, 0x13, 0x78, 0xE4, 0xC7, 0x8C, 0x1D,
+                /* 0100 */  0x51, 0xB8, 0x80, 0xE7, 0x73, 0x0C, 0x91, 0xE3,
+                /* 0108 */  0x1E, 0x6A, 0x8C, 0xA3, 0x88, 0x7C, 0x38, 0x0C,
+                /* 0110 */  0xED, 0x74, 0xE3, 0x1C, 0xD8, 0xE9, 0x14, 0x04,
+                /* 0118 */  0x2E, 0x90, 0x60, 0x3D, 0xCF, 0x59, 0x20, 0xFF,
+                /* 0120 */  0xFF, 0x18, 0x07, 0xC1, 0xF0, 0x8E, 0x01, 0x23,
+                /* 0128 */  0x03, 0x42, 0x1E, 0x05, 0x58, 0x1D, 0x96, 0x26,
+                /* 0130 */  0x91, 0xC0, 0xEE, 0x05, 0x68, 0xBC, 0x04, 0x48,
+                /* 0138 */  0xE1, 0x20, 0xA5, 0x0C, 0x42, 0x30, 0x8D, 0x09,
+                /* 0140 */  0xB0, 0x75, 0x68, 0x90, 0x37, 0x01, 0xD6, 0xAE,
+                /* 0148 */  0x02, 0x42, 0x89, 0x74, 0x02, 0x71, 0x42, 0x44,
+                /* 0150 */  0x89, 0x18, 0xD4, 0x40, 0x51, 0x6A, 0x43, 0x15,
+                /* 0158 */  0x4C, 0x67, 0xC3, 0x13, 0x66, 0xDC, 0x10, 0x31,
+                /* 0160 */  0x0C, 0x14, 0xB7, 0xFD, 0x41, 0x90, 0x61, 0xE3,
+                /* 0168 */  0xC6, 0xEF, 0x41, 0x9D, 0xD6, 0xD9, 0x1D, 0xD3,
+                /* 0170 */  0xAB, 0x82, 0x09, 0x3C, 0xE9, 0x37, 0x84, 0xA7,
+                /* 0178 */  0x83, 0xA3, 0x38, 0xDA, 0xA8, 0x31, 0x9A, 0x23,
+                /* 0180 */  0x65, 0xAB, 0xD6, 0xB9, 0xC2, 0x91, 0xE0, 0x51,
+                /* 0188 */  0xE7, 0x05, 0x9F, 0x0C, 0x3C, 0xB4, 0xC3, 0xF6,
+                /* 0190 */  0x60, 0xCF, 0xD2, 0x43, 0x38, 0x82, 0x67, 0x86,
+                /* 0198 */  0x47, 0x02, 0x8F, 0x81, 0xDD, 0x15, 0x7C, 0x08,
+                /* 01A0 */  0xF0, 0x19, 0x01, 0xEF, 0x1A, 0x50, 0x97, 0x83,
+                /* 01A8 */  0x47, 0x03, 0x36, 0xE9, 0x70, 0x98, 0xF1, 0x7A,
+                /* 01B0 */  0xEE, 0x9E, 0xBA, 0xCF, 0x18, 0xFC, 0xBC, 0xE1,
+                /* 01B8 */  0xC1, 0xE1, 0x46, 0x7A, 0x32, 0x47, 0x56, 0xAA,
+                /* 01C0 */  0x00, 0xB3, 0xD7, 0x00, 0x1D, 0x25, 0x7C, 0xE0,
+                /* 01C8 */  0x60, 0x77, 0x81, 0xA7, 0x00, 0x13, 0x58, 0xFE,
+                /* 01D0 */  0x20, 0x50, 0x23, 0x33, 0xB4, 0xC7, 0xFB, 0xDE,
+                /* 01D8 */  0x61, 0xC8, 0x27, 0x85, 0xC3, 0x62, 0x62, 0x0F,
+                /* 01E0 */  0x1E, 0x74, 0x3C, 0xE0, 0xBF, 0x8F, 0x3C, 0x69,
+                /* 01E8 */  0x78, 0xFA, 0x9E, 0xAF, 0x09, 0x06, 0x86, 0x90,
+                /* 01F0 */  0x95, 0xF1, 0xA0, 0x06, 0x62, 0xE8, 0x57, 0x85,
+                /* 01F8 */  0xC3, 0x38, 0x0D, 0x9F, 0x40, 0x7C, 0x0E, 0x08,
+                /* 0200 */  0x12, 0xE3, 0x98, 0x3C, 0x38, 0xFF, 0xFF, 0x09,
+                /* 0208 */  0x1C, 0x6B, 0xE4, 0xF4, 0x9C, 0xE2, 0xF3, 0x04,
+                /* 0210 */  0x3F, 0x5C, 0xF8, 0x3C, 0xC1, 0x4E, 0x0C, 0xA7,
+                /* 0218 */  0xF1, 0x1C, 0xE0, 0xE1, 0x9C, 0x95, 0x8F, 0x13,
+                /* 0220 */  0xC0, 0x02, 0xE2, 0x75, 0x82, 0x0F, 0x14, 0x3E,
+                /* 0228 */  0xEC, 0xA1, 0x79, 0x14, 0x2F, 0x11, 0x6F, 0x0F,
+                /* 0230 */  0x26, 0x88, 0xF6, 0x10, 0x03, 0xC6, 0x19, 0xE1,
+                /* 0238 */  0xCE, 0x1B, 0x70, 0x4E, 0x31, 0xC0, 0x03, 0xEA,
+                /* 0240 */  0x10, 0x30, 0x87, 0x09, 0x0F, 0x81, 0x0F, 0xE0,
+                /* 0248 */  0x19, 0xE4, 0x1C, 0x7D, 0xCC, 0x39, 0x33, 0xDC,
+                /* 0250 */  0x71, 0x07, 0x6C, 0xC3, 0xE0, 0x91, 0x2D, 0x80,
+                /* 0258 */  0xB0, 0x38, 0x4F, 0x02, 0x05, 0x7C, 0x1B, 0x50,
+                /* 0260 */  0x18, 0x1F, 0x6E, 0xC0, 0xFB, 0xFF, 0x3F, 0xDC,
+                /* 0268 */  0x00, 0xD7, 0xF3, 0x01, 0xEE, 0xF8, 0x00, 0xF7,
+                /* 0270 */  0x62, 0xC1, 0x0E, 0x0F, 0x8F, 0x37, 0xC0, 0x60,
+                /* 0278 */  0x48, 0x8F, 0x34, 0x6F, 0x35, 0x31, 0x5E, 0x6D,
+                /* 0280 */  0x42, 0x44, 0x78, 0xA8, 0x79, 0xB7, 0x31, 0x52,
+                /* 0288 */  0xBC, 0xC7, 0x1B, 0x76, 0x8D, 0x39, 0x8B, 0x07,
+                /* 0290 */  0x90, 0x28, 0xC5, 0xA1, 0xE9, 0x62, 0x13, 0x23,
+                /* 0298 */  0xCA, 0x9B, 0x8D, 0x61, 0xDF, 0x74, 0x0C, 0x14,
+                /* 02A0 */  0x2A, 0x52, 0x84, 0x30, 0x2F, 0x16, 0x21, 0x1E,
+                /* 02A8 */  0x6F, 0xC0, 0x2C, 0xE9, 0xA5, 0xA2, 0xCF, 0x81,
+                /* 02B0 */  0x8F, 0x37, 0x80, 0x97, 0xFF, 0xFF, 0xF1, 0x06,
+                /* 02B8 */  0xF0, 0x30, 0x0C, 0x1F, 0x53, 0xC0, 0x76, 0x73,
+                /* 02C0 */  0x60, 0xF7, 0x14, 0xF8, 0xE7, 0x14, 0xC0, 0x91,
+                /* 02C8 */  0x90, 0x47, 0x80, 0x0E, 0x1E, 0x16, 0x01, 0x22,
+                /* 02D0 */  0x1B, 0xCF, 0x00, 0x9F, 0x89, 0xA8, 0x40, 0x2A,
+                /* 02D8 */  0xCD, 0x14, 0x2C, 0xE3, 0x14, 0xAC, 0x4E, 0x88,
+                /* 02E0 */  0x5C, 0x06, 0x85, 0x44, 0x40, 0x68, 0x64, 0x86,
+                /* 02E8 */  0xF3, 0x21, 0xD1, 0x60, 0x06, 0xF1, 0xF9, 0xC0,
+                /* 02F0 */  0x67, 0x0A, 0x9F, 0x9C, 0xF8, 0xFF, 0xFF, 0xE4,
+                /* 02F8 */  0x04, 0x9E, 0x83, 0xC9, 0x43, 0x05, 0x2C, 0x44,
+                /* 0300 */  0x9F, 0x16, 0x38, 0x9C, 0xCF, 0x2C, 0x1C, 0xCE,
+                /* 0308 */  0x47, 0x12, 0x7E, 0x80, 0xE4, 0x47, 0x25, 0x70,
+                /* 0310 */  0x09, 0x3C, 0x34, 0x80, 0x02, 0xC8, 0xF7, 0x03,
+                /* 0318 */  0x9F, 0x03, 0x9E, 0x11, 0xD8, 0x1C, 0x1E, 0x09,
+                /* 0320 */  0x7C, 0x20, 0x60, 0xF0, 0x3C, 0xDA, 0xA8, 0xE8,
+                /* 0328 */  0xD1, 0xC6, 0xC3, 0xE3, 0x47, 0x06, 0xCF, 0xE7,
+                /* 0330 */  0x81, 0xE0, 0x28, 0x1F, 0x09, 0x70, 0x18, 0xEF,
+                /* 0338 */  0x17, 0x1E, 0xA2, 0x4F, 0x39, 0xB0, 0x26, 0x72,
+                /* 0340 */  0xD4, 0x16, 0x7D, 0x22, 0x10, 0xE8, 0x33, 0x17,
+                /* 0348 */  0xE6, 0x94, 0x03, 0x9C, 0x82, 0x8F, 0x1E, 0x15,
+                /* 0350 */  0xF5, 0x40, 0x0A, 0xDA, 0x93, 0x82, 0xCF, 0x0A,
+                /* 0358 */  0x3E, 0x7C, 0xC1, 0xFF, 0xFF, 0x1F, 0xBE, 0xE0,
+                /* 0360 */  0xCC, 0xEB, 0x65, 0xCD, 0x07, 0x8E, 0x38, 0x67,
+                /* 0368 */  0x71, 0xBA, 0xEF, 0x16, 0xF8, 0x13, 0x29, 0x30,
+                /* 0370 */  0x0B, 0x72, 0x22, 0x45, 0xC1, 0xF8, 0x44, 0x0A,
+                /* 0378 */  0xD8, 0xBC, 0x05, 0x60, 0xAF, 0x0B, 0x4F, 0x22,
+                /* 0380 */  0x30, 0xCE, 0x11, 0xCF, 0x58, 0x30, 0x0F, 0x55,
+                /* 0388 */  0xA7, 0xF8, 0x52, 0xF5, 0xC6, 0x10, 0xE1, 0xC9,
+                /* 0390 */  0xEA, 0x35, 0xEA, 0x01, 0xCB, 0x60, 0x2F, 0x02,
+                /* 0398 */  0x86, 0x79, 0xC5, 0xF2, 0xE9, 0x2A, 0xC4, 0x03,
+                /* 03A0 */  0x96, 0xCF, 0x5A, 0xD1, 0x42, 0x84, 0x8C, 0x12,
+                /* 03A8 */  0xEC, 0x15, 0xEB, 0x55, 0xC6, 0x47, 0x2A, 0x83,
+                /* 03B0 */  0x07, 0x0C, 0x1B, 0x2D, 0x52, 0x84, 0x47, 0x2C,
+                /* 03B8 */  0xFC, 0xFF, 0xFF, 0x88, 0x05, 0x1E, 0x09, 0x07,
+                /* 03C0 */  0x52, 0x80, 0x2A, 0x03, 0xC7, 0x1D, 0x48, 0x81,
+                /* 03C8 */  0xFD, 0x69, 0x02, 0x7F, 0xBD, 0xF0, 0x78, 0xB0,
+                /* 03D0 */  0xFF, 0xFF, 0x73, 0x00, 0xF8, 0x0E, 0x31, 0xC0,
+                /* 03D8 */  0x60, 0xC0, 0x30, 0x0E, 0x31, 0xC0, 0x43, 0xF0,
+                /* 03E0 */  0xC9, 0x0C, 0xF4, 0xC7, 0x1D, 0xF8, 0xE3, 0xE0,
+                /* 03E8 */  0x19, 0x9F, 0x1C, 0x26, 0x50, 0x98, 0x13, 0x29,
+                /* 03F0 */  0x0A, 0xC6, 0x27, 0x52, 0xC0, 0xD9, 0xFF, 0xFF,
+                /* 03F8 */  0x70, 0x05, 0x86, 0xE3, 0x0D, 0xF8, 0x6F, 0x33,
+                /* 0400 */  0x3E, 0x84, 0xFA, 0x7C, 0xE3, 0x0B, 0xA9, 0x21,
+                /* 0408 */  0x5E, 0x6C, 0xDE, 0xD4, 0x5E, 0x09, 0x5E, 0xDF,
+                /* 0410 */  0xD9, 0xB5, 0xE6, 0xF5, 0xDD, 0xA7, 0x82, 0x27,
+                /* 0418 */  0xD1, 0x08, 0x21, 0xA3, 0xBC, 0xE4, 0x18, 0x24,
+                /* 0420 */  0xC4, 0xEB, 0xA8, 0x01, 0x83, 0x05, 0x89, 0x78,
+                /* 0428 */  0x0A, 0x4F, 0x3B, 0x8F, 0x37, 0xE0, 0x15, 0x75,
+                /* 0430 */  0x20, 0x05, 0xE8, 0xF1, 0xFF, 0x3F, 0x90, 0x02,
+                /* 0438 */  0x83, 0x7B, 0x0A, 0xEC, 0x73, 0x0A, 0xE0, 0x29,
+                /* 0440 */  0xF9, 0x89, 0x94, 0xA6, 0x3E, 0x91, 0xA2, 0x15,
+                /* 0448 */  0x01, 0x69, 0xAA, 0x60, 0x21, 0x98, 0xFE, 0x44,
+                /* 0450 */  0x4A, 0x0F, 0x06, 0xCE, 0x4D, 0xA2, 0xE4, 0x43,
+                /* 0458 */  0xA3, 0x70, 0xCE, 0x7A, 0x20, 0xA1, 0x20, 0x06,
+                /* 0460 */  0x74, 0x90, 0x43, 0x05, 0xFA, 0xAC, 0xE2, 0x03,
+                /* 0468 */  0xC9, 0x81, 0x3C, 0x22, 0x7A, 0x58, 0x3E, 0x54,
+                /* 0470 */  0xFA, 0xAE, 0xE2, 0x73, 0x88, 0x8F, 0x14, 0x1E,
+                /* 0478 */  0xBF, 0x0F, 0x0B, 0xFC, 0x3F, 0xE3, 0xE3, 0x28,
+                /* 0480 */  0x03, 0xAF, 0xE6, 0xBC, 0x82, 0x02, 0xF3, 0x69,
+                /* 0488 */  0x14, 0xA3, 0xEB, 0x3E, 0x01, 0x92, 0xFF, 0xFF,
+                /* 0490 */  0xFC, 0xB8, 0xBE, 0xC3, 0x28, 0xC8, 0xD1, 0x79,
+                /* 0498 */  0xF8, 0xC9, 0xA2, 0xE2, 0x4E, 0x96, 0x82, 0x78,
+                /* 04A0 */  0xB2, 0x8E, 0x32, 0x59, 0xF4, 0x4C, 0x7C, 0xBB,
+                /* 04A8 */  0xF0, 0x8C, 0xDE, 0xBB, 0x7C, 0x83, 0x65, 0x37,
+                /* 04B0 */  0x59, 0x78, 0x97, 0x81, 0x90, 0x8F, 0x06, 0xBE,
+                /* 04B8 */  0xC9, 0xC2, 0x1D, 0x8B, 0x2F, 0x23, 0xE0, 0xBB,
+                /* 04C0 */  0xC9, 0x02, 0x5E, 0x47, 0xE3, 0xB3, 0x05, 0x3B,
+                /* 04C8 */  0x85, 0xF8, 0xBA, 0x06, 0x4B, 0xA1, 0x4D, 0x9F,
+                /* 04D0 */  0x1A, 0x8D, 0x5A, 0xFD, 0xFF, 0x1B, 0x94, 0xA9,
+                /* 04D8 */  0x51, 0xA6, 0x41, 0xAD, 0x3E, 0x95, 0x1A, 0x33,
+                /* 04E0 */  0x76, 0xA1, 0xB0, 0xB8, 0x0B, 0x06, 0x95, 0xB4,
+                /* 04E8 */  0x2C, 0x8D, 0xCB, 0x81, 0x40, 0x68, 0x80, 0x5B,
+                /* 04F0 */  0xA9, 0x40, 0x1C, 0xFA, 0x0B, 0xA4, 0x53, 0x02,
+                /* 04F8 */  0xF9, 0x6A, 0x09, 0xC8, 0x62, 0x57, 0x25, 0x10,
+                /* 0500 */  0xCB, 0x54, 0x01, 0xD1, 0xC8, 0xDD, 0xC2, 0x20,
+                /* 0508 */  0x02, 0x72, 0xBC, 0x4F, 0x8D, 0x40, 0x1D, 0x49,
+                /* 0510 */  0x07, 0x10, 0x13, 0xE4, 0x63, 0xAC, 0xF4, 0x25,
+                /* 0518 */  0x20, 0x10, 0xCB, 0xA6, 0x15, 0xA0, 0xE5, 0x3A,
+                /* 0520 */  0x01, 0x62, 0x61, 0x41, 0x68, 0xC0, 0x5F, 0xB5,
+                /* 0528 */  0x86, 0xE0, 0xB4, 0x20, 0x02, 0x72, 0x32, 0x2D,
+                /* 0530 */  0x40, 0x2C, 0x27, 0x88, 0x80, 0xFC, 0xFF, 0x07 
             })
         }
 
         Device (WMI3)
         {
-            Name (_HID, EisaId ("PNP0C14"))
-            Name (_UID, 0x03)
-            Name (_WDG, /**** Is ResourceTemplate, but EndTag not at buffer end ****/ Buffer (0x3C)
+            Name (_HID, EisaId ("PNP0C14"))  // _HID: Hardware ID
+            Name (_UID, 0x03)  // _UID: Unique ID
+            Name (_WDG, Buffer (0x3C)
             {
-                /* 0000 */    0x79, 0x36, 0x4D, 0x8F, 0x9E, 0x74, 0x79, 0x44, 
-                /* 0008 */    0x9B, 0x16, 0xC6, 0x26, 0x01, 0xFD, 0x25, 0xF0, 
-                /* 0010 */    0x41, 0x42, 0x01, 0x02, 0x69, 0xE8, 0xD2, 0x85, 
-                /* 0018 */    0x5A, 0x36, 0xCE, 0x4A, 0xA4, 0xD3, 0xCD, 0x69, 
-                /* 0020 */    0x2B, 0x16, 0x98, 0xA0, 0x41, 0x43, 0x01, 0x02, 
-                /* 0028 */    0x21, 0x12, 0x90, 0x05, 0x66, 0xD5, 0xD1, 0x11, 
-                /* 0030 */    0xB2, 0xF0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10, 
-                /* 0038 */    0x42, 0x43, 0x01, 0x00
+                /* 0000 */  0x79, 0x36, 0x4D, 0x8F, 0x9E, 0x74, 0x79, 0x44,
+                /* 0008 */  0x9B, 0x16, 0xC6, 0x26, 0x01, 0xFD, 0x25, 0xF0,
+                /* 0010 */  0x41, 0x42, 0x01, 0x02, 0x69, 0xE8, 0xD2, 0x85,
+                /* 0018 */  0x5A, 0x36, 0xCE, 0x4A, 0xA4, 0xD3, 0xCD, 0x69,
+                /* 0020 */  0x2B, 0x16, 0x98, 0xA0, 0x41, 0x43, 0x01, 0x02,
+                /* 0028 */  0x21, 0x12, 0x90, 0x05, 0x66, 0xD5, 0xD1, 0x11,
+                /* 0030 */  0xB2, 0xF0, 0x00, 0xA0, 0xC9, 0x06, 0x29, 0x10,
+                /* 0038 */  0x42, 0x43, 0x01, 0x00                         
             })
             Method (WMAB, 3, NotSerialized)
             {
@@ -14548,136 +14145,136 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
             Name (WQBC, Buffer (0x040A)
             {
-                /* 0000 */    0x46, 0x4F, 0x4D, 0x42, 0x01, 0x00, 0x00, 0x00, 
-                /* 0008 */    0xFA, 0x03, 0x00, 0x00, 0x32, 0x12, 0x00, 0x00, 
-                /* 0010 */    0x44, 0x53, 0x00, 0x01, 0x1A, 0x7D, 0xDA, 0x54, 
-                /* 0018 */    0x98, 0xC3, 0x88, 0x00, 0x01, 0x06, 0x18, 0x42, 
-                /* 0020 */    0x10, 0x07, 0x10, 0x8A, 0x0D, 0x21, 0x02, 0x0B, 
-                /* 0028 */    0x83, 0x50, 0x50, 0x18, 0x14, 0xA0, 0x45, 0x41, 
-                /* 0030 */    0xC8, 0x05, 0x14, 0x95, 0x02, 0x21, 0xC3, 0x02, 
-                /* 0038 */    0x14, 0x0B, 0x70, 0x2E, 0x40, 0xBA, 0x00, 0xE5, 
-                /* 0040 */    0x28, 0x72, 0x0C, 0x22, 0x02, 0xF7, 0xEF, 0x0F, 
-                /* 0048 */    0x31, 0x10, 0x88, 0x14, 0x40, 0x48, 0x28, 0x84, 
-                /* 0050 */    0x44, 0x00, 0x53, 0x21, 0x70, 0x84, 0xA0, 0x5F, 
-                /* 0058 */    0x01, 0x08, 0x1D, 0x0A, 0x90, 0x29, 0xC0, 0xA0, 
-                /* 0060 */    0x00, 0xA7, 0x08, 0x22, 0x88, 0xD2, 0xB2, 0x00, 
-                /* 0068 */    0xDD, 0x02, 0x7C, 0x0B, 0xD0, 0x0E, 0x21, 0xB4, 
-                /* 0070 */    0x58, 0x07, 0x11, 0x21, 0xD2, 0x31, 0x34, 0x29, 
-                /* 0078 */    0x40, 0xA2, 0x00, 0x8B, 0x02, 0x64, 0xC3, 0xC8, 
-                /* 0080 */    0x36, 0x22, 0x99, 0x87, 0x45, 0x0E, 0x02, 0x25, 
-                /* 0088 */    0x66, 0x10, 0x28, 0x9D, 0xE0, 0xB2, 0x89, 0xAB, 
-                /* 0090 */    0x41, 0x9C, 0x4C, 0x94, 0xF3, 0x88, 0x92, 0xE0, 
-                /* 0098 */    0xA8, 0x0E, 0x22, 0x42, 0xEC, 0x72, 0x05, 0x48, 
-                /* 00A0 */    0x1E, 0x80, 0x34, 0x4F, 0x4C, 0xD6, 0xE7, 0xA0, 
-                /* 00A8 */    0x91, 0xB1, 0x11, 0xF0, 0x94, 0x1A, 0x40, 0x58, 
-                /* 00B0 */    0xA0, 0x75, 0x2A, 0xE0, 0x7A, 0x0D, 0x43, 0x3D, 
-                /* 00B8 */    0x80, 0x48, 0xCE, 0x58, 0x51, 0xC0, 0xF6, 0x3A, 
-                /* 00C0 */    0x11, 0x8D, 0xEA, 0x40, 0x99, 0x24, 0x38, 0xD4, 
-                /* 00C8 */    0x30, 0x3D, 0xB5, 0xE6, 0x27, 0xA6, 0x89, 0x9C, 
-                /* 00D0 */    0x5A, 0xD3, 0x43, 0x16, 0x24, 0x93, 0x36, 0x14, 
-                /* 00D8 */    0xD4, 0xD8, 0x3D, 0xAD, 0x93, 0xF2, 0x4C, 0x23, 
-                /* 00E0 */    0x1E, 0x94, 0x61, 0x12, 0x78, 0x14, 0x0C, 0x8D, 
-                /* 00E8 */    0x13, 0x94, 0x75, 0x22, 0xA0, 0x03, 0xE5, 0x80, 
-                /* 00F0 */    0x27, 0xE1, 0x39, 0x16, 0x2F, 0x40, 0xF8, 0x88, 
-                /* 00F8 */    0xC9, 0xB4, 0x4D, 0xE0, 0x33, 0x81, 0x87, 0x79, 
-                /* 0100 */    0xCC, 0xD8, 0x11, 0x85, 0x0B, 0x78, 0x3E, 0xC7, 
-                /* 0108 */    0x10, 0x39, 0xEE, 0xA1, 0xC6, 0x38, 0x8A, 0xC8, 
-                /* 0110 */    0x47, 0x60, 0x24, 0x03, 0xC5, 0x2B, 0x08, 0x89, 
-                /* 0118 */    0x80, 0xF8, 0x76, 0x70, 0x70, 0x91, 0xFC, 0xFF, 
-                /* 0120 */    0x47, 0x89, 0x11, 0x2A, 0xC6, 0xDB, 0x00, 0x6E, 
-                /* 0128 */    0x5E, 0x09, 0x8A, 0x1E, 0x07, 0x4A, 0x06, 0x84, 
-                /* 0130 */    0x3C, 0x0A, 0xB0, 0x7A, 0x28, 0x20, 0x04, 0x16, 
-                /* 0138 */    0x27, 0x40, 0xE3, 0x38, 0x05, 0xD3, 0x99, 0x00, 
-                /* 0140 */    0x6D, 0x02, 0xBC, 0x09, 0x30, 0x27, 0xC0, 0x16, 
-                /* 0148 */    0x86, 0x80, 0x82, 0x9C, 0x59, 0x94, 0x20, 0x11, 
-                /* 0150 */    0x42, 0x31, 0x88, 0x0A, 0x05, 0x18, 0x43, 0x14, 
-                /* 0158 */    0xCA, 0x3B, 0x41, 0x8C, 0xCA, 0x20, 0x74, 0x82, 
-                /* 0160 */    0x08, 0x14, 0x3D, 0x78, 0x98, 0xD6, 0x40, 0x74, 
-                /* 0168 */    0x89, 0xF0, 0xC8, 0xB1, 0x47, 0x00, 0x9F, 0x19, 
-                /* 0170 */    0xCE, 0xE9, 0x04, 0x1F, 0x01, 0xDE, 0x16, 0x4C, 
-                /* 0178 */    0xE0, 0x79, 0xBF, 0x24, 0x1C, 0x6A, 0xD8, 0x03, 
-                /* 0180 */    0x8E, 0x1A, 0xE3, 0x28, 0x12, 0x58, 0xD0, 0x33, 
-                /* 0188 */    0x42, 0x16, 0x40, 0x14, 0x09, 0x1E, 0x75, 0x64, 
-                /* 0190 */    0xF0, 0xE1, 0xC0, 0x23, 0x3B, 0x72, 0xCF, 0xF0, 
-                /* 0198 */    0x04, 0x82, 0x1C, 0xC2, 0x11, 0x3C, 0x36, 0x3C, 
-                /* 01A0 */    0x15, 0x78, 0x0C, 0xEC, 0xBA, 0xE0, 0x73, 0x80, 
-                /* 01A8 */    0x8F, 0x09, 0x78, 0xD7, 0x80, 0x9A, 0xF3, 0xD3, 
-                /* 01B0 */    0x01, 0x9B, 0x72, 0x38, 0xCC, 0x70, 0x3D, 0xFD, 
-                /* 01B8 */    0x70, 0x27, 0x70, 0xD2, 0x06, 0x64, 0xB3, 0xF3, 
-                /* 01C0 */    0xE0, 0x70, 0xE3, 0x3C, 0x99, 0x23, 0x2B, 0x55, 
-                /* 01C8 */    0x80, 0xD9, 0x13, 0x82, 0x4E, 0x13, 0x3E, 0x73, 
-                /* 01D0 */    0xB0, 0xBB, 0xC0, 0xF9, 0xF4, 0x0C, 0x49, 0xE4, 
-                /* 01D8 */    0x0F, 0x02, 0x35, 0x32, 0x43, 0xFB, 0x2C, 0xF0, 
-                /* 01E0 */    0xEA, 0x61, 0xC8, 0x87, 0x85, 0xC3, 0x62, 0x62, 
-                /* 01E8 */    0xCF, 0x1E, 0x74, 0x3C, 0xE0, 0x3F, 0x25, 0x3C, 
-                /* 01F0 */    0x6C, 0x78, 0xFA, 0x9E, 0xAF, 0x09, 0xA2, 0x3D, 
-                /* 01F8 */    0x8F, 0x80, 0xE1, 0xFF, 0x7F, 0x1E, 0x81, 0x39, 
-                /* 0200 */    0x9C, 0x07, 0x84, 0x27, 0x07, 0x76, 0x80, 0xC0, 
-                /* 0208 */    0x1C, 0x48, 0x80, 0xC9, 0xF9, 0x02, 0x77, 0x28, 
-                /* 0210 */    0xF0, 0x10, 0xF8, 0x00, 0x1E, 0x25, 0xCE, 0xD1, 
-                /* 0218 */    0x4A, 0x67, 0x86, 0x3C, 0xB9, 0x80, 0x2D, 0xFB, 
-                /* 0220 */    0x1B, 0x40, 0x07, 0x0F, 0xE7, 0x06, 0x91, 0x8D, 
-                /* 0228 */    0x57, 0x80, 0x09, 0x74, 0x38, 0xB1, 0x1E, 0x20, 
-                /* 0230 */    0x4D, 0x14, 0x0C, 0x04, 0xD3, 0xD3, 0x6B, 0x00, 
-                /* 0238 */    0x3E, 0x15, 0x38, 0x37, 0x89, 0x92, 0x0F, 0x8C, 
-                /* 0240 */    0xC2, 0x39, 0xEB, 0x79, 0x84, 0x82, 0x18, 0xD0, 
-                /* 0248 */    0x41, 0x20, 0xE4, 0xE4, 0xA0, 0x80, 0x3A, 0xAA, 
-                /* 0250 */    0xF8, 0x3C, 0x72, 0xAA, 0x0F, 0x3D, 0x9E, 0x94, 
-                /* 0258 */    0x47, 0xE1, 0xAB, 0x8A, 0x0F, 0x21, 0x3E, 0x4F, 
-                /* 0260 */    0x78, 0xF4, 0x3E, 0x29, 0xF0, 0xEF, 0x8C, 0xAF, 
-                /* 0268 */    0x0E, 0x46, 0xB7, 0x9A, 0xE3, 0x0A, 0x0A, 0xCC, 
-                /* 0270 */    0x67, 0x11, 0x4E, 0x50, 0xD7, 0x6D, 0x01, 0xFA, 
-                /* 0278 */    0x29, 0xE0, 0x08, 0x3C, 0x94, 0x77, 0x92, 0xC7, 
-                /* 0280 */    0x90, 0x04, 0xF5, 0x9D, 0x16, 0x40, 0x01, 0xE4, 
-                /* 0288 */    0x9B, 0x81, 0x4F, 0x02, 0x21, 0xFE, 0xFF, 0x4F, 
-                /* 0290 */    0x07, 0x1E, 0xC3, 0xC3, 0x80, 0xD1, 0x8C, 0xCE, 
-                /* 0298 */    0xC3, 0x4F, 0x16, 0x15, 0x77, 0xB2, 0x14, 0xC4, 
-                /* 02A0 */    0x93, 0x75, 0x94, 0xC9, 0xA2, 0x67, 0xE2, 0xAB, 
-                /* 02A8 */    0x85, 0x27, 0x74, 0x4A, 0x41, 0xCE, 0xD1, 0x13, 
-                /* 02B0 */    0xF6, 0x55, 0x04, 0xD6, 0xF9, 0x20, 0xE4, 0x8B, 
-                /* 02B8 */    0x81, 0xA7, 0x61, 0x38, 0x4F, 0x96, 0xC3, 0x79, 
-                /* 02C0 */    0xB2, 0x7C, 0x2C, 0xBE, 0x6A, 0xC0, 0x1F, 0x2D, 
-                /* 02C8 */    0x96, 0xA0, 0xC0, 0xD9, 0x82, 0x1C, 0x1E, 0x13, 
-                /* 02D0 */    0x6F, 0x54, 0xF4, 0x46, 0xE4, 0xE1, 0xF1, 0xCB, 
-                /* 02D8 */    0x81, 0xE7, 0xF3, 0x8C, 0x70, 0x94, 0x6F, 0x12, 
-                /* 02E0 */    0x38, 0x8C, 0xC7, 0x12, 0x0F, 0xD1, 0x97, 0x23, 
-                /* 02E8 */    0x58, 0x13, 0x39, 0x69, 0xDF, 0x16, 0x4E, 0x36, 
-                /* 02F0 */    0xE8, 0x4B, 0x10, 0xBB, 0x1C, 0x01, 0xBF, 0x88, 
-                /* 02F8 */    0x26, 0x86, 0xC1, 0x22, 0x2D, 0x45, 0x11, 0x17, 
-                /* 0300 */    0x45, 0x61, 0x7C, 0xC5, 0x82, 0xFD, 0xFF, 0xBF, 
-                /* 0308 */    0x62, 0x01, 0x16, 0x04, 0x0F, 0x1B, 0x34, 0x87, 
-                /* 0310 */    0x83, 0x97, 0x1E, 0x36, 0x6B, 0x38, 0x07, 0x99, 
-                /* 0318 */    0xD3, 0xF1, 0x48, 0x4E, 0x1B, 0xC6, 0x1D, 0x0B, 
-                /* 0320 */    0xFE, 0x9D, 0xEA, 0xA9, 0xCA, 0xD3, 0x8A, 0xF2, 
-                /* 0328 */    0x64, 0xF5, 0x7A, 0xE5, 0x63, 0x96, 0xA1, 0xCE, 
-                /* 0330 */    0xE0, 0x1D, 0xCB, 0xB7, 0x3C, 0x4F, 0x21, 0x4A, 
-                /* 0338 */    0x9C, 0x97, 0x2D, 0x76, 0xC7, 0x32, 0x48, 0x50, 
-                /* 0340 */    0x23, 0x3F, 0x68, 0x31, 0x94, 0xE0, 0xF1, 0xDE, 
-                /* 0348 */    0xB1, 0x00, 0x6F, 0xFF, 0xFF, 0x3B, 0x16, 0x60, 
-                /* 0350 */    0xFC, 0x04, 0xC1, 0x09, 0x7C, 0xC7, 0x02, 0x1C, 
-                /* 0358 */    0xC5, 0x7E, 0x37, 0xE8, 0x4A, 0x45, 0xEE, 0x58, 
-                /* 0360 */    0x28, 0x0E, 0xAB, 0xB9, 0x63, 0x41, 0x9C, 0x28, 
-                /* 0368 */    0xE6, 0x8A, 0x05, 0x86, 0xFF, 0xFF, 0x15, 0x0B, 
-                /* 0370 */    0xE0, 0x75, 0xC0, 0x2B, 0x16, 0x68, 0xFE, 0xFF, 
-                /* 0378 */    0x57, 0x2C, 0xF0, 0x5E, 0x8E, 0x80, 0xDF, 0x09, 
-                /* 0380 */    0xD1, 0x77, 0x0D, 0x7E, 0x9A, 0xB6, 0xA2, 0xBB, 
-                /* 0388 */    0x06, 0x94, 0x19, 0xBE, 0x07, 0xF9, 0xB0, 0x13, 
-                /* 0390 */    0x2C, 0xD2, 0xA3, 0x8D, 0x6F, 0x49, 0xE1, 0x7C, 
-                /* 0398 */    0xDB, 0x00, 0xD8, 0xF2, 0xFF, 0xBF, 0x6D, 0x00, 
-                /* 03A0 */    0x4C, 0x19, 0xBF, 0x6F, 0x1B, 0xC0, 0x4F, 0xA1, 
-                /* 03A8 */    0x4D, 0x9F, 0x1A, 0x8D, 0x5A, 0x35, 0x28, 0x53, 
-                /* 03B0 */    0xA3, 0x4C, 0x83, 0x5A, 0x7D, 0x2A, 0x35, 0x66, 
-                /* 03B8 */    0x4C, 0xC9, 0xC1, 0xCE, 0x77, 0x0C, 0x2A, 0x6C, 
-                /* 03C0 */    0x65, 0x1A, 0x9A, 0x63, 0x81, 0xD0, 0x10, 0xC7, 
-                /* 03C8 */    0x26, 0x19, 0x01, 0x51, 0x22, 0x10, 0x01, 0x59, 
-                /* 03D0 */    0xFD, 0x6F, 0x42, 0x40, 0xCE, 0x02, 0x22, 0x20, 
-                /* 03D8 */    0x2B, 0x58, 0x9A, 0xC0, 0x9D, 0xFF, 0xD8, 0x28, 
-                /* 03E0 */    0x40, 0xA2, 0x02, 0x84, 0x29, 0x7D, 0x93, 0x09, 
-                /* 03E8 */    0xD4, 0xB2, 0x41, 0x04, 0xF4, 0xFF, 0x3F, 0x42, 
-                /* 03F0 */    0xD9, 0x00, 0x62, 0x82, 0x41, 0x04, 0x64, 0x91, 
-                /* 03F8 */    0x3E, 0x80, 0x98, 0x62, 0x10, 0x01, 0x59, 0xDD, 
-                /* 0400 */    0xA3, 0x40, 0x40, 0xD6, 0x0A, 0x22, 0x20, 0xFF, 
-                /* 0408 */    0xFF, 0x01
+                /* 0000 */  0x46, 0x4F, 0x4D, 0x42, 0x01, 0x00, 0x00, 0x00,
+                /* 0008 */  0xFA, 0x03, 0x00, 0x00, 0x32, 0x12, 0x00, 0x00,
+                /* 0010 */  0x44, 0x53, 0x00, 0x01, 0x1A, 0x7D, 0xDA, 0x54,
+                /* 0018 */  0x98, 0xC3, 0x88, 0x00, 0x01, 0x06, 0x18, 0x42,
+                /* 0020 */  0x10, 0x07, 0x10, 0x8A, 0x0D, 0x21, 0x02, 0x0B,
+                /* 0028 */  0x83, 0x50, 0x50, 0x18, 0x14, 0xA0, 0x45, 0x41,
+                /* 0030 */  0xC8, 0x05, 0x14, 0x95, 0x02, 0x21, 0xC3, 0x02,
+                /* 0038 */  0x14, 0x0B, 0x70, 0x2E, 0x40, 0xBA, 0x00, 0xE5,
+                /* 0040 */  0x28, 0x72, 0x0C, 0x22, 0x02, 0xF7, 0xEF, 0x0F,
+                /* 0048 */  0x31, 0x10, 0x88, 0x14, 0x40, 0x48, 0x28, 0x84,
+                /* 0050 */  0x44, 0x00, 0x53, 0x21, 0x70, 0x84, 0xA0, 0x5F,
+                /* 0058 */  0x01, 0x08, 0x1D, 0x0A, 0x90, 0x29, 0xC0, 0xA0,
+                /* 0060 */  0x00, 0xA7, 0x08, 0x22, 0x88, 0xD2, 0xB2, 0x00,
+                /* 0068 */  0xDD, 0x02, 0x7C, 0x0B, 0xD0, 0x0E, 0x21, 0xB4,
+                /* 0070 */  0x58, 0x07, 0x11, 0x21, 0xD2, 0x31, 0x34, 0x29,
+                /* 0078 */  0x40, 0xA2, 0x00, 0x8B, 0x02, 0x64, 0xC3, 0xC8,
+                /* 0080 */  0x36, 0x22, 0x99, 0x87, 0x45, 0x0E, 0x02, 0x25,
+                /* 0088 */  0x66, 0x10, 0x28, 0x9D, 0xE0, 0xB2, 0x89, 0xAB,
+                /* 0090 */  0x41, 0x9C, 0x4C, 0x94, 0xF3, 0x88, 0x92, 0xE0,
+                /* 0098 */  0xA8, 0x0E, 0x22, 0x42, 0xEC, 0x72, 0x05, 0x48,
+                /* 00A0 */  0x1E, 0x80, 0x34, 0x4F, 0x4C, 0xD6, 0xE7, 0xA0,
+                /* 00A8 */  0x91, 0xB1, 0x11, 0xF0, 0x94, 0x1A, 0x40, 0x58,
+                /* 00B0 */  0xA0, 0x75, 0x2A, 0xE0, 0x7A, 0x0D, 0x43, 0x3D,
+                /* 00B8 */  0x80, 0x48, 0xCE, 0x58, 0x51, 0xC0, 0xF6, 0x3A,
+                /* 00C0 */  0x11, 0x8D, 0xEA, 0x40, 0x99, 0x24, 0x38, 0xD4,
+                /* 00C8 */  0x30, 0x3D, 0xB5, 0xE6, 0x27, 0xA6, 0x89, 0x9C,
+                /* 00D0 */  0x5A, 0xD3, 0x43, 0x16, 0x24, 0x93, 0x36, 0x14,
+                /* 00D8 */  0xD4, 0xD8, 0x3D, 0xAD, 0x93, 0xF2, 0x4C, 0x23,
+                /* 00E0 */  0x1E, 0x94, 0x61, 0x12, 0x78, 0x14, 0x0C, 0x8D,
+                /* 00E8 */  0x13, 0x94, 0x75, 0x22, 0xA0, 0x03, 0xE5, 0x80,
+                /* 00F0 */  0x27, 0xE1, 0x39, 0x16, 0x2F, 0x40, 0xF8, 0x88,
+                /* 00F8 */  0xC9, 0xB4, 0x4D, 0xE0, 0x33, 0x81, 0x87, 0x79,
+                /* 0100 */  0xCC, 0xD8, 0x11, 0x85, 0x0B, 0x78, 0x3E, 0xC7,
+                /* 0108 */  0x10, 0x39, 0xEE, 0xA1, 0xC6, 0x38, 0x8A, 0xC8,
+                /* 0110 */  0x47, 0x60, 0x24, 0x03, 0xC5, 0x2B, 0x08, 0x89,
+                /* 0118 */  0x80, 0xF8, 0x76, 0x70, 0x70, 0x91, 0xFC, 0xFF,
+                /* 0120 */  0x47, 0x89, 0x11, 0x2A, 0xC6, 0xDB, 0x00, 0x6E,
+                /* 0128 */  0x5E, 0x09, 0x8A, 0x1E, 0x07, 0x4A, 0x06, 0x84,
+                /* 0130 */  0x3C, 0x0A, 0xB0, 0x7A, 0x28, 0x20, 0x04, 0x16,
+                /* 0138 */  0x27, 0x40, 0xE3, 0x38, 0x05, 0xD3, 0x99, 0x00,
+                /* 0140 */  0x6D, 0x02, 0xBC, 0x09, 0x30, 0x27, 0xC0, 0x16,
+                /* 0148 */  0x86, 0x80, 0x82, 0x9C, 0x59, 0x94, 0x20, 0x11,
+                /* 0150 */  0x42, 0x31, 0x88, 0x0A, 0x05, 0x18, 0x43, 0x14,
+                /* 0158 */  0xCA, 0x3B, 0x41, 0x8C, 0xCA, 0x20, 0x74, 0x82,
+                /* 0160 */  0x08, 0x14, 0x3D, 0x78, 0x98, 0xD6, 0x40, 0x74,
+                /* 0168 */  0x89, 0xF0, 0xC8, 0xB1, 0x47, 0x00, 0x9F, 0x19,
+                /* 0170 */  0xCE, 0xE9, 0x04, 0x1F, 0x01, 0xDE, 0x16, 0x4C,
+                /* 0178 */  0xE0, 0x79, 0xBF, 0x24, 0x1C, 0x6A, 0xD8, 0x03,
+                /* 0180 */  0x8E, 0x1A, 0xE3, 0x28, 0x12, 0x58, 0xD0, 0x33,
+                /* 0188 */  0x42, 0x16, 0x40, 0x14, 0x09, 0x1E, 0x75, 0x64,
+                /* 0190 */  0xF0, 0xE1, 0xC0, 0x23, 0x3B, 0x72, 0xCF, 0xF0,
+                /* 0198 */  0x04, 0x82, 0x1C, 0xC2, 0x11, 0x3C, 0x36, 0x3C,
+                /* 01A0 */  0x15, 0x78, 0x0C, 0xEC, 0xBA, 0xE0, 0x73, 0x80,
+                /* 01A8 */  0x8F, 0x09, 0x78, 0xD7, 0x80, 0x9A, 0xF3, 0xD3,
+                /* 01B0 */  0x01, 0x9B, 0x72, 0x38, 0xCC, 0x70, 0x3D, 0xFD,
+                /* 01B8 */  0x70, 0x27, 0x70, 0xD2, 0x06, 0x64, 0xB3, 0xF3,
+                /* 01C0 */  0xE0, 0x70, 0xE3, 0x3C, 0x99, 0x23, 0x2B, 0x55,
+                /* 01C8 */  0x80, 0xD9, 0x13, 0x82, 0x4E, 0x13, 0x3E, 0x73,
+                /* 01D0 */  0xB0, 0xBB, 0xC0, 0xF9, 0xF4, 0x0C, 0x49, 0xE4,
+                /* 01D8 */  0x0F, 0x02, 0x35, 0x32, 0x43, 0xFB, 0x2C, 0xF0,
+                /* 01E0 */  0xEA, 0x61, 0xC8, 0x87, 0x85, 0xC3, 0x62, 0x62,
+                /* 01E8 */  0xCF, 0x1E, 0x74, 0x3C, 0xE0, 0x3F, 0x25, 0x3C,
+                /* 01F0 */  0x6C, 0x78, 0xFA, 0x9E, 0xAF, 0x09, 0xA2, 0x3D,
+                /* 01F8 */  0x8F, 0x80, 0xE1, 0xFF, 0x7F, 0x1E, 0x81, 0x39,
+                /* 0200 */  0x9C, 0x07, 0x84, 0x27, 0x07, 0x76, 0x80, 0xC0,
+                /* 0208 */  0x1C, 0x48, 0x80, 0xC9, 0xF9, 0x02, 0x77, 0x28,
+                /* 0210 */  0xF0, 0x10, 0xF8, 0x00, 0x1E, 0x25, 0xCE, 0xD1,
+                /* 0218 */  0x4A, 0x67, 0x86, 0x3C, 0xB9, 0x80, 0x2D, 0xFB,
+                /* 0220 */  0x1B, 0x40, 0x07, 0x0F, 0xE7, 0x06, 0x91, 0x8D,
+                /* 0228 */  0x57, 0x80, 0x09, 0x74, 0x38, 0xB1, 0x1E, 0x20,
+                /* 0230 */  0x4D, 0x14, 0x0C, 0x04, 0xD3, 0xD3, 0x6B, 0x00,
+                /* 0238 */  0x3E, 0x15, 0x38, 0x37, 0x89, 0x92, 0x0F, 0x8C,
+                /* 0240 */  0xC2, 0x39, 0xEB, 0x79, 0x84, 0x82, 0x18, 0xD0,
+                /* 0248 */  0x41, 0x20, 0xE4, 0xE4, 0xA0, 0x80, 0x3A, 0xAA,
+                /* 0250 */  0xF8, 0x3C, 0x72, 0xAA, 0x0F, 0x3D, 0x9E, 0x94,
+                /* 0258 */  0x47, 0xE1, 0xAB, 0x8A, 0x0F, 0x21, 0x3E, 0x4F,
+                /* 0260 */  0x78, 0xF4, 0x3E, 0x29, 0xF0, 0xEF, 0x8C, 0xAF,
+                /* 0268 */  0x0E, 0x46, 0xB7, 0x9A, 0xE3, 0x0A, 0x0A, 0xCC,
+                /* 0270 */  0x67, 0x11, 0x4E, 0x50, 0xD7, 0x6D, 0x01, 0xFA,
+                /* 0278 */  0x29, 0xE0, 0x08, 0x3C, 0x94, 0x77, 0x92, 0xC7,
+                /* 0280 */  0x90, 0x04, 0xF5, 0x9D, 0x16, 0x40, 0x01, 0xE4,
+                /* 0288 */  0x9B, 0x81, 0x4F, 0x02, 0x21, 0xFE, 0xFF, 0x4F,
+                /* 0290 */  0x07, 0x1E, 0xC3, 0xC3, 0x80, 0xD1, 0x8C, 0xCE,
+                /* 0298 */  0xC3, 0x4F, 0x16, 0x15, 0x77, 0xB2, 0x14, 0xC4,
+                /* 02A0 */  0x93, 0x75, 0x94, 0xC9, 0xA2, 0x67, 0xE2, 0xAB,
+                /* 02A8 */  0x85, 0x27, 0x74, 0x4A, 0x41, 0xCE, 0xD1, 0x13,
+                /* 02B0 */  0xF6, 0x55, 0x04, 0xD6, 0xF9, 0x20, 0xE4, 0x8B,
+                /* 02B8 */  0x81, 0xA7, 0x61, 0x38, 0x4F, 0x96, 0xC3, 0x79,
+                /* 02C0 */  0xB2, 0x7C, 0x2C, 0xBE, 0x6A, 0xC0, 0x1F, 0x2D,
+                /* 02C8 */  0x96, 0xA0, 0xC0, 0xD9, 0x82, 0x1C, 0x1E, 0x13,
+                /* 02D0 */  0x6F, 0x54, 0xF4, 0x46, 0xE4, 0xE1, 0xF1, 0xCB,
+                /* 02D8 */  0x81, 0xE7, 0xF3, 0x8C, 0x70, 0x94, 0x6F, 0x12,
+                /* 02E0 */  0x38, 0x8C, 0xC7, 0x12, 0x0F, 0xD1, 0x97, 0x23,
+                /* 02E8 */  0x58, 0x13, 0x39, 0x69, 0xDF, 0x16, 0x4E, 0x36,
+                /* 02F0 */  0xE8, 0x4B, 0x10, 0xBB, 0x1C, 0x01, 0xBF, 0x88,
+                /* 02F8 */  0x26, 0x86, 0xC1, 0x22, 0x2D, 0x45, 0x11, 0x17,
+                /* 0300 */  0x45, 0x61, 0x7C, 0xC5, 0x82, 0xFD, 0xFF, 0xBF,
+                /* 0308 */  0x62, 0x01, 0x16, 0x04, 0x0F, 0x1B, 0x34, 0x87,
+                /* 0310 */  0x83, 0x97, 0x1E, 0x36, 0x6B, 0x38, 0x07, 0x99,
+                /* 0318 */  0xD3, 0xF1, 0x48, 0x4E, 0x1B, 0xC6, 0x1D, 0x0B,
+                /* 0320 */  0xFE, 0x9D, 0xEA, 0xA9, 0xCA, 0xD3, 0x8A, 0xF2,
+                /* 0328 */  0x64, 0xF5, 0x7A, 0xE5, 0x63, 0x96, 0xA1, 0xCE,
+                /* 0330 */  0xE0, 0x1D, 0xCB, 0xB7, 0x3C, 0x4F, 0x21, 0x4A,
+                /* 0338 */  0x9C, 0x97, 0x2D, 0x76, 0xC7, 0x32, 0x48, 0x50,
+                /* 0340 */  0x23, 0x3F, 0x68, 0x31, 0x94, 0xE0, 0xF1, 0xDE,
+                /* 0348 */  0xB1, 0x00, 0x6F, 0xFF, 0xFF, 0x3B, 0x16, 0x60,
+                /* 0350 */  0xFC, 0x04, 0xC1, 0x09, 0x7C, 0xC7, 0x02, 0x1C,
+                /* 0358 */  0xC5, 0x7E, 0x37, 0xE8, 0x4A, 0x45, 0xEE, 0x58,
+                /* 0360 */  0x28, 0x0E, 0xAB, 0xB9, 0x63, 0x41, 0x9C, 0x28,
+                /* 0368 */  0xE6, 0x8A, 0x05, 0x86, 0xFF, 0xFF, 0x15, 0x0B,
+                /* 0370 */  0xE0, 0x75, 0xC0, 0x2B, 0x16, 0x68, 0xFE, 0xFF,
+                /* 0378 */  0x57, 0x2C, 0xF0, 0x5E, 0x8E, 0x80, 0xDF, 0x09,
+                /* 0380 */  0xD1, 0x77, 0x0D, 0x7E, 0x9A, 0xB6, 0xA2, 0xBB,
+                /* 0388 */  0x06, 0x94, 0x19, 0xBE, 0x07, 0xF9, 0xB0, 0x13,
+                /* 0390 */  0x2C, 0xD2, 0xA3, 0x8D, 0x6F, 0x49, 0xE1, 0x7C,
+                /* 0398 */  0xDB, 0x00, 0xD8, 0xF2, 0xFF, 0xBF, 0x6D, 0x00,
+                /* 03A0 */  0x4C, 0x19, 0xBF, 0x6F, 0x1B, 0xC0, 0x4F, 0xA1,
+                /* 03A8 */  0x4D, 0x9F, 0x1A, 0x8D, 0x5A, 0x35, 0x28, 0x53,
+                /* 03B0 */  0xA3, 0x4C, 0x83, 0x5A, 0x7D, 0x2A, 0x35, 0x66,
+                /* 03B8 */  0x4C, 0xC9, 0xC1, 0xCE, 0x77, 0x0C, 0x2A, 0x6C,
+                /* 03C0 */  0x65, 0x1A, 0x9A, 0x63, 0x81, 0xD0, 0x10, 0xC7,
+                /* 03C8 */  0x26, 0x19, 0x01, 0x51, 0x22, 0x10, 0x01, 0x59,
+                /* 03D0 */  0xFD, 0x6F, 0x42, 0x40, 0xCE, 0x02, 0x22, 0x20,
+                /* 03D8 */  0x2B, 0x58, 0x9A, 0xC0, 0x9D, 0xFF, 0xD8, 0x28,
+                /* 03E0 */  0x40, 0xA2, 0x02, 0x84, 0x29, 0x7D, 0x93, 0x09,
+                /* 03E8 */  0xD4, 0xB2, 0x41, 0x04, 0xF4, 0xFF, 0x3F, 0x42,
+                /* 03F0 */  0xD9, 0x00, 0x62, 0x82, 0x41, 0x04, 0x64, 0x91,
+                /* 03F8 */  0x3E, 0x80, 0x98, 0x62, 0x10, 0x01, 0x59, 0xDD,
+                /* 0400 */  0xA3, 0x40, 0x40, 0xD6, 0x0A, 0x22, 0x20, 0xFF,
+                /* 0408 */  0xFF, 0x01                                     
             })
         }
 
@@ -14799,18 +14396,15 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Store (Zero, BBLS)
                     Return (Zero)
                 }
+                ElseIf (LEqual (0x02, Arg0))
+                {
+                    Store (Zero, ILNF)
+                    Store (One, BBLS)
+                    Return (Zero)
+                }
                 Else
                 {
-                    If (LEqual (0x02, Arg0))
-                    {
-                        Store (Zero, ILNF)
-                        Store (One, BBLS)
-                        Return (Zero)
-                    }
-                    Else
-                    {
-                        Return (One)
-                    }
+                    Return (One)
                 }
             }
 
@@ -14820,16 +14414,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     Return (Add (0x02, HPLD))
                 }
+                ElseIf (And (RBEC (0x46), 0x04))
+                {
+                    Return (0x03)
+                }
                 Else
                 {
-                    If (And (RBEC (0x46), 0x04))
-                    {
-                        Return (0x03)
-                    }
-                    Else
-                    {
-                        Return (0x02)
-                    }
+                    Return (0x02)
                 }
             }
         }
@@ -14848,17 +14439,14 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Store (One, PLUX)
                     Return (Zero)
                 }
+                ElseIf (LEqual (0x02, Arg0))
+                {
+                    Store (Zero, PLUX)
+                    Return (Zero)
+                }
                 Else
                 {
-                    If (LEqual (0x02, Arg0))
-                    {
-                        Store (Zero, PLUX)
-                        Return (Zero)
-                    }
-                    Else
-                    {
-                        Return (One)
-                    }
+                    Return (One)
                 }
             }
         }
@@ -14883,35 +14471,35 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             {
                 Name (OPVK, Buffer (0xE6)
                 {
-                    /* 0000 */    0xE4, 0xB8, 0x4F, 0x51, 0x50, 0x72, 0x8A, 0xC2, 
-                    /* 0008 */    0x4B, 0x56, 0xE6, 0x00, 0x00, 0x00, 0x01, 0x00, 
-                    /* 0010 */    0x31, 0x34, 0x38, 0x35, 0x39, 0x37, 0x34, 0x35, 
-                    /* 0018 */    0x36, 0x39, 0x38, 0x35, 0x47, 0x65, 0x6E, 0x75, 
-                    /* 0020 */    0x69, 0x6E, 0x65, 0x20, 0x4E, 0x56, 0x49, 0x44, 
-                    /* 0028 */    0x49, 0x41, 0x20, 0x43, 0x65, 0x72, 0x74, 0x69, 
-                    /* 0030 */    0x66, 0x69, 0x65, 0x64, 0x20, 0x4F, 0x70, 0x74, 
-                    /* 0038 */    0x69, 0x6D, 0x75, 0x73, 0x20, 0x52, 0x65, 0x61, 
-                    /* 0040 */    0x64, 0x79, 0x20, 0x4D, 0x6F, 0x74, 0x68, 0x65, 
-                    /* 0048 */    0x72, 0x62, 0x6F, 0x61, 0x72, 0x64, 0x20, 0x66, 
-                    /* 0050 */    0x6F, 0x72, 0x20, 0x36, 0x38, 0x38, 0x33, 0x32, 
-                    /* 0058 */    0x35, 0x6E, 0x6F, 0x7A, 0x6F, 0x6D, 0x69, 0x32, 
-                    /* 0060 */    0x31, 0x44, 0x35, 0x20, 0x20, 0x20, 0x20, 0x20, 
-                    /* 0068 */    0x2D, 0x20, 0x40, 0x4A, 0x20, 0x24, 0x55, 0x27, 
-                    /* 0070 */    0x5C, 0x22, 0x54, 0x20, 0x29, 0x5F, 0x47, 0x42, 
-                    /* 0078 */    0x20, 0x50, 0x2F, 0x41, 0x4F, 0x5C, 0x37, 0x22, 
-                    /* 0080 */    0x3D, 0x46, 0x37, 0x39, 0x4B, 0x37, 0x2B, 0x5F, 
-                    /* 0088 */    0x3F, 0x4B, 0x48, 0x5C, 0x5F, 0x46, 0x58, 0x48, 
-                    /* 0090 */    0x5F, 0x44, 0x57, 0x32, 0x26, 0x4A, 0x46, 0x50, 
-                    /* 0098 */    0x52, 0x25, 0x24, 0x2F, 0x46, 0x24, 0x20, 0x2D, 
-                    /* 00A0 */    0x20, 0x43, 0x6F, 0x70, 0x79, 0x72, 0x69, 0x67, 
-                    /* 00A8 */    0x68, 0x74, 0x20, 0x32, 0x30, 0x31, 0x30, 0x20, 
-                    /* 00B0 */    0x4E, 0x56, 0x49, 0x44, 0x49, 0x41, 0x20, 0x43, 
-                    /* 00B8 */    0x6F, 0x72, 0x70, 0x6F, 0x72, 0x61, 0x74, 0x69, 
-                    /* 00C0 */    0x6F, 0x6E, 0x20, 0x41, 0x6C, 0x6C, 0x20, 0x52, 
-                    /* 00C8 */    0x69, 0x67, 0x68, 0x74, 0x73, 0x20, 0x52, 0x65, 
-                    /* 00D0 */    0x73, 0x65, 0x72, 0x76, 0x65, 0x64, 0x2D, 0x31, 
-                    /* 00D8 */    0x34, 0x38, 0x35, 0x39, 0x37, 0x34, 0x35, 0x36, 
-                    /* 00E0 */    0x39, 0x38, 0x35, 0x28, 0x52, 0x29
+                    /* 0000 */  0xE4, 0xB8, 0x4F, 0x51, 0x50, 0x72, 0x8A, 0xC2,
+                    /* 0008 */  0x4B, 0x56, 0xE6, 0x00, 0x00, 0x00, 0x01, 0x00,
+                    /* 0010 */  0x31, 0x34, 0x38, 0x35, 0x39, 0x37, 0x34, 0x35,
+                    /* 0018 */  0x36, 0x39, 0x38, 0x35, 0x47, 0x65, 0x6E, 0x75,
+                    /* 0020 */  0x69, 0x6E, 0x65, 0x20, 0x4E, 0x56, 0x49, 0x44,
+                    /* 0028 */  0x49, 0x41, 0x20, 0x43, 0x65, 0x72, 0x74, 0x69,
+                    /* 0030 */  0x66, 0x69, 0x65, 0x64, 0x20, 0x4F, 0x70, 0x74,
+                    /* 0038 */  0x69, 0x6D, 0x75, 0x73, 0x20, 0x52, 0x65, 0x61,
+                    /* 0040 */  0x64, 0x79, 0x20, 0x4D, 0x6F, 0x74, 0x68, 0x65,
+                    /* 0048 */  0x72, 0x62, 0x6F, 0x61, 0x72, 0x64, 0x20, 0x66,
+                    /* 0050 */  0x6F, 0x72, 0x20, 0x36, 0x38, 0x38, 0x33, 0x32,
+                    /* 0058 */  0x35, 0x6E, 0x6F, 0x7A, 0x6F, 0x6D, 0x69, 0x32,
+                    /* 0060 */  0x31, 0x44, 0x35, 0x20, 0x20, 0x20, 0x20, 0x20,
+                    /* 0068 */  0x2D, 0x20, 0x40, 0x4A, 0x20, 0x24, 0x55, 0x27,
+                    /* 0070 */  0x5C, 0x22, 0x54, 0x20, 0x29, 0x5F, 0x47, 0x42,
+                    /* 0078 */  0x20, 0x50, 0x2F, 0x41, 0x4F, 0x5C, 0x37, 0x22,
+                    /* 0080 */  0x3D, 0x46, 0x37, 0x39, 0x4B, 0x37, 0x2B, 0x5F,
+                    /* 0088 */  0x3F, 0x4B, 0x48, 0x5C, 0x5F, 0x46, 0x58, 0x48,
+                    /* 0090 */  0x5F, 0x44, 0x57, 0x32, 0x26, 0x4A, 0x46, 0x50,
+                    /* 0098 */  0x52, 0x25, 0x24, 0x2F, 0x46, 0x24, 0x20, 0x2D,
+                    /* 00A0 */  0x20, 0x43, 0x6F, 0x70, 0x79, 0x72, 0x69, 0x67,
+                    /* 00A8 */  0x68, 0x74, 0x20, 0x32, 0x30, 0x31, 0x30, 0x20,
+                    /* 00B0 */  0x4E, 0x56, 0x49, 0x44, 0x49, 0x41, 0x20, 0x43,
+                    /* 00B8 */  0x6F, 0x72, 0x70, 0x6F, 0x72, 0x61, 0x74, 0x69,
+                    /* 00C0 */  0x6F, 0x6E, 0x20, 0x41, 0x6C, 0x6C, 0x20, 0x52,
+                    /* 00C8 */  0x69, 0x67, 0x68, 0x74, 0x73, 0x20, 0x52, 0x65,
+                    /* 00D0 */  0x73, 0x65, 0x72, 0x76, 0x65, 0x64, 0x2D, 0x31,
+                    /* 00D8 */  0x34, 0x38, 0x35, 0x39, 0x37, 0x34, 0x35, 0x36,
+                    /* 00E0 */  0x39, 0x38, 0x35, 0x28, 0x52, 0x29             
                 })
                 CreateWordField (Arg0, 0x02, USRG)
                 If (LEqual (USRG, 0x564B))
@@ -14929,7 +14517,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             Name (HDAS, Zero)
             Method (NVOP, 4, NotSerialized)
             {
-                Name (_T_0, Zero)
+                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 Store ("------- NV OPTIMUS DSM --------", Debug)
                 If (LNotEqual (Arg1, 0x0100))
                 {
@@ -14941,94 +14529,81 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     Store (Buffer (0x04)
                         {
-                            0x00, 0x00, 0x00, 0x00
+                             0x00, 0x00, 0x00, 0x00                         
                         }, Local0)
                     Divide (Zero, 0x08, Local2, Local1)
                     ShiftLeft (One, Local2, Local2)
-                    Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1
-                        ))
+                    Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1))
                     Divide (0x1A, 0x08, Local2, Local1)
                     ShiftLeft (One, Local2, Local2)
-                    Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1
-                        ))
+                    Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1))
                     Divide (0x1B, 0x08, Local2, Local1)
                     ShiftLeft (One, Local2, Local2)
-                    Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1
-                        ))
+                    Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1))
                     Divide (0x10, 0x08, Local2, Local1)
                     ShiftLeft (One, Local2, Local2)
-                    Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1
-                        ))
+                    Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1))
                     Return (Local0)
                 }
-                Else
+                ElseIf (LEqual (_T_0, 0x1A))
                 {
-                    If (LEqual (_T_0, 0x1A))
+                    CreateField (Arg3, 0x18, 0x02, OPCE)
+                    CreateField (Arg3, Zero, One, FLCH)
+                    If (ToInteger (FLCH))
                     {
-                        CreateField (Arg3, 0x18, 0x02, OPCE)
-                        CreateField (Arg3, Zero, One, FLCH)
-                        If (ToInteger (FLCH))
-                        {
-                            Store (OPCE, OMPR)
-                        }
+                        Store (OPCE, OMPR)
+                    }
 
-                        Store (Buffer (0x04)
-                            {
-                                0x00, 0x00, 0x00, 0x00
-                            }, Local0)
-                        CreateField (Local0, Zero, One, OPEN)
-                        CreateField (Local0, 0x03, 0x02, CGCS)
-                        CreateField (Local0, 0x06, One, SHPC)
-                        CreateField (Local0, 0x18, 0x03, DGPC)
-                        CreateField (Local0, 0x1B, 0x02, HDAC)
-                        Store (One, OPEN)
-                        Store (One, SHPC)
-                        Store (One, DGPC)
-                        If (_STA ())
+                    Store (Buffer (0x04)
                         {
-                            Store (0x03, CGCS)
-                        }
+                             0x00, 0x00, 0x00, 0x00                         
+                        }, Local0)
+                    CreateField (Local0, Zero, One, OPEN)
+                    CreateField (Local0, 0x03, 0x02, CGCS)
+                    CreateField (Local0, 0x06, One, SHPC)
+                    CreateField (Local0, 0x18, 0x03, DGPC)
+                    CreateField (Local0, 0x1B, 0x02, HDAC)
+                    Store (One, OPEN)
+                    Store (One, SHPC)
+                    Store (One, DGPC)
+                    If (_STA ())
+                    {
+                        Store (0x03, CGCS)
+                    }
 
-                        Store (0x02, HDAC)
-                        Return (Local0)
+                    Store (0x02, HDAC)
+                    Return (Local0)
+                }
+                ElseIf (LEqual (_T_0, 0x1B))
+                {
+                    CreateField (Arg3, Zero, One, HDAU)
+                    CreateField (Arg3, One, One, HDAR)
+                    Store (Buffer (0x04)
+                        {
+                             0x00, 0x00, 0x00, 0x00                         
+                        }, Local0)
+                    CreateField (Local0, 0x02, 0x02, RQGS)
+                    CreateField (Local0, 0x04, One, PWST)
+                    Store (One, PWST)
+                    If (LAnd (^^^LPC.EC.DOCD, ^^^LPC.EC.AC._PSR ()))
+                    {
+                        Store (One, RQGS)
                     }
                     Else
                     {
-                        If (LEqual (_T_0, 0x1B))
-                        {
-                            CreateField (Arg3, Zero, One, HDAU)
-                            CreateField (Arg3, One, One, HDAR)
-                            Store (Buffer (0x04)
-                                {
-                                    0x00, 0x00, 0x00, 0x00
-                                }, Local0)
-                            CreateField (Local0, 0x02, 0x02, RQGS)
-                            CreateField (Local0, 0x04, One, PWST)
-                            Store (One, PWST)
-                            If (LAnd (^^^LPC.EC.DOCD, ^^^LPC.EC.AC._PSR ()))
-                            {
-                                Store (One, RQGS)
-                            }
-                            Else
-                            {
-                                Store (Zero, RQGS)
-                            }
-
-                            If (ToInteger (HDAR))
-                            {
-                                Store (ToInteger (HDAU), HDAS)
-                            }
-
-                            Return (Local0)
-                        }
-                        Else
-                        {
-                            If (LEqual (_T_0, 0x10))
-                            {
-                                Return (GOBT (Arg3))
-                            }
-                        }
+                        Store (Zero, RQGS)
                     }
+
+                    If (ToInteger (HDAR))
+                    {
+                        Store (ToInteger (HDAU), HDAS)
+                    }
+
+                    Return (Local0)
+                }
+                ElseIf (LEqual (_T_0, 0x10))
+                {
+                    Return (GOBT (Arg3))
                 }
 
                 Return (0x80000002)
@@ -15048,8 +14623,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 Store (Zero, Local0)
                 While (LLess (Local0, Local1))
                 {
-                    If (LNotEqual (DerefOf (Index (Arg0, Local0)), DerefOf (Index (
-                        Arg1, Local0))))
+                    If (LNotEqual (DerefOf (Index (Arg0, Local0)), DerefOf (Index (Arg1, Local0))))
                     {
                         Return (Zero)
                     }
@@ -15066,19 +14640,19 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             Name (CPPC, Zero)
             Method (NVPS, 4, NotSerialized)
             {
-                Name (_T_1, Zero)
-                Name (_T_0, Zero)
+                Name (_T_1, Zero)  // _T_x: Emitted by ASL Compiler
+                Name (_T_0, Zero)  // _T_x: Emitted by ASL Compiler
                 Store ("------- NV GPS DSM --------", Debug)
                 Store (ToInteger (Arg2), _T_0)
                 If (LEqual (_T_0, Zero))
                 {
                     Store (Buffer (0x08)
                         {
-                            /* 0000 */    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00
+                             0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 
                         }, Local0)
                     Store (Buffer (0x07)
                         {
-                            0x00, 0x20, 0x21, 0x22, 0x23, 0x2A, 0xFF
+                             0x00, 0x20, 0x21, 0x22, 0x23, 0x2A, 0xFF       
                         }, Local3)
                     Store (Zero, Local4)
                     Store (DerefOf (Index (Local3, Local4)), Local5)
@@ -15086,105 +14660,83 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     {
                         Divide (Local5, 0x08, Local2, Local1)
                         ShiftLeft (One, Local2, Local2)
-                        Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1
-                            ))
+                        Or (DerefOf (Index (Local0, Local1)), Local2, Index (Local0, Local1))
                         Increment (Local4)
                         Store (DerefOf (Index (Local3, Local4)), Local5)
                     }
 
                     Return (Local0)
                 }
-                Else
+                ElseIf (LEqual (_T_0, 0x20))
                 {
-                    If (LEqual (_T_0, 0x20))
+                    Store (Buffer (0x04)
+                        {
+                             0x00, 0x00, 0x00, 0x00                         
+                        }, Local0)
+                    CreateField (Local0, 0x18, One, CUIT)
+                    CreateField (Local0, 0x1E, One, PSER)
+                    Store (One, CUIT)
+                    Store (One, PSER)
+                    Return (Local0)
+                }
+                ElseIf (LEqual (_T_0, 0x21))
+                {
+                    Return (\_PR.CPU0._PSS)
+                }
+                ElseIf (LEqual (_T_0, 0x22))
+                {
+                    CreateField (Arg3, Zero, 0x08, PPCV)
+                    Store (PPCV, CPPC)
+                    PNTF (0x80)
+                    Return (Buffer (0x04)
                     {
-                        Store (Buffer (0x04)
-                            {
-                                0x00, 0x00, 0x00, 0x00
-                            }, Local0)
-                        CreateField (Local0, 0x18, One, CUIT)
-                        CreateField (Local0, 0x1E, One, PSER)
-                        Store (One, CUIT)
-                        Store (One, PSER)
+                         0x00, 0x00, 0x00, 0x00                         
+                    })
+                }
+                ElseIf (LEqual (_T_0, 0x23))
+                {
+                    Store (Buffer (0x04)
+                        {
+                             0x00, 0x00, 0x00, 0x00                         
+                        }, Local0)
+                    Store (CPPC, Index (Local0, Zero))
+                    Return (Local0)
+                }
+                ElseIf (LEqual (_T_0, 0x2A))
+                {
+                    Store (Buffer (0x24)
+                        {
+                            /* 0000 */  0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00,
+                            /* 0008 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                            /* 0010 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                            /* 0018 */  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+                            /* 0020 */  0x00, 0x00, 0x00, 0x00                         
+                        }, Local0)
+                    Store (DerefOf (Index (Arg3, Zero)), Index (Local0, Zero))
+                    CreateField (Arg3, Zero, 0x04, QTYP)
+                    Store (ToInteger (QTYP), _T_1)
+                    If (LEqual (_T_1, Zero))
+                    {
+                        Store (^^^LPC.EC.TMP0, Local1)
+                        Store (And (Local1, 0xFF), Index (Local0, 0x0C))
                         Return (Local0)
                     }
-                    Else
+                    ElseIf (LEqual (_T_1, One))
                     {
-                        If (LEqual (_T_0, 0x21))
-                        {
-                            Return (\_PR.CPU0._PSS)
-                        }
-                        Else
-                        {
-                            If (LEqual (_T_0, 0x22))
-                            {
-                                CreateField (Arg3, Zero, 0x08, PPCV)
-                                Store (PPCV, CPPC)
-                                PNTF (0x80)
-                                Return (Buffer (0x04)
-                                {
-                                    0x00, 0x00, 0x00, 0x00
-                                })
-                            }
-                            Else
-                            {
-                                If (LEqual (_T_0, 0x23))
-                                {
-                                    Store (Buffer (0x04)
-                                        {
-                                            0x00, 0x00, 0x00, 0x00
-                                        }, Local0)
-                                    Store (CPPC, Index (Local0, Zero))
-                                    Return (Local0)
-                                }
-                                Else
-                                {
-                                    If (LEqual (_T_0, 0x2A))
-                                    {
-                                        Store (Buffer (0x24)
-                                            {
-                                                /* 0000 */    0x00, 0x02, 0x00, 0x00, 0x00, 0x00, 0x01, 0x00, 
-                                                /* 0008 */    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                                                /* 0010 */    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                                                /* 0018 */    0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 
-                                                /* 0020 */    0x00, 0x00, 0x00, 0x00
-                                            }, Local0)
-                                        Store (DerefOf (Index (Arg3, Zero)), Index (Local0, Zero))
-                                        CreateField (Arg3, Zero, 0x04, QTYP)
-                                        Store (ToInteger (QTYP), _T_1)
-                                        If (LEqual (_T_1, Zero))
-                                        {
-                                            Store (^^^LPC.EC.TMP0, Local1)
-                                            Store (And (Local1, 0xFF), Index (Local0, 0x0C))
-                                            Return (Local0)
-                                        }
-                                        Else
-                                        {
-                                            If (LEqual (_T_1, One))
-                                            {
-                                                Store (0x08, Index (Local0, 0x0D))
-                                                Store (0x03, Index (Local0, One))
-                                                Return (Local0)
-                                            }
-                                            Else
-                                            {
-                                                If (LEqual (_T_1, 0x02))
-                                                {
-                                                    Store (Zero, Index (Local0, One))
-                                                    Return (Local0)
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        Store (0x08, Index (Local0, 0x0D))
+                        Store (0x03, Index (Local0, One))
+                        Return (Local0)
+                    }
+                    ElseIf (LEqual (_T_1, 0x02))
+                    {
+                        Store (Zero, Index (Local0, One))
+                        Return (Local0)
                     }
                 }
 
                 Return (Buffer (0x04)
                 {
-                    0x02, 0x00, 0x00, 0x80
+                     0x02, 0x00, 0x00, 0x80                         
                 })
             }
         }
@@ -15192,48 +14744,48 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
     Scope (_SB.PCI0.EHC2.URTH.URMH.PRTC)
     {
-        Name (_EJD, "\\_SB.GDCK")
+        Name (_EJD, "\\_SB.GDCK")  // _EJD: Ejection Dependent Device
     }
 
     Scope (_SB.PCI0.EHC1.URTH.URMH.PRT5)
     {
-        Name (_EJD, "\\_SB.PCI0.EXP3.SLOT")
+        Name (_EJD, "\\_SB.PCI0.EXP3.SLOT")  // _EJD: Ejection Dependent Device
     }
 
     Scope (_SB.PCI0.EXP3.SLOT)
     {
-        Name (_EJD, "\\_SB.PCI0.EHC1.URTH.URMH.PRT5")
+        Name (_EJD, "\\_SB.PCI0.EHC1.URTH.URMH.PRT5")  // _EJD: Ejection Dependent Device
     }
 
-    Name (_S0, Package (0x04)
+    Name (_S0, Package (0x04)  // _S0_: S0 System State
     {
         Zero, 
         Zero, 
         Zero, 
         Zero
     })
-    Name (_S3, Package (0x04)
+    Name (_S3, Package (0x04)  // _S3_: S3 System State
     {
         0x05, 
         0x05, 
         Zero, 
         Zero
     })
-    Name (_S4, Package (0x04)
+    Name (_S4, Package (0x04)  // _S4_: S4 System State
     {
         0x06, 
         0x06, 
         Zero, 
         Zero
     })
-    Name (_S5, Package (0x04)
+    Name (_S5, Package (0x04)  // _S5_: S5 System State
     {
         0x07, 
         0x07, 
         Zero, 
         Zero
     })
-    Method (_PTS, 1, NotSerialized)
+    Method (_PTS, 1, NotSerialized)  // _PTS: Prepare To Sleep
     {
         If (LEqual (Arg0, 0x05)) {}
         Else
@@ -15322,7 +14874,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         Zero, 
         Zero
     })
-    Method (_WAK, 1, NotSerialized)
+    Method (_WAK, 1, NotSerialized)  // _WAK: Wake
     {
         If (LOr (LEqual (Arg0, Zero), LGreaterEqual (Arg0, 0x05)))
         {
@@ -15407,23 +14959,20 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     VBTD ()
                 }
             }
-            Else
+            ElseIf (WVIS)
             {
-                If (WVIS)
+                \_SB.PCI0.IGPU.GLIS (\_SB.LID._LID ())
+                Store (\_SB.GDCK.GGID (), Local0)
+                If (LOr (LEqual (Local0, Zero), LEqual (Local0, One)))
                 {
-                    \_SB.PCI0.IGPU.GLIS (\_SB.LID._LID ())
-                    Store (\_SB.GDCK.GGID (), Local0)
-                    If (LOr (LEqual (Local0, Zero), LEqual (Local0, One)))
-                    {
-                        \_SB.PCI0.IGPU.GDCS (One)
-                    }
-                    Else
-                    {
-                        \_SB.PCI0.IGPU.GDCS (Zero)
-                    }
-
-                    VBTD ()
+                    \_SB.PCI0.IGPU.GDCS (One)
                 }
+                Else
+                {
+                    \_SB.PCI0.IGPU.GDCS (Zero)
+                }
+
+                VBTD ()
             }
 
             VCMS (One, \_SB.LID._LID ())
@@ -15564,12 +15113,9 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
         {
             \_SB.PCI0.IGPU.GLIS (\_SB.LID._LID ())
         }
-        Else
+        ElseIf (WVIS)
         {
-            If (WVIS)
-            {
-                \_SB.PCI0.IGPU.GLIS (\_SB.LID._LID ())
-            }
+            \_SB.PCI0.IGPU.GLIS (\_SB.LID._LID ())
         }
 
         If (LLess (Arg0, 0x04))
@@ -15611,7 +15157,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
     Scope (_SI)
     {
-        Method (_SST, 1, NotSerialized)
+        Method (_SST, 1, NotSerialized)  // _SST: System Status
         {
             If (LEqual (Arg0, Zero))
             {
@@ -15642,17 +15188,14 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     \_SB.PCI0.LPC.EC.BEEP (0x07)
                 }
+                ElseIf (LEqual (SPS, 0x03))
+                {
+                    \_SB.PCI0.LPC.EC.BEEP (0x03)
+                    \_SB.GDCK.PEJ3 ()
+                }
                 Else
                 {
-                    If (LEqual (SPS, 0x03))
-                    {
-                        \_SB.PCI0.LPC.EC.BEEP (0x03)
-                        \_SB.GDCK.PEJ3 ()
-                    }
-                    Else
-                    {
-                        \_SB.PCI0.LPC.EC.BEEP (0x04)
-                    }
+                    \_SB.PCI0.LPC.EC.BEEP (0x04)
                 }
 
                 If (LEqual (SPS, 0x03)) {}
@@ -15676,7 +15219,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
     Scope (_GPE)
     {
-        Method (_L1D, 0, NotSerialized)
+        Method (_L1D, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Store (B1B2 (\_SB.PCI0.LPC.EC.AK00, \_SB.PCI0.LPC.EC.AK01), Local0)
             Store (Local0, RRBF)
@@ -15705,7 +15248,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             }
         }
 
-        Method (_L09, 0, NotSerialized)
+        Method (_L09, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             If (\_SB.PCI0.EXP1.PS)
             {
@@ -15729,7 +15272,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             }
         }
 
-        Method (_L01, 0, NotSerialized)
+        Method (_L01, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             If (\_SB.PCI0.EXP1.HPCS)
             {
@@ -15756,7 +15299,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             }
         }
 
-        Method (_L02, 0, NotSerialized)
+        Method (_L02, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             Store (Zero, \_SB.PCI0.LPC.SWGE)
             If (LAnd (CWUE, And (SWGP, 0x02)))
@@ -15769,7 +15312,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             }
         }
 
-        Method (_L06, 0, NotSerialized)
+        Method (_L06, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             If (\_SB.PCI0.IGPU.GSSE)
             {
@@ -15781,7 +15324,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
             }
         }
 
-        Method (_L16, 0, NotSerialized)
+        Method (_L16, 0, NotSerialized)  // _Lxx: Level-Triggered GPE
         {
             If (\_SB.PCI0.PEG.VID.ISOP ())
             {
@@ -15806,45 +15349,33 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                     Store (TATC, Local0)
                     Return (Local0)
                 }
+                ElseIf (LEqual (Arg0, One))
+                {
+                    Store (TDFA, Local0)
+                    Add (Local0, ShiftLeft (TDTA, 0x04), Local0)
+                    Add (Local0, ShiftLeft (TDFD, 0x08), Local0)
+                    Add (Local0, ShiftLeft (TDTD, 0x0C), Local0)
+                    Add (Local0, ShiftLeft (TNFT, 0x10), Local0)
+                    Add (Local0, ShiftLeft (TNTT, 0x14), Local0)
+                    Return (Local0)
+                }
+                ElseIf (LEqual (Arg0, 0x02))
+                {
+                    Store (TCFA, Local0)
+                    Add (Local0, ShiftLeft (TCTA, 0x04), Local0)
+                    Add (Local0, ShiftLeft (TCFD, 0x08), Local0)
+                    Add (Local0, ShiftLeft (TCTD, 0x0C), Local0)
+                    Return (Local0)
+                }
+                ElseIf (LEqual (Arg0, 0x03)) {}
+                ElseIf (LEqual (Arg0, 0x04))
+                {
+                    Store (TATW, Local0)
+                    Return (Local0)
+                }
                 Else
                 {
-                    If (LEqual (Arg0, One))
-                    {
-                        Store (TDFA, Local0)
-                        Add (Local0, ShiftLeft (TDTA, 0x04), Local0)
-                        Add (Local0, ShiftLeft (TDFD, 0x08), Local0)
-                        Add (Local0, ShiftLeft (TDTD, 0x0C), Local0)
-                        Add (Local0, ShiftLeft (TNFT, 0x10), Local0)
-                        Add (Local0, ShiftLeft (TNTT, 0x14), Local0)
-                        Return (Local0)
-                    }
-                    Else
-                    {
-                        If (LEqual (Arg0, 0x02))
-                        {
-                            Store (TCFA, Local0)
-                            Add (Local0, ShiftLeft (TCTA, 0x04), Local0)
-                            Add (Local0, ShiftLeft (TCFD, 0x08), Local0)
-                            Add (Local0, ShiftLeft (TCTD, 0x0C), Local0)
-                            Return (Local0)
-                        }
-                        Else
-                        {
-                            If (LEqual (Arg0, 0x03)) {}
-                            Else
-                            {
-                                If (LEqual (Arg0, 0x04))
-                                {
-                                    Store (TATW, Local0)
-                                    Return (Local0)
-                                }
-                                Else
-                                {
-                                    Noop
-                                }
-                            }
-                        }
-                    }
+                    Noop
                 }
             }
 
@@ -15887,16 +15418,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                             Store (One, FTPS)
                         }
                     }
+                    ElseIf (\_PR.CLVL)
+                    {
+                        Store (CTDP, FTPS)
+                    }
                     Else
                     {
-                        If (\_PR.CLVL)
-                        {
-                            Store (CTDP, FTPS)
-                        }
-                        Else
-                        {
-                            Store (Zero, FTPS)
-                        }
+                        Store (Zero, FTPS)
                     }
 
                     If (XOr (FTPS, Local1))
@@ -16005,23 +15533,17 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     Add (Local0, TIF0, Local0)
                 }
+                ElseIf (LEqual (Local1, One))
+                {
+                    Add (Local0, TIF1, Local0)
+                }
+                ElseIf (LEqual (Local1, 0x02))
+                {
+                    Add (Local0, TIF2, Local0)
+                }
                 Else
                 {
-                    If (LEqual (Local1, One))
-                    {
-                        Add (Local0, TIF1, Local0)
-                    }
-                    Else
-                    {
-                        If (LEqual (Local1, 0x02))
-                        {
-                            Add (Local0, TIF2, Local0)
-                        }
-                        Else
-                        {
-                            Add (Local0, 0xFF, Local0)
-                        }
-                    }
+                    Add (Local0, 0xFF, Local0)
                 }
 
                 Store (And (ShiftRight (Arg0, 0x04), 0x0F), Local1)
@@ -16029,23 +15551,17 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                 {
                     Add (Local0, ShiftLeft (TIT0, 0x08), Local0)
                 }
+                ElseIf (LEqual (Local1, One))
+                {
+                    Add (Local0, ShiftLeft (TIT1, 0x08), Local0)
+                }
+                ElseIf (LEqual (Local1, 0x02))
+                {
+                    Add (Local0, ShiftLeft (TIT2, 0x08), Local0)
+                }
                 Else
                 {
-                    If (LEqual (Local1, One))
-                    {
-                        Add (Local0, ShiftLeft (TIT1, 0x08), Local0)
-                    }
-                    Else
-                    {
-                        If (LEqual (Local1, 0x02))
-                        {
-                            Add (Local0, ShiftLeft (TIT2, 0x08), Local0)
-                        }
-                        Else
-                        {
-                            Add (Local0, 0xFF00, Local0)
-                        }
-                    }
+                    Add (Local0, 0xFF00, Local0)
                 }
 
                 Return (Local0)
@@ -16164,16 +15680,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (TCR0, TCRT)
                         Store (TPS0, TPSV)
                     }
+                    ElseIf (LEqual (TCTA, One))
+                    {
+                        Store (TCR1, TCRT)
+                        Store (TPS1, TPSV)
+                    }
                     Else
                     {
-                        If (LEqual (TCTA, One))
-                        {
-                            Store (TCR1, TCRT)
-                            Store (TPS1, TPSV)
-                        }
-                        Else
-                        {
-                        }
                     }
                 }
                 Else
@@ -16188,16 +15701,13 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
                         Store (TCR0, TCRT)
                         Store (TPS0, TPSV)
                     }
+                    ElseIf (LEqual (TCTD, One))
+                    {
+                        Store (TCR1, TCRT)
+                        Store (TPS1, TPSV)
+                    }
                     Else
                     {
-                        If (LEqual (TCTD, One))
-                        {
-                            Store (TCR1, TCRT)
-                            Store (TPS1, TPSV)
-                        }
-                        Else
-                        {
-                        }
                     }
                 }
 
@@ -16218,12 +15728,12 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
     {
         ThermalZone (THM0)
         {
-            Method (_CRT, 0, NotSerialized)
+            Method (_CRT, 0, NotSerialized)  // _CRT: Critical Temperature
             {
                 Return (TCRT)
             }
 
-            Method (_TMP, 0, NotSerialized)
+            Method (_TMP, 0, NotSerialized)  // _TMP: Temperature
             {
                 If (H8DR)
                 {
@@ -16287,7 +15797,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
     Scope (_SB.PCI0.LPC.EC)
     {
-        Method (_Q40, 0, NotSerialized)
+        Method (_Q40, 0, NotSerialized)  // _Qxx: EC Query
         {
             Notify (\_TZ.THM0, 0x80)
             If (H8DR)
@@ -16339,7 +15849,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
     }
 
     Name (GPIC, Zero)
-    Method (_PIC, 1, NotSerialized)
+    Method (_PIC, 1, NotSerialized)  // _PIC: Interrupt Model
     {
         Store (Arg0, GPIC)
     }
@@ -16352,7 +15862,7 @@ DefinitionBlock ("iASLPPOqzb.aml", "DSDT", 1, "Apple ", "TP-G2   ", 0x00002670)
 
     Field (MNVS, AnyAcc, NoLock, Preserve)
     {
-                Offset (0xFC0), 
+        Offset (0xFC0), 
         CMD,    8, 
         ERR,    32, 
         PAR0,   32, 
