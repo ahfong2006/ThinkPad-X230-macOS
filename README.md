@@ -2,7 +2,7 @@
 
 **Run macOS High Sierra on your ThinkPad X230**
 
-**Video Tutorial : Coming Soon**
+**Video Tutorial : https://youtu.be/bdfjqAeB9T0**
 
 **Last Edit 2017/07/19**
 
